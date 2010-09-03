@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	 version="3.0">
+   <servlet>
+      <servlet-name>JerseyServletAdaptor</servlet-name>
+      <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>JerseyServletAdaptor</servlet-name>
+      <url-pattern>/resources/*</url-pattern>
+   </servlet-mapping>
+   <session-config>
+      <session-timeout>
+            30
+      </session-timeout>
+   </session-config>
+   <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>protected resources</web-resource-name>
+            <url-pattern>/resources/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>operator</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>dinner-panel-operator-realm</realm-name>
+    </login-config>
+</web-app>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="dinner_panel_main_persistence_unit" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>luoyong.dinnerpanel.dao.model.Bill</class>
+    <class>luoyong.dinnerpanel.dao.model.BillItem</class>
+    <class>luoyong.dinnerpanel.dao.model.BillItemHastenRecord</class>
+    <class>luoyong.dinnerpanel.dao.model.Food</class>
+    <class>luoyong.dinnerpanel.dao.model.FoodCategory</class>
+    <class>luoyong.dinnerpanel.dao.model.Operator</class>
+    <class>luoyong.dinnerpanel.dao.model.SalePlace</class>
+    <class>luoyong.dinnerpanel.dao.model.SaleSite</class>
+    <class>luoyong.dinnerpanel.dao.model.SpecialEvent</class>
+    <class>luoyong.dinnerpanel.dao.model.LoginOperator</class>
+    <class>luoyong.dinnerpanel.dao.model.LoginOperatorGroup</class>
+    <properties>
+      <!-- The parameters will be set in EntityManagerBuilder -->
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
+    </properties>
+  </persistence-unit>
+</persistence>
