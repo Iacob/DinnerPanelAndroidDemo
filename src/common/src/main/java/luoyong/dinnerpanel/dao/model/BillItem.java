@@ -24,7 +24,8 @@ import javax.persistence.Temporal;
       query="update BillItem i "
          + "set i.ek=luoyong.dinnerpanel.dao.model.ExistKey.D "
          + "where i.id=?1 "
-         + "and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+         + "and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C"),
    @NamedQuery(name=BillItem.QUERY_CANCEL_ITEM_FROM_BILL,
       query="update BillItem i "
          + "set i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.C "
@@ -32,14 +33,17 @@ import javax.persistence.Temporal;
    @NamedQuery(name=BillItem.QUERY_MARK_BILL_ITEM_COMPLETE,
       query="update BillItem i "
          + "set i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.F "
-         + "where i.id=?1 and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+         + "where i.id=?1 and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C"),
    @NamedQuery(name=BillItem.QUERY_MARK_BILL_ITEM_PROCESSING,
       query="update BillItem i "
          + "set i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.P "
-         + "where i.id=?1 and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+         + "where i.id=?1 and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C"),
    @NamedQuery(name=BillItem.QUERY_GET_BILL_ITEM_INFORMATION,query="select i "
       + "from BillItem i "
-      + "where i.id=?1 and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+      + "where i.id=?1 and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+      + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C"),
    @NamedQuery(name=BillItem.QUERY_GET_ALL_BILL_ITEMS_FROM_BILL,
       query="select i from BillItem i "
          + "where i.bill=?1 "

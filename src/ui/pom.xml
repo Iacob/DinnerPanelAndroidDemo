@@ -47,6 +47,12 @@
       </dependency>
       <dependency>
          <groupId>luoyong.dinnerpanel</groupId>
+         <artifactId>DinnerPanelCommon</artifactId>
+         <version>1.0</version>
+         <scope>compile</scope>
+      </dependency>
+      <dependency>
+         <groupId>luoyong.dinnerpanel</groupId>
          <artifactId>DinnerPanelService</artifactId>
          <version>1.0</version>
          <scope>compile</scope>

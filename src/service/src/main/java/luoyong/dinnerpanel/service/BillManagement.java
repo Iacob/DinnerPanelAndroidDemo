@@ -9,6 +9,7 @@ import luoyong.dinnerpanel.dao.EntityManagerBuilder;
 import luoyong.dinnerpanel.dao.model.Bill;
 import luoyong.dinnerpanel.dao.model.BillItem;
 import luoyong.dinnerpanel.dao.model.BillItemHastenRecord;
+import luoyong.dinnerpanel.dao.model.BillItemStatus;
 import luoyong.dinnerpanel.dao.model.ExistKey;
 import luoyong.dinnerpanel.dao.model.SalePlace;
 
@@ -152,6 +153,26 @@ public class BillManagement {
    }
 
    public void removeItemFromBill(Long id) {
+
+      // If ID parameter is null, return immediately.
+      if (id == null) {
+         return;
+      }
+
+      // If correspond bill item does not exists, return immediately.
+      BillItem billItem = this.getBillItemInformation(id);
+      if (billItem == null) {
+         return;
+      }
+
+      // Processed bill item does not allowed to be removed. Return immediately.
+      if ((billItem.getStatus() != null)
+              && ((billItem.getStatus().equals(BillItemStatus.P))
+               || (billItem.getStatus().equals(BillItemStatus.F)))) {
+         
+         return;
+      }
+
       EntityManager em = null;
       try {
          em = EntityManagerBuilder.buildEntityManager();
@@ -173,6 +194,27 @@ public class BillManagement {
    }
 
    public void cancelItemFromBill(Long id) {
+
+      // If ID parameter is null, return immediately.
+      if (id == null) {
+         return;
+      }
+
+      // If correspond bill item does not exists, return immediately.
+      BillItem billItem = this.getBillItemInformation(id);
+      if (billItem == null) {
+         return;
+      }
+
+      // Processed bill item does not allowed to be cancelled.
+      // Return immediately.
+      if ((billItem.getStatus() != null)
+              && ((billItem.getStatus().equals(BillItemStatus.P))
+               || (billItem.getStatus().equals(BillItemStatus.F)))) {
+
+         return;
+      }
+
       EntityManager em = null;
       try {
          em = EntityManagerBuilder.buildEntityManager();
@@ -194,6 +236,7 @@ public class BillManagement {
    }
 
    public void markBillItemComplete(Long id) {
+
       EntityManager em = null;
       try {
          em = EntityManagerBuilder.buildEntityManager();
@@ -215,6 +258,26 @@ public class BillManagement {
    }
 
    public void markBillItemProcessing(Long id) {
+
+      // If ID parameter is null, return immediately.
+      if (id == null) {
+         return;
+      }
+
+      // If correspond bill item does not exists, return immediately.
+      BillItem billItem = this.getBillItemInformation(id);
+      if (billItem == null) {
+         return;
+      }
+
+      // Finished bill item does not allowed to be marked as processing.
+      // Return immediately.
+      if ((billItem.getStatus() != null)
+              && (billItem.getStatus().equals(BillItemStatus.F))) {
+
+         return;
+      }
+
       EntityManager em = null;
       try {
          em = EntityManagerBuilder.buildEntityManager();
@@ -236,6 +299,27 @@ public class BillManagement {
    }
 
    public void setCommentToBillItem(Long id, String comment) {
+
+      // If ID parameter is null, return immediately.
+      if (id == null) {
+         return;
+      }
+
+      // If correspond bill item does not exists, return immediately.
+      BillItem billItem = this.getBillItemInformation(id);
+      if (billItem == null) {
+         return;
+      }
+
+      // Processed bill item does not allowed to be set comment.
+      // Return immediately.
+      if ((billItem.getStatus() != null)
+              && ((billItem.getStatus().equals(BillItemStatus.P))
+               || (billItem.getStatus().equals(BillItemStatus.F)))) {
+
+         return;
+      }
+
       EntityManager em = null;
       try {
          em = EntityManagerBuilder.buildEntityManager();
@@ -274,6 +358,25 @@ public class BillManagement {
    }
 
    public void hastenFoodInBill(BillItem item) {
+
+      // If parameter is null, return immediately.
+      if (item == null) {
+         return;
+      }
+
+      // If correspond bill item does not exists, return immediately.
+      BillItem billItem = this.getBillItemInformation(item);
+      if (billItem == null) {
+         return;
+      }
+
+      // Finished food item does not need to be hastened. Return immediately.
+      if ((billItem.getStatus() != null)
+              && (billItem.getStatus().equals(BillItemStatus.F))) {
+
+         return;
+      }
+
       EntityManager em = null;
       try {
          em = EntityManagerBuilder.buildEntityManager();

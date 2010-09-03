@@ -19,7 +19,8 @@ import javax.persistence.Table;
 @NamedQueries({
    @NamedQuery(
       name = BillItemHastenRecord.QUERY_CALCULATE_BILL_ITEM_HASTEN_COUNT,
-      query = "select count(h) from BillItemHastenRecord h where billItemId=?1")
+      query = "select count(h) from BillItemHastenRecord h "
+         + "where h.billItemId=?1")
 })
 public class BillItemHastenRecord implements Serializable {
 
