@@ -6,20 +6,18 @@ package luoyong.dinnerpanel.dao.model;
  */
 public enum FoodStatus {
 
-   A, U, P;
+   /**
+    * 启用
+    */
+   A,
 
-   @Override
-   public String toString() {
-      if (this.name() == null) {
-         return "未知";
-      }else if (this.name().equals("A")) {
-         return "启用";
-      }else if (this.name().equals("U")) {
-         return "停用";
-      }else if (this.name().equals("P")) {
-         return "审核中";
-      }else {
-         return "未知";
-      }
-   }
+   /**
+    * 停用
+    */
+   U,
+
+   /**
+    * 审核中
+    */
+   P;
 }

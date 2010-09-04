@@ -6,24 +6,28 @@ package luoyong.dinnerpanel.dao.model;
  */
 public enum SalePlaceServiceStatus {
 
-   A, T, B, F, N;
+   /**
+    * 启用
+    */
+   A,
 
-   @Override
-   public String toString() {
-      if (this.name() == null) {
-         return null;
-      }else if (this.name().equals("A")) {
-         return "启用";
-      }else if (this.name().equals("T")) {
-         return "占用";
-      }else if (this.name().equals("B")) {
-         return "预定";
-      }else if (this.name().equals("F")) {
-         return "故障";
-      }else if (this.name().equals("N")) {
-         return "无人管理";
-      }else{
-         return null;
-      }
-   }
+   /**
+    * 占用
+    */
+   T,
+
+   /**
+    * 预定
+    */
+   B,
+
+   /**
+    * 故障
+    */
+   F,
+
+   /**
+    * 无人管理
+    */
+   N;
 }

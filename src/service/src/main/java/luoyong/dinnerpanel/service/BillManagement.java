@@ -298,6 +298,28 @@ public class BillManagement {
       this.markBillItemProcessing(item.getId());
    }
 
+   public void markBillItemReturned(Long id) {
+
+      EntityManager em = null;
+      try {
+         em = EntityManagerBuilder.buildEntityManager();
+         em.getTransaction().begin();
+         Query query = em.createNamedQuery(
+                 BillItem.QUERY_MARK_BILL_ITEM_RETURNED);
+         query.setParameter(1, id);
+         query.executeUpdate();
+         em.getTransaction().commit();
+      } finally {
+         try {
+            em.close();
+         } catch (Throwable t) {}
+      }
+   }
+
+   public void markBillItemReturned(BillItem item) {
+      this.markBillItemReturned(item.getId());
+   }
+
    public void setCommentToBillItem(Long id, String comment) {
 
       // If ID parameter is null, return immediately.

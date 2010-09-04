@@ -6,6 +6,13 @@ package luoyong.dinnerpanel.dao.model;
  */
 public enum ExistKey {
 
+   /**
+    * 存在
+    */
    E,
+
+   /**
+    * 不存在
+    */
    D;
 }

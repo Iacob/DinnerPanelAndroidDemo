@@ -32,6 +32,8 @@ public class BillItemStatusEnum {
          return "已完成";
       }else if (this.status.name().equals("C")) {
          return "已撤销";
+      }else if (this.status.name().equals("R")) {
+         return "退菜";
       }else {
          return null;
       }

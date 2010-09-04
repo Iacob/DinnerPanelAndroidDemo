@@ -6,20 +6,18 @@ package luoyong.dinnerpanel.dao.model;
  */
 public enum OperatorStatus {
 
-   O,Q,P;
+   /**
+    * 在职
+    */
+   O,
 
-   @Override
-   public String toString() {
-      if (this.name() == null) {
-         return null;
-      }else if (this.name().equals("O")) {
-         return "在职";
-      }else if (this.name().equals("Q")) {
-         return "离职";
-      }else if (this.name().equals("P")) {
-         return "审核中";
-      }else {
-         return null;
-      }
-   }
+   /**
+    * 离职
+    */
+   Q,
+
+   /**
+    * 审核中
+    */
+   P;
 }

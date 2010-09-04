@@ -6,5 +6,28 @@ package luoyong.dinnerpanel.dao.model;
  */
 public enum BillItemStatus {
 
-   W, P, F, C
+   /**
+    * 待处理
+    */
+   W,
+
+   /**
+    * 已撤销
+    */
+   C,
+   
+   /**
+    * 处理中
+    */
+   P,
+
+   /**
+    * 已完成
+    */
+   F,
+
+   /**
+    * 退菜
+    */
+   R
 }
