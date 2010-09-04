@@ -1,0 +1,15 @@
+  http://prj.csdn.net 不允许发布产品
+Y http://sxsoft.com
+Y http://www.programfan.com/project
+  http://www.itbank.cn 无法注册
+  http://www.softwelt.com 无法注册
+Y http://www.bizsofts.com 字数限制1000
+  http://www.adminvc.com 只出售网站
+  http://www.51bids.com 无法发布产品信息
+Y http://www.cnzz.cn/project 审核较慢
+  http://www.mytino.com 无法发布产品信息
+Y http://www.fwbao.com
+  http://www.qianyan.biz 只开放给企业用户
+  http://www.soopu.com E-Mail验证有问题
+Y http://www.58.com http://wap.58.com
+Y http://www.zhantai.com http://wap.zhantai.com 收费
