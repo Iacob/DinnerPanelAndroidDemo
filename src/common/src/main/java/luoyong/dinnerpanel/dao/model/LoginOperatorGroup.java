@@ -17,6 +17,7 @@ public class LoginOperatorGroup implements Serializable {
    @Id
    @Column(name="user_id", length=100)
    private String userId;
+   
    @Column(name="group_name", length=100)
    private String groupName;
 

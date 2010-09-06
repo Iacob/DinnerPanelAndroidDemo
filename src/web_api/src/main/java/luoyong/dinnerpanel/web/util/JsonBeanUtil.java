@@ -91,6 +91,13 @@ public class JsonBeanUtil {
                }catch(JSONException ex) {
                   ex.printStackTrace(System.err);
                }
+            }else if (fieldType.equals(Integer.class)) {
+               try {
+                  result.put(dynaProperty.getName(),
+                          wrapDynaBean.get(dynaProperty.getName()));
+               }catch(JSONException ex) {
+                  ex.printStackTrace(System.err);
+               }
             }else {
                // Nothing else.
             }
@@ -178,6 +185,13 @@ public class JsonBeanUtil {
                   propertyValue = Enum.valueOf(
                           fieldType, jsonObject.getString(propertyName));
                   wrapDynaBean.set(propertyName, propertyValue);
+               }catch(Throwable t) {
+                  t.printStackTrace(System.err);
+               }
+            }else if (fieldType.equals(Integer.class)) {
+               try {
+                  wrapDynaBean.set(propertyName,
+                          new Integer(jsonObject.getInt(propertyName)));
                }catch(Throwable t) {
                   t.printStackTrace(System.err);
                }

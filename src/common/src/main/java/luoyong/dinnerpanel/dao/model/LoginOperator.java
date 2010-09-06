@@ -17,6 +17,7 @@ public class LoginOperator implements Serializable {
    @Id
    @Column(name="user_id", length=100)
    private String userId;
+   
    @Column(name="password", length=100)
    private String password;
 

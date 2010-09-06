@@ -1,3 +1,2 @@
-Add empty array and empty object support to JsonME.
+Add Collection support to JsonBeanUtil.java.
 Add login operator methods.
-Add bill price calculator.
