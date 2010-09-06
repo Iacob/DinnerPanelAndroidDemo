@@ -13,3 +13,4 @@ Y http://www.fwbao.com
   http://www.soopu.com E-Mail验证有问题
 Y http://www.58.com http://wap.58.com
 Y http://www.zhantai.com http://wap.zhantai.com 收费
+Y http://www.ganji.com
