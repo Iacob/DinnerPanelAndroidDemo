@@ -47,8 +47,7 @@ import javax.persistence.Temporal;
       query = "update Bill b set b.comment=?1 "
          + "where b.id=?2 "
          + "and b.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
-         + "and b.status <> luoyong.dinnerpanel.dao.model.BillStatus.C "
-         + "and b.checkoutTime is null"),
+         + "and b.status <> luoyong.dinnerpanel.dao.model.BillStatus.C"),
    @NamedQuery(name = Bill.QUERY_SET_SELLING_PRICE_TO_BILL,
       query = "update Bill b set b.sellingPrice=?1 "
          + "where b.id=?2 "
@@ -64,8 +63,7 @@ import javax.persistence.Temporal;
    @NamedQuery(name = Bill.QUERY_REMOVE_BILL,
       query = "update Bill b set b.ek=luoyong.dinnerpanel.dao.model.ExistKey.D "
          + "where b.id=?1 "
-         + "and b.status <> luoyong.dinnerpanel.dao.model.BillStatus.C "
-         + "and b.checkoutTime is null"),
+         + "and b.status <> luoyong.dinnerpanel.dao.model.BillStatus.C"),
    @NamedQuery(name = Bill.QUERY_MARK_BILL_AS_SENT,
       query = "update Bill b "
          + "set b.status=luoyong.dinnerpanel.dao.model.BillStatus.S "

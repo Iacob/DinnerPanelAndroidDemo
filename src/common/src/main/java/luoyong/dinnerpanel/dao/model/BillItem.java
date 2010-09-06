@@ -31,9 +31,7 @@ import javax.persistence.Temporal;
       query="update BillItem i "
          + "set i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.C "
          + "where i.id=?1 and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.P "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.F "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.R"),
+         + "and i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.W"),
    @NamedQuery(name=BillItem.QUERY_MARK_BILL_ITEM_COMPLETE,
       query="update BillItem i "
          + "set i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.F "
@@ -44,9 +42,7 @@ import javax.persistence.Temporal;
       query="update BillItem i "
          + "set i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.P "
          + "where i.id=?1 and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.F "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.R"),
+         + "and i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.W"),
    @NamedQuery(name=BillItem.QUERY_MARK_BILL_ITEM_RETURNED,
       query="update BillItem i "
          + "set i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.R "
@@ -73,10 +69,7 @@ import javax.persistence.Temporal;
       query="update BillItem i set i.comment=?1 "
          + "where i.id = ?2 "
          + "and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.P "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.F "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.R"),
+         + "and i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.W"),
    @NamedQuery(name=BillItem.QUERY_WRITE_BILL_ITEM_HASTEN_COUNT,
       query="update BillItem i set i.hastenCount=?1 "
          + "where i.id = ?2 "
