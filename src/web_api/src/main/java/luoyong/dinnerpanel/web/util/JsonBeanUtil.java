@@ -1,6 +1,7 @@
 package luoyong.dinnerpanel.web.util;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.commons.beanutils.DynaClass;
@@ -31,6 +32,9 @@ public class JsonBeanUtil {
 
       // Properties from wrapped bean class.
       DynaProperty dynaProperties[] = dynaClass.getDynaProperties();
+      if (dynaProperties == null) {
+         return result;
+      }
 
       SimpleDateFormat simpleDateFormat
               = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -40,12 +44,12 @@ public class JsonBeanUtil {
 
       for (DynaProperty dynaProperty : dynaProperties) {
 
-         fieldType = dynaProperty.getType();
-
          if ((dynaProperty != null)
-                 && (fieldType != null)
+                 && (dynaProperty.getType() != null)
                  && (dynaProperty.getName() != null)
                  && (!dynaProperty.getName().equals("class"))) {
+
+            fieldType = dynaProperty.getType();
 
             if (fieldType.equals(String.class)) {
                try {
@@ -88,17 +92,99 @@ public class JsonBeanUtil {
                   ex.printStackTrace(System.err);
                }
             }else {
-               try {
-                  fieldValue = wrapDynaBean.get(dynaProperty.getName());
-                  result.put(dynaProperty.getName(),
-                          (fieldValue==null)?null:fieldValue);
-               }catch(JSONException ex) {
-                  ex.printStackTrace(System.err);
-               }
+               // Nothing else.
             }
          }
       }
 
       return result;
+   }
+
+   public static void jsonToObject(JSONObject jsonObject, Object object) {
+      
+      if ((jsonObject == null) || (object == null)) {
+         return;
+      }
+
+      // Wrapped bean.
+      WrapDynaBean wrapDynaBean = new WrapDynaBean(object);
+
+      // Wrapped bean class.
+      DynaClass dynaClass = wrapDynaBean.getDynaClass();
+
+      // Properties from wrapped bean class.
+      DynaProperty dynaProperties[] = dynaClass.getDynaProperties();
+      if (dynaProperties == null) {
+         return;
+      }
+
+      SimpleDateFormat simpleDateFormat
+              = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+      Class fieldType = null;
+      String propertyName = null;
+      Object propertyValue = null;
+
+      BigDecimal decimalValue = null;
+      String stringValue = null;
+
+      for (DynaProperty dynaProperty : dynaProperties) {
+
+         if ((dynaProperty != null)
+                 && (dynaProperty.getType() != null)
+                 && (dynaProperty.getName() != null)
+                 && (!dynaProperty.getName().equals("class"))) {
+
+            fieldType = dynaProperty.getType();
+            propertyName = dynaProperty.getName();
+
+            if (fieldType.equals(String.class)) {
+               try {
+                  wrapDynaBean.set(propertyName,
+                          jsonObject.getString(propertyName));
+               }catch(Throwable t) {
+                  t.printStackTrace(System.err);
+               }
+            }else if (fieldType.equals(Long.class)) {
+               try {
+                  wrapDynaBean.set(propertyName,
+                          jsonObject.getLong(propertyName));
+               }catch(Throwable t) {
+                  t.printStackTrace(System.err);
+               }
+            }else if (fieldType.equals(BigDecimal.class)) {
+               try {
+
+                  decimalValue = new BigDecimal(
+                          jsonObject.getDouble(propertyName),
+                          MathContext.DECIMAL32);
+                  decimalValue.setScale(2);
+
+                  wrapDynaBean.set(propertyName, decimalValue);
+               }catch(Throwable t) {
+                  t.printStackTrace(System.err);
+               }
+            }else if (fieldType.equals(Date.class)) {
+               try {
+
+                  stringValue = jsonObject.getString(propertyName);
+                  wrapDynaBean.set(propertyName,
+                          simpleDateFormat.parse(stringValue));
+               }catch(Throwable t) {
+                  t.printStackTrace(System.err);
+               }
+            }else if (fieldType.equals(Enum.class)) {
+               try {
+                  propertyValue = Enum.valueOf(
+                          fieldType, jsonObject.getString(propertyName));
+                  wrapDynaBean.set(propertyName, propertyValue);
+               }catch(Throwable t) {
+                  t.printStackTrace(System.err);
+               }
+            }else {
+               // Nothing else.
+            }
+         }
+      }
    }
 }
