@@ -80,7 +80,7 @@ public class RWSBill {
       return resultArray.toString();
    }
 
-   @Path("operator/get-bill/{bill-id}")
+   @Path("customer/get-bill/{bill-id}")
    @Produces("application/json")
    @GET
    public String getBill(@PathParam("bill-id") String billIdString) {
@@ -112,7 +112,7 @@ public class RWSBill {
       return resultArray.toString();
    }
 
-   @Path("operator/get-all-bill-items-from-bill/{bill-id}")
+   @Path("customer/get-all-bill-items-from-bill/{bill-id}")
    @Produces("application/json")
    @GET
    public String getAllBillItemsFromBill(
@@ -155,7 +155,7 @@ public class RWSBill {
       return resultArray.toString();
    }
 
-   @Path("operator/add-item-to-bill/{bill-id}/{food-id}")
+   @Path("customer/add-item-to-bill/{bill-id}/{food-id}")
    @Produces("application/json")
    @GET
    public void addItemToBill(@PathParam("bill-id") String billIdString,
@@ -229,7 +229,7 @@ public class RWSBill {
       billManagement.addItemToBill(billItem);
    }
 
-   @Path("operator/cancel-item-from-bill/{bill-item-id}")
+   @Path("customer/cancel-item-from-bill/{bill-item-id}")
    @Produces("application/json")
    @GET
    public void cancelItemFromBill(
@@ -460,7 +460,7 @@ public class RWSBill {
       billManagement.setSellingPriceToBill(billId, sellingPrice);
    }
 
-   @Path("operator/set-comment-to-bill-item/{bill-item-id}/{comment}")
+   @Path("customer/set-comment-to-bill-item/{bill-item-id}/{comment}")
    @Produces("application/json")
    @GET
    public void setCommentToBillItem(
@@ -484,7 +484,7 @@ public class RWSBill {
       billManagement.setCommentToBillItem(billItemId, comment);
    }
 
-   @Path("operator/get-bill-item/{bill-item-id}")
+   @Path("customer/get-bill-item/{bill-item-id}")
    @Produces("application/json")
    @GET
    public String getBillItemInformation(
@@ -551,6 +551,188 @@ public class RWSBill {
       }
 
       result.put(bill.getPrice());
+
+      return result.toString();
+   }
+
+   @Path("manager/remove-bill/{bill-id}")
+   @Produces("application/json")
+   @GET
+   public void removeBill(@PathParam("bill-id") String billIdString) {
+
+      if ((billIdString ==  null)
+              || (billIdString.trim().length() < 1)) {
+
+         return;
+      }
+
+      Long billId = null;
+      try {
+         billId = Long.valueOf(billIdString);
+      }catch(Throwable t) {}
+
+      if (billId == null) {
+         return;
+      }
+
+      billManagement.removeBill(billId);
+   }
+
+   @Path("operator/mark-bill-as-sent/{bill-id}")
+   @Produces("application/json")
+   @GET
+   public void markBillAsSent(@PathParam("bill-id") String billIdString) {
+
+      if ((billIdString ==  null)
+              || (billIdString.trim().length() < 1)) {
+
+         return;
+      }
+
+      Long billId = null;
+      try {
+         billId = Long.valueOf(billIdString);
+      }catch(Throwable t) {}
+
+      if (billId == null) {
+         return;
+      }
+
+      billManagement.markBillAsSent(billId);
+   }
+
+   @Path("manager/remove-item-from-bill/{bill-item-id}")
+   @Produces("application/json")
+   @GET
+   public void removeItemFromBill(
+           @PathParam("bill-item-id") String billItemIdString) {
+
+      if ((billItemIdString ==  null)
+              || (billItemIdString.trim().length() < 1)) {
+
+         return;
+      }
+
+      Long billItemId = null;
+      try {
+         billItemId = Long.valueOf(billItemIdString);
+      }catch(Throwable t) {}
+
+      if (billItemId == null) {
+         return;
+      }
+
+      billManagement.removeItemFromBill(billItemId);
+   }
+
+   @Path("kitchen/mark-bill-item-complete/{bill-item-id}")
+   @Produces("application/json")
+   @GET
+   public void markBillItemComplete(
+           @PathParam("bill-item-id") String billItemIdString) {
+
+      if ((billItemIdString ==  null)
+              || (billItemIdString.trim().length() < 1)) {
+
+         return;
+      }
+
+      Long billItemId = null;
+      try {
+         billItemId = Long.valueOf(billItemIdString);
+      }catch(Throwable t) {}
+
+      if (billItemId == null) {
+         return;
+      }
+
+      billManagement.markBillItemComplete(billItemId);
+   }
+
+   @Path("kitchen/mark-bill-item-processing/{bill-item-id}")
+   @Produces("application/json")
+   @GET
+   public void markBillItemProcessing(
+           @PathParam("bill-item-id") String billItemIdString) {
+
+      if ((billItemIdString ==  null)
+              || (billItemIdString.trim().length() < 1)) {
+
+         return;
+      }
+
+      Long billItemId = null;
+      try {
+         billItemId = Long.valueOf(billItemIdString);
+      }catch(Throwable t) {}
+
+      if (billItemId == null) {
+         return;
+      }
+
+      billManagement.markBillItemProcessing(billItemId);
+   }
+
+   @Path("kitchen/mark-bill-item-returned/{bill-item-id}")
+   @Produces("application/json")
+   @GET
+   public void markBillItemReturned(
+           @PathParam("bill-item-id") String billItemIdString) {
+
+      if ((billItemIdString ==  null)
+              || (billItemIdString.trim().length() < 1)) {
+
+         return;
+      }
+
+      Long billItemId = null;
+      try {
+         billItemId = Long.valueOf(billItemIdString);
+      }catch(Throwable t) {}
+
+      if (billItemId == null) {
+         return;
+      }
+
+      billManagement.markBillItemReturned(billItemId);
+   }
+
+   @Path("operator/calculate-bill-item-hasten-count/{bill-item-id}")
+   @Produces("application/json")
+   @GET
+   public String calculateBillItemHastenCount(
+           @PathParam("bill-item-id") String billItemIdString) {
+
+      JSONArray result = new JSONArray();
+
+      if ((billItemIdString == null)
+              || (billItemIdString.trim().length() < 1)) {
+
+         return result.toString();
+      }
+
+      Long billItemId = null;
+      try {
+         billItemId = Long.valueOf(billItemIdString);
+      }catch(Throwable t) {}
+      if (billItemId == null) {
+         return result.toString();
+      }
+
+      BillItem billItem = billManagement.getBillItemInformation(billItemId);
+      if (billItem == null) {
+         return result.toString();
+      }
+
+      billManagement.writeBillItemHastenCount(billItem);
+
+      // Reload bill item information.
+      billItem = billManagement.getBillItemInformation(billItemId);
+      if (billItem == null) {
+         return result.toString();
+      }
+
+      result.put(billItem.getHastenCount());
 
       return result.toString();
    }
