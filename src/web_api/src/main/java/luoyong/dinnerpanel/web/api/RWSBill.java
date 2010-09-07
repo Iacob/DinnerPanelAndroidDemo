@@ -40,7 +40,7 @@ public class RWSBill {
       foodManagement = new FoodManagement();
    }
 
-   @Path("get-current-bill-from-sale-place/{sale-place-id}")
+   @Path("operator/get-current-bill-from-sale-place/{sale-place-id}")
    @Produces("application/json")
    @GET
    public String getCurrentBillFromSalePlace(
@@ -72,7 +72,7 @@ public class RWSBill {
 
          if ((bill != null) && (bill.getId() != null)) {
 
-            jsonObjectBill = JsonBeanUtil.beanToJson(bill);
+            jsonObjectBill = JsonBeanUtil.beanToJsonObject(bill);
             resultArray.put(jsonObjectBill);
          }
       }
@@ -80,7 +80,7 @@ public class RWSBill {
       return resultArray.toString();
    }
 
-   @Path("get-bill/{bill-id}")
+   @Path("operator/get-bill/{bill-id}")
    @Produces("application/json")
    @GET
    public String getBill(@PathParam("bill-id") String billIdString) {
@@ -105,14 +105,14 @@ public class RWSBill {
       if (bill == null) {
          return resultArray.toString();
       }else {
-         jsonObjectBill = JsonBeanUtil.beanToJson(bill);
+         jsonObjectBill = JsonBeanUtil.beanToJsonObject(bill);
          resultArray.put(jsonObjectBill);
       }
 
       return resultArray.toString();
    }
 
-   @Path("get-all-bill-items-from-bill/{bill-id}")
+   @Path("operator/get-all-bill-items-from-bill/{bill-id}")
    @Produces("application/json")
    @GET
    public String getAllBillItemsFromBill(
@@ -147,7 +147,7 @@ public class RWSBill {
       for (BillItem billItem : billItemList) {
          if ((billItem != null) && (billItem.getId() != null)) {
 
-            jsonObjectBillItem = JsonBeanUtil.beanToJson(billItem);
+            jsonObjectBillItem = JsonBeanUtil.beanToJsonObject(billItem);
             resultArray.put(jsonObjectBillItem);
          }
       }
@@ -155,7 +155,7 @@ public class RWSBill {
       return resultArray.toString();
    }
 
-   @Path("add-item-to-bill/{bill-id}/{food-id}")
+   @Path("operator/add-item-to-bill/{bill-id}/{food-id}")
    @Produces("application/json")
    @GET
    public void addItemToBill(@PathParam("bill-id") String billIdString,
@@ -229,7 +229,7 @@ public class RWSBill {
       billManagement.addItemToBill(billItem);
    }
 
-   @Path("cancel-item-from-bill/{bill-item-id}")
+   @Path("operator/cancel-item-from-bill/{bill-item-id}")
    @Produces("application/json")
    @GET
    public void cancelItemFromBill(
@@ -253,7 +253,7 @@ public class RWSBill {
       billManagement.cancelItemFromBill(billItemId);
    }
 
-   @Path("hasten-food-in-bill/{bill-item-id}")
+   @Path("operator/hasten-food-in-bill/{bill-item-id}")
    @Produces("application/json")
    @GET
    public void hastenFoodInBill(
@@ -282,7 +282,7 @@ public class RWSBill {
       billManagement.hastenFoodInBill(billItem);
    }
 
-   @Path("checkout-bill/{bill-id}")
+   @Path("operator/checkout-bill/{bill-id}")
    @Produces("application/json")
    @GET
    public void checkoutBill(@PathParam("bill-id") String billIdString) {
@@ -308,7 +308,7 @@ public class RWSBill {
       billManagement.checkoutBill(bill);
    }
 
-   @Path("cancel-bill/{bill-id}")
+   @Path("operator/cancel-bill/{bill-id}")
    @Produces("application/json")
    @GET
    public void cancelBill(
@@ -330,7 +330,7 @@ public class RWSBill {
       billManagement.cancelBill(billId);
    }
 
-   @Path("make-bill-for-sale-place/{sale-place-id}")
+   @Path("operator/make-bill-for-sale-place/{sale-place-id}")
    @Produces("application/json")
    @GET
    public void makeBill(@PathParam("sale-place-id") String salePlaceIdString) {
@@ -365,7 +365,7 @@ public class RWSBill {
       billManagement.makeBill(bill);
    }
 
-   @Path("set-comment-to-bill/{bill-id}/{comment}")
+   @Path("operator/set-comment-to-bill/{bill-id}/{comment}")
    @Produces("application/json")
    @GET
    public void setCommentToBill(@PathParam("bill-id") String billIdString,
@@ -386,7 +386,7 @@ public class RWSBill {
       billManagement.setCommentToBill(billId, comment);
    }
 
-   @Path("get-current-bill-count-from-sale-place/{sale-place-id}")
+   @Path("operator/get-current-bill-count-from-sale-place/{sale-place-id}")
    @Produces("application/json")
    @GET
    public String getCurrentBillCountFromSalePlace(
@@ -421,7 +421,7 @@ public class RWSBill {
       return result.toString();
    }
 
-   @Path("set-selling-price-to-bill/{bill-id}/{selling-price}")
+   @Path("operator/set-selling-price-to-bill/{bill-id}/{selling-price}")
    @Produces("application/json")
    @GET
    public void setSellingPriceToBill(@PathParam("bill-id") String billIdString,
@@ -460,7 +460,7 @@ public class RWSBill {
       billManagement.setSellingPriceToBill(billId, sellingPrice);
    }
 
-   @Path("set-comment-to-bill-item/{bill-item-id}/{comment}")
+   @Path("operator/set-comment-to-bill-item/{bill-item-id}/{comment}")
    @Produces("application/json")
    @GET
    public void setCommentToBillItem(
@@ -484,7 +484,7 @@ public class RWSBill {
       billManagement.setCommentToBillItem(billItemId, comment);
    }
 
-   @Path("get-bill-item/{bill-item-id}")
+   @Path("operator/get-bill-item/{bill-item-id}")
    @Produces("application/json")
    @GET
    public String getBillItemInformation(
@@ -511,13 +511,13 @@ public class RWSBill {
          return result.toString();
       }
 
-      JSONObject jsonObjectBillItem = JsonBeanUtil.beanToJson(billItem);
+      JSONObject jsonObjectBillItem = JsonBeanUtil.beanToJsonObject(billItem);
       result.put(jsonObjectBillItem);
 
       return result.toString();
    }
 
-   @Path("calculate-bill-price/{bill-id}")
+   @Path("operator/calculate-bill-price/{bill-id}")
    @Produces("application/json")
    @GET
    public String calculateBillPrice(@PathParam("bill-id") String billIdString) {

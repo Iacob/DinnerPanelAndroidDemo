@@ -19,6 +19,7 @@ public class SalePlaceManagement {
          em = EntityManagerBuilder.buildEntityManager();
          em.getTransaction().begin();
          salePlace.setEk(ExistKey.E);
+         salePlace.setId(null);
          em.persist(salePlace);
          em.getTransaction().commit();
       } finally {

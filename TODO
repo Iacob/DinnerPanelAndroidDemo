@@ -1,2 +1,4 @@
 Add Collection support to JsonBeanUtil.java.
 Add login operator methods.
+Add more roles to system.
+Test HTTP POST.

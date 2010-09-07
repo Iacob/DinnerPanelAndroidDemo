@@ -22,6 +22,7 @@ public class FoodManagement {
          em = EntityManagerBuilder.buildEntityManager();
          em.getTransaction().begin();
          foodCategory.setEk(ExistKey.E);
+         foodCategory.setId(null);
          em.persist(foodCategory);
          em.getTransaction().commit();
       } finally {
@@ -126,11 +127,13 @@ public class FoodManagement {
    }
 
    public void addFoodInformation(Food food) {
+
       EntityManager em = null;
       try {
          em = EntityManagerBuilder.buildEntityManager();
          em.getTransaction().begin();
          food.setEk(ExistKey.E);
+         food.setId(null);
          em.persist(food);
          em.getTransaction().commit();
       } finally {

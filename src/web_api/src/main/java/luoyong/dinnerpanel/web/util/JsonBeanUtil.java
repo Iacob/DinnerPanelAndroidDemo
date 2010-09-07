@@ -16,7 +16,7 @@ import org.json.JSONObject;
  */
 public class JsonBeanUtil {
 
-   public static JSONObject beanToJson(Object object) {
+   public static JSONObject beanToJsonObject(Object object) {
 
       if (object == null) {
          return null;
