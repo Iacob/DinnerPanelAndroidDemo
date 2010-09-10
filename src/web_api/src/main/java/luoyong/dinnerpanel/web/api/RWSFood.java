@@ -277,7 +277,7 @@ public class RWSFood {
       }
 
       Food food = new Food();
-      JsonBeanUtil.jsonToObject(foodInfoJsonObject, food);
+      JsonBeanUtil.jsonObjectToBean(foodInfoJsonObject, food);
 
       foodManagement.addFoodInformation(food);
    }
@@ -412,7 +412,7 @@ public class RWSFood {
       }
 
       Food food = new Food();
-      JsonBeanUtil.jsonToObject(foodInfoJsonObject, food);
+      JsonBeanUtil.jsonObjectToBean(foodInfoJsonObject, food);
 
       Food foodInSystem = foodManagement.getFoodInformation(food);
       if (foodInSystem == null) {

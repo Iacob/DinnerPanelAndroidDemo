@@ -107,7 +107,7 @@ public class JsonBeanUtil {
       return result;
    }
 
-   public static void jsonToObject(JSONObject jsonObject, Object object) {
+   public static void jsonObjectToBean(JSONObject jsonObject, Object object) {
       
       if ((jsonObject == null) || (object == null)) {
          return;

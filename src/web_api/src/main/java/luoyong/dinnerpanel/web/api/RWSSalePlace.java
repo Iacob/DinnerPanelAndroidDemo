@@ -78,7 +78,7 @@ public class RWSSalePlace {
       }
 
       SalePlace salePlace = new SalePlace();
-      JsonBeanUtil.jsonToObject(salePlaceJsonObject, salePlace);
+      JsonBeanUtil.jsonObjectToBean(salePlaceJsonObject, salePlace);
 
       salePlaceManagement.addSalePlace(salePlace);
    }
@@ -105,7 +105,7 @@ public class RWSSalePlace {
       }
 
       SalePlace salePlace = new SalePlace();
-      JsonBeanUtil.jsonToObject(salePlaceJsonObject, salePlace);
+      JsonBeanUtil.jsonObjectToBean(salePlaceJsonObject, salePlace);
 
       SalePlace salePlaceInSystem = salePlaceManagement.getSalePlace(salePlace);
       if (salePlaceInSystem == null) {

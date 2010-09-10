@@ -48,7 +48,7 @@ public class RWSOperator {
       }
 
       Operator operator = new Operator();
-      JsonBeanUtil.jsonToObject(operatorJsonObject, operator);
+      JsonBeanUtil.jsonObjectToBean(operatorJsonObject, operator);
 
       operatorManagement.addOperator(operator);
    }
@@ -75,7 +75,7 @@ public class RWSOperator {
       }
 
       Operator operator = new Operator();
-      JsonBeanUtil.jsonToObject(operatorJsonObject, operator);
+      JsonBeanUtil.jsonObjectToBean(operatorJsonObject, operator);
 
       Operator operatorInSystem
               = operatorManagement.getOperatorInformation(operator);
