@@ -147,51 +147,62 @@ public class JsonBeanUtil {
 
             if (fieldType.equals(String.class)) {
                try {
-                  wrapDynaBean.set(propertyName,
-                          jsonObject.getString(propertyName));
+                  if (jsonObject.has(propertyName)) {
+                     wrapDynaBean.set(propertyName,
+                             jsonObject.getString(propertyName));
+                  }
                }catch(Throwable t) {
                   t.printStackTrace(System.err);
                }
             }else if (fieldType.equals(Long.class)) {
                try {
-                  wrapDynaBean.set(propertyName,
-                          jsonObject.getLong(propertyName));
+                  if (jsonObject.has(propertyName)) {
+                     wrapDynaBean.set(propertyName,
+                             jsonObject.getLong(propertyName));
+                  }
                }catch(Throwable t) {
                   t.printStackTrace(System.err);
                }
             }else if (fieldType.equals(BigDecimal.class)) {
                try {
+                  if (jsonObject.has(propertyName)) {
+                     
+                     decimalValue = new BigDecimal(
+                             jsonObject.getDouble(propertyName),
+                             MathContext.DECIMAL32);
+                     decimalValue.setScale(2);
 
-                  decimalValue = new BigDecimal(
-                          jsonObject.getDouble(propertyName),
-                          MathContext.DECIMAL32);
-                  decimalValue.setScale(2);
-
-                  wrapDynaBean.set(propertyName, decimalValue);
+                     wrapDynaBean.set(propertyName, decimalValue);
+                  }
                }catch(Throwable t) {
                   t.printStackTrace(System.err);
                }
             }else if (fieldType.equals(Date.class)) {
                try {
-
-                  stringValue = jsonObject.getString(propertyName);
-                  wrapDynaBean.set(propertyName,
-                          simpleDateFormat.parse(stringValue));
+                  if (jsonObject.has(propertyName)) {
+                     stringValue = jsonObject.getString(propertyName);
+                     wrapDynaBean.set(propertyName,
+                             simpleDateFormat.parse(stringValue));
+                  }
                }catch(Throwable t) {
                   t.printStackTrace(System.err);
                }
-            }else if (fieldType.equals(Enum.class)) {
+            }else if (fieldType.isEnum()) {
                try {
-                  propertyValue = Enum.valueOf(
-                          fieldType, jsonObject.getString(propertyName));
-                  wrapDynaBean.set(propertyName, propertyValue);
+                  if (jsonObject.has(propertyName)) {
+                     propertyValue = Enum.valueOf(
+                             fieldType, jsonObject.getString(propertyName));
+                     wrapDynaBean.set(propertyName, propertyValue);
+                  }
                }catch(Throwable t) {
                   t.printStackTrace(System.err);
                }
             }else if (fieldType.equals(Integer.class)) {
                try {
-                  wrapDynaBean.set(propertyName,
-                          new Integer(jsonObject.getInt(propertyName)));
+                  if (jsonObject.has(propertyName)) {
+                     wrapDynaBean.set(propertyName,
+                             new Integer(jsonObject.getInt(propertyName)));
+                  }
                }catch(Throwable t) {
                   t.printStackTrace(System.err);
                }

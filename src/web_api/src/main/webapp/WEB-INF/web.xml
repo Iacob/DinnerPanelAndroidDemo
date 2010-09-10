@@ -18,6 +18,7 @@
             30
       </session-timeout>
    </session-config>
+   
    <security-constraint>
       <web-resource-collection>
          <web-resource-name>protected resources</web-resource-name>
@@ -26,13 +27,80 @@
          <http-method>POST</http-method>
       </web-resource-collection>
       <auth-constraint>
-         <!-- TODO: Config previledge settings. -->
+         <role-name>customer</role-name>
          <role-name>operator</role-name>
          <role-name>clerk</role-name>
          <role-name>manager</role-name>
          <role-name>admin</role-name>
       </auth-constraint>
    </security-constraint>
+   
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Sale Place API for Customer</web-resource-name>
+         <url-pattern>/resources/sale-place/customer/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>customer</role-name>
+         <role-name>operator</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Sale Place API for Operator</web-resource-name>
+         <url-pattern>/resources/sale-place/operator/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>operator</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Sale Place API for Clerk</web-resource-name>
+         <url-pattern>/resources/sale-place/clerk/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Sale Place API for Manager</web-resource-name>
+         <url-pattern>/resources/sale-place/manager/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Sale Place API for Admin</web-resource-name>
+         <url-pattern>/resources/sale-place/admin/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   
    <login-config>
       <auth-method>BASIC</auth-method>
       <realm-name>dinner-panel-operator-realm</realm-name>
