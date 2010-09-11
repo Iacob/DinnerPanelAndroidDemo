@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import luoyong.dinnerpanel.dao.model.SalePlace;
 import luoyong.dinnerpanel.service.SalePlaceManagement;
 import luoyong.dinnerpanel.web.util.JsonBeanUtil;
+import luoyong.dinnerpanel.web.util.RWSUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,13 +31,17 @@ public class RWSSalePlace {
    @Produces("application/json")
    @GET
    public String getAllSalePlaces() {
+
+      JSONObject result = new JSONObject();
+
+      JSONArray resultArray = new JSONArray();
       
       List<SalePlace> salePlaceList = salePlaceManagement.getAllSalePlaces();
-      JSONArray resultArray = new JSONArray();
 
       if (salePlaceList == null) {
-         // Return an empty json array.
-         return resultArray.toString();
+         // Return empty result.
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
       }
 
       JSONObject salePlaceJsonObject = null;
@@ -53,17 +58,21 @@ public class RWSSalePlace {
          }
       }
       
-      return resultArray.toString();
+      RWSUtil.setJsonObjectResult(result, 0, resultArray);
+      return result.toString();
    }
 
    @Path("manager/add-sale-place")
    @Consumes("application/json")
    @Produces("application/json")
    @POST
-   public void addSalePlace(String salePlaceInfo) {
+   public String addSalePlace(String salePlaceInfo) {
+
+      JSONObject result = new JSONObject();
 
       if ((salePlaceInfo == null) || (salePlaceInfo.trim().length() < 1)) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "上传的餐桌信息不能为空");
+         return result.toString();
       }
 
       JSONObject salePlaceJsonObject = null;
@@ -74,23 +83,30 @@ public class RWSSalePlace {
       }
 
       if (salePlaceJsonObject == null) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "上传的餐桌信息格式不正确");
+         return result.toString();
       }
 
       SalePlace salePlace = new SalePlace();
       JsonBeanUtil.jsonObjectToBean(salePlaceJsonObject, salePlace);
 
       salePlaceManagement.addSalePlace(salePlace);
+
+      RWSUtil.setJsonObjectReturnCode(result, 0);
+      return result.toString();
    }
 
    @Path("manager/update-sale-place")
    @Consumes("application/json")
    @Produces("application/json")
    @POST
-   public void updateSalePlace(String salePlaceInfo) {
+   public String updateSalePlace(String salePlaceInfo) {
+
+      JSONObject result = new JSONObject();
 
       if ((salePlaceInfo == null) || (salePlaceInfo.trim().length() < 1)) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "上传的餐桌信息不能为空");
+         return result.toString();
       }
 
       JSONObject salePlaceJsonObject = null;
@@ -101,7 +117,8 @@ public class RWSSalePlace {
       }
 
       if (salePlaceJsonObject == null) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "上传的餐桌信息格式不正确");
+         return result.toString();
       }
 
       SalePlace salePlace = new SalePlace();
@@ -109,22 +126,29 @@ public class RWSSalePlace {
 
       SalePlace salePlaceInSystem = salePlaceManagement.getSalePlace(salePlace);
       if (salePlaceInSystem == null) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "所要更新的餐桌信息不存在");
+         return result.toString();
       }
 
       salePlaceManagement.updateSalePlace(salePlace);
+
+      RWSUtil.setJsonObjectReturnCode(result, 0);
+      return result.toString();
    }
 
    @Path("manager/remove-sale-place/{sale-place-id}")
    @Produces("application/json")
    @GET
-   public void removeSalePlace(
+   public String removeSalePlace(
            @PathParam("sale-place-id") String salePlaceIdString) {
+
+      JSONObject result = new JSONObject();
 
       if ((salePlaceIdString ==  null)
               || (salePlaceIdString.trim().length() < 1)) {
          
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "餐桌ID不能为空");
+         return result.toString();
       }
 
       Long salePlaceId = null;
@@ -133,10 +157,14 @@ public class RWSSalePlace {
       }catch(Throwable t) {}
 
       if (salePlaceId == null) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "餐桌ID不是合法的整数");
+         return result.toString();
       }
 
       salePlaceManagement.removeSalePlace(salePlaceId);
+
+      RWSUtil.setJsonObjectReturnCode(result, 0);
+      return result.toString();
    }
 
    @Path("customer/get-sale-place/{sale-place-id}")
@@ -145,11 +173,14 @@ public class RWSSalePlace {
    public String getSalePlace(
            @PathParam("sale-place-id") String salePlaceIdString) {
 
-      JSONArray result = new JSONArray();
+      JSONObject result = new JSONObject();
+
+      JSONArray resultArray = new JSONArray();
 
       if ((salePlaceIdString == null)
               || (salePlaceIdString.trim().length() < 1)) {
          
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "餐桌ID不能为空");
          return result.toString();
       }
 
@@ -159,22 +190,26 @@ public class RWSSalePlace {
       }catch(Throwable t) {}
 
       if (salePlaceId == null) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "餐桌ID不是合法整数");
          return result.toString();
       }
 
       SalePlace salePlace = salePlaceManagement.getSalePlace(salePlaceId);
 
       if (salePlace == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
          return result.toString();
       }
 
       JSONObject salePlaceJsonObject
               =  JsonBeanUtil.beanToJsonObject(salePlace);
       if (salePlaceJsonObject == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
          return result.toString();
       }else {
          // Return sale place information in json form.
-         result.put(salePlaceJsonObject);
+         resultArray.put(salePlaceJsonObject);
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
          return result.toString();
       }
    }

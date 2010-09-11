@@ -3,7 +3,9 @@ package luoyong.dinnerpanel.web.api;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import luoyong.dinnerpanel.web.util.RWSUtil;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -26,8 +28,10 @@ public class RWSSystem {
    @Produces("application/json")
    @GET
    public String testLogin() {
-      JSONArray result = new JSONArray();
-      result.put("success");
+      JSONObject result = new JSONObject();
+      JSONArray resultArray = new JSONArray();
+      resultArray.put("success");
+      RWSUtil.setJsonObjectResult(result, 0, resultArray);
       return result.toString();
    }
 }

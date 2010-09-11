@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import luoyong.dinnerpanel.dao.model.Operator;
 import luoyong.dinnerpanel.service.OperatorManagement;
 import luoyong.dinnerpanel.web.util.JsonBeanUtil;
+import luoyong.dinnerpanel.web.util.RWSUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,10 +31,13 @@ public class RWSOperator {
    @Consumes("application/json")
    @Produces("application/json")
    @POST
-   public void addOperator(String operatorInfo) {
+   public String addOperator(String operatorInfo) {
+
+      JSONObject result = new JSONObject();
 
       if ((operatorInfo == null) || (operatorInfo.trim().length() < 1)) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "上传的操作员信息不能为空");
+         return result.toString();
       }
 
       JSONObject operatorJsonObject = null;
@@ -44,23 +48,30 @@ public class RWSOperator {
       }
 
       if (operatorJsonObject == null) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "上传的操作员信息不正确");
+         return result.toString();
       }
 
       Operator operator = new Operator();
       JsonBeanUtil.jsonObjectToBean(operatorJsonObject, operator);
 
       operatorManagement.addOperator(operator);
+
+      RWSUtil.setJsonObjectReturnCode(result, 0);
+      return result.toString();
    }
 
    @Path("admin/update-operator")
    @Consumes("application/json")
    @Produces("application/json")
    @POST
-   public void updateOperator(String operatorInfo) {
+   public String updateOperator(String operatorInfo) {
+
+      JSONObject result = new JSONObject();
 
       if ((operatorInfo == null) || (operatorInfo.trim().length() < 1)) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "上传的操作员信息不能为空");
+         return result.toString();
       }
 
       JSONObject operatorJsonObject = null;
@@ -71,7 +82,8 @@ public class RWSOperator {
       }
 
       if (operatorJsonObject == null) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "上传的操作员信息格式不正确");
+         return result.toString();
       }
 
       Operator operator = new Operator();
@@ -80,25 +92,35 @@ public class RWSOperator {
       Operator operatorInSystem
               = operatorManagement.getOperatorInformation(operator);
       if (operatorInSystem == null) {
-         return;
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "所要更新的操作员信息不存在 ");
+         return result.toString();
       }
 
       operatorManagement.updateOperatorInformation(operator);
+
+      RWSUtil.setJsonObjectReturnCode(result, 0);
+      return result.toString();
    }
 
    @Path("admin/remove-operator-information/{operator-id}")
    @Produces("application/json")
    @GET
-   public void removeOperator(
-           @PathParam("operator-id") String operatorsId) {
+   public String removeOperator(
+           @PathParam("operator-id") String operatorId) {
 
-      if ((operatorsId ==  null)
-              || (operatorsId.trim().length() < 1)) {
+      JSONObject result = new JSONObject();
 
-         return;
+      if ((operatorId ==  null)
+              || (operatorId.trim().length() < 1)) {
+
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "操作员ID不能为空");
+         return result.toString();
       }
 
-      operatorManagement.removeOperatorInformation(operatorsId);
+      operatorManagement.removeOperatorInformation(operatorId);
+
+      RWSUtil.setJsonObjectReturnCode(result, 0);
+      return result.toString();
    }
 
    @Path("admin/get-operator-information/{operator-id}")
@@ -107,27 +129,33 @@ public class RWSOperator {
    public String getOperatorInformation(
            @PathParam("operator-id") String operatorId) {
 
-      JSONArray result = new JSONArray();
+      JSONObject result = new JSONObject();
+
+      JSONArray resultArray = new JSONArray();
 
       if ((operatorId == null)
               || (operatorId.trim().length() < 1)) {
 
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "操作员ID不能为空");
          return result.toString();
       }
 
       Operator operator = operatorManagement.getOperatorInformation(operatorId);
 
       if (operator == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
          return result.toString();
       }
 
       JSONObject operatorJsonObject
               =  JsonBeanUtil.beanToJsonObject(operator);
       if (operatorJsonObject == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
          return result.toString();
       }else {
          // Return operator information in json form.
-         result.put(operatorJsonObject);
+         resultArray.put(operatorJsonObject);
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
          return result.toString();
       }
    }
@@ -137,13 +165,17 @@ public class RWSOperator {
    @GET
    public String getAllOperatorInformation() {
 
-      List<Operator> operatorList
-              = operatorManagement.getAllOperatorInformation();
+      JSONObject result = new JSONObject();
+
       JSONArray resultArray = new JSONArray();
 
+      List<Operator> operatorList
+              = operatorManagement.getAllOperatorInformation();
+
       if (operatorList == null) {
-         // Return an empty json array.
-         return resultArray.toString();
+         // Return empty result.
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
       }
 
       JSONObject operatorJsonObject = null;
@@ -160,6 +192,7 @@ public class RWSOperator {
          }
       }
 
-      return resultArray.toString();
+      RWSUtil.setJsonObjectResult(result, 0, resultArray);
+      return result.toString();
    }
 }
