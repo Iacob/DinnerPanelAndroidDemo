@@ -459,11 +459,11 @@ public class RWSBill {
       return result.toString();
    }
 
-   @Path("operator/set-comment-to-bill/{bill-id}/{comment}")
+   @Path("operator/set-comment-to-bill/{bill-id}")
    @Produces("application/json")
    @GET
    public String setCommentToBill(@PathParam("bill-id") String billIdString,
-           @PathParam("comment") String comment) {
+           @QueryParam("comment") String comment) {
 
       JSONObject result = new JSONObject();
 
@@ -579,12 +579,12 @@ public class RWSBill {
       return result.toString();
    }
 
-   @Path("customer/set-comment-to-bill-item/{bill-item-id}/{comment}")
+   @Path("customer/set-comment-to-bill-item/{bill-item-id}")
    @Produces("application/json")
    @GET
    public String setCommentToBillItem(
            @PathParam("bill-item-id") String billItemIdString,
-           @PathParam("comment") String comment) {
+           @QueryParam("comment") String comment) {
 
       JSONObject result = new JSONObject();
 
