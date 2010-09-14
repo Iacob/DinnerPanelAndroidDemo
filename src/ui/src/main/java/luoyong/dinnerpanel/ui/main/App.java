@@ -4,8 +4,8 @@ import luoyong.dinnerpanel.dao.EntityManagerBuilder;
 import luoyong.dinnerpanel.ui.MainFrame;
 
 /**
- * Hello world!
  *
+ * @author 
  */
 public class App {
 
