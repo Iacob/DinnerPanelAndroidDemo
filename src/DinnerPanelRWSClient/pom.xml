@@ -3,10 +3,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <groupId>luoyong.dinnerpanel</groupId>
-   <artifactId>DinnerPanelRWSCCommon</artifactId>
+   <artifactId>DinnerPanelRWSClient</artifactId>
    <packaging>jar</packaging>
    <version>1.0</version>
-   <name>DinnerPanelRWSCommon</name>
+   <name>DinnerPanelRWSClient</name>
    <url>http://maven.apache.org</url>
    <build>
       <plugins>
@@ -22,7 +22,7 @@
       </plugins>
    </build>
    <dependencies>
-      
+       
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
@@ -38,11 +38,18 @@
       </dependency>
 
       <dependency>
-         <groupId>commons-beanutils</groupId>
-         <artifactId>commons-beanutils</artifactId>
-         <version>1.8.3</version>
+         <groupId>luoyong.dinnerpanel</groupId>
+         <artifactId>DinnerPanelRWSCommon</artifactId>
+         <version>1.0</version>
          <scope>compile</scope>
       </dependency>
-      
+
+      <dependency>
+         <groupId>luoyong.dinnerpanel</groupId>
+         <artifactId>DinnerPanelCommon</artifactId>
+         <version>1.0</version>
+         <scope>compile</scope>
+      </dependency>
+
    </dependencies>
 </project>
