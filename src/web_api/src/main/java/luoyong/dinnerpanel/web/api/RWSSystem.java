@@ -3,7 +3,7 @@ package luoyong.dinnerpanel.web.api;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import luoyong.dinnerpanel.web.util.RWSUtil;
+import luoyong.dinnerpanel.rwscommon.util.RWSUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

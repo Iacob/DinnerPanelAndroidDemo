@@ -9,8 +9,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import luoyong.dinnerpanel.dao.model.SalePlace;
 import luoyong.dinnerpanel.service.SalePlaceManagement;
-import luoyong.dinnerpanel.web.util.JsonBeanUtil;
-import luoyong.dinnerpanel.web.util.RWSUtil;
+import luoyong.dinnerpanel.rwscommon.util.JsonBeanUtil;
+import luoyong.dinnerpanel.rwscommon.util.RWSUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

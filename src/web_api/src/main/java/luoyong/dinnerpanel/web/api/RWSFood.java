@@ -10,8 +10,8 @@ import javax.ws.rs.Produces;
 import luoyong.dinnerpanel.dao.model.Food;
 import luoyong.dinnerpanel.dao.model.FoodCategory;
 import luoyong.dinnerpanel.service.FoodManagement;
-import luoyong.dinnerpanel.web.util.JsonBeanUtil;
-import luoyong.dinnerpanel.web.util.RWSUtil;
+import luoyong.dinnerpanel.rwscommon.util.JsonBeanUtil;
+import luoyong.dinnerpanel.rwscommon.util.RWSUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

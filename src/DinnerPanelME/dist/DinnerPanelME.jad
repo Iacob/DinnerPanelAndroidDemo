@@ -1,8 +1,0 @@
-MIDlet-1: MainMidlet,,luoyong.dinnerpanel.device.javame.generic.MainMidlet
-MIDlet-Jar-Size: 48433
-MIDlet-Jar-URL: DinnerPanelME.jar
-MIDlet-Name: DinnerPanelME
-MIDlet-Vendor: Vendor
-MIDlet-Version: 1.0
-MicroEdition-Configuration: CLDC-1.1
-MicroEdition-Profile: MIDP-2.1
