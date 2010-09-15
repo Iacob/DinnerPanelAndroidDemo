@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -113,60 +114,81 @@ public class RWSUtil {
          throw new RemoteConnectionException("URL must not be null.");
       }
 
-      // Connect to URL.
-      URLConnection urlConnection = null;
+      byte[] serverByteMessage = null;
 
-      try {
-         urlConnection = httpURL.openConnection();
-      }catch(IOException ex) {
-         throw new RemoteConnectionException("无法连接到服务器", ex);
-      }
+      HttpURLConnection httpURLConnection = null;
 
-      if (urlConnection == null) {
-         throw new RemoteConnectionException("无法连接到服务器");
-      }
-
-      // Detect if the connection is HTTP connection.
-      if (!(urlConnection instanceof HttpURLConnection)) {
-         throw new RemoteConnectionException("和服务器的连接不是HTTP连接");
-      }
-
-      HttpURLConnection httpURLConnection = (HttpURLConnection)urlConnection;
-
-      // Set request method.
-      try {
-         httpURLConnection.setRequestMethod("GET");
-      }catch(ProtocolException ex) {
-         try {
-            httpURLConnection.disconnect();
-         }catch(Throwable t) {}
-         throw new RemoteConnectionException("服务器无法支持GET方法", ex);
-      }
-
-      // Preparing to receive message from server.
       InputStream serverInputStream = null;
 
       try {
-         serverInputStream = httpURLConnection.getInputStream();
-      }catch(IOException ex) {
+         // Connect to URL.
+         URLConnection urlConnection = null;
+
          try {
-            if (httpURLConnection.getResponseCode() == 401) {
-
-               // Close server input stream.
-               try {
-                  serverInputStream.close();
-               }catch(Throwable t) {}
-
-               // Close HTTP URL connection.
-               try {
-                  httpURLConnection.disconnect();
-               }catch(Throwable t) {}
-               
-               throw new RemoteAuthorizationException("没有权限");
-            }
-         }catch(IOException e) {
+            urlConnection = httpURL.openConnection();
+         } catch (IOException ex) {
+            throw new RemoteConnectionException("无法连接到服务器", ex);
          }
 
+         if (urlConnection == null) {
+            throw new RemoteConnectionException("无法连接到服务器");
+         }
+
+         // Detect if the connection is HTTP connection.
+         if (!(urlConnection instanceof HttpURLConnection)) {
+            throw new RemoteConnectionException("和服务器的连接不是HTTP连接");
+         }
+
+         httpURLConnection = (HttpURLConnection) urlConnection;
+
+         // Set request method.
+         try {
+            httpURLConnection.setRequestMethod("GET");
+         } catch (ProtocolException ex) {
+            throw new RemoteConnectionException("服务器无法支持GET方法", ex);
+         }
+
+         // Preparing to receive message from server.
+
+         try {
+            serverInputStream = httpURLConnection.getInputStream();
+         } catch (IOException ex) {
+
+            int httpResponseCode = 0;
+
+            try {
+
+               httpResponseCode = httpURLConnection.getResponseCode();
+
+               if (httpResponseCode == 401) {
+                  throw new RemoteAuthorizationException("没有权限");
+               }
+            } catch (IOException e) {
+            }
+
+            throw new RemoteConnectionException(
+                    "无法从服务器读入数据，服务器返回：HTTP" + httpResponseCode, ex);
+         }
+
+         // Receiving message from server.
+
+         int serverReadCount = 0;
+         byte serverReadBuffer[] = new byte[512];
+         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+         while (serverReadCount > -1) {
+            try {
+               serverReadCount = serverInputStream.read(serverReadBuffer);
+            } catch (IOException ex) {
+
+               throw new RemoteConnectionException("从服务器读入数据时发生错误", ex);
+            }
+            byteArrayOutputStream.write(serverReadBuffer, 0, serverReadCount);
+         }
+
+         serverByteMessage = byteArrayOutputStream.toByteArray();
+         
+      }finally {
          // Close server input stream.
          try {
             serverInputStream.close();
@@ -176,47 +198,7 @@ public class RWSUtil {
          try {
             httpURLConnection.disconnect();
          } catch (Throwable t) {}
-         
-         throw new RemoteConnectionException("无法从服务器读入数据", ex);
       }
-
-      // Receiving message from server.
-
-      int serverReadCount = 0;
-      byte serverReadBuffer[] = new byte[512];
-      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-      while (serverReadCount > -1) {
-         try {
-            serverReadCount = serverInputStream.read(serverReadBuffer);
-         } catch (IOException ex) {
-
-            // Close server input stream.
-            try {
-               serverInputStream.close();
-            } catch (Throwable t) {}
-
-            // Close HTTP URL connection.
-            try {
-               httpURLConnection.disconnect();
-            } catch (Throwable t) {}
-
-            throw new RemoteConnectionException("从服务器读入数据时发生错误", ex);
-         }
-         byteArrayOutputStream.write(serverReadBuffer, 0, serverReadCount);
-      }
-
-      byte[] serverByteMessage = byteArrayOutputStream.toByteArray();
-
-      // Close server input stream.
-      try {
-         serverInputStream.close();
-      } catch (Throwable t) {}
-
-      // Close HTTP URL connection.
-      try {
-         httpURLConnection.disconnect();
-      } catch (Throwable t) {}
 
       // Extract result from the information returned by server.
       
@@ -227,6 +209,27 @@ public class RWSUtil {
 
          throw new RemoteInformationException("服务器返回信息的编码格式不正确", ex);
       }
+   }
+
+   public static JSONArray getRWSResultViaGET(String urlString) throws
+           RemoteConnectionException,
+           RemoteAuthorizationException,
+           RemoteInformationException,
+           RemoteBusinessLogicException  {
+
+      if (urlString == null) {
+         throw new RemoteConnectionException("URL为空");
+      }
+
+      URL url = null;
+      
+      try {
+         url = new URL(urlString);
+      } catch (MalformedURLException ex) {
+         throw new RemoteConnectionException("URL格式不正确", ex);
+      }
+
+      return getRWSResultViaGET(url);
    }
 
    public static JSONArray getRWSResultViaPOST(
@@ -240,105 +243,117 @@ public class RWSUtil {
          throw new RemoteConnectionException("URL must not be null.");
       }
 
-      // Connect to URL.
-      URLConnection urlConnection = null;
+      byte[] serverByteMessage = null;
+
+      HttpURLConnection httpURLConnection = null;
+
+      InputStream serverInputStream = null;
 
       try {
-         urlConnection = httpURL.openConnection();
-      }catch(IOException ex) {
-         throw new RemoteConnectionException("无法连接到服务器", ex);
-      }
 
-      if (urlConnection == null) {
-         throw new RemoteConnectionException("无法连接到服务器");
-      }
-
-      // Detect if the connection is HTTP connection.
-      if (!(urlConnection instanceof HttpURLConnection)) {
-         throw new RemoteConnectionException("和服务器的连接不是HTTP连接");
-      }
-
-      HttpURLConnection httpURLConnection = (HttpURLConnection)urlConnection;
-
-      // Set request method.
-      try {
-         httpURLConnection.setRequestMethod("POST");
-      }catch(ProtocolException ex) {
-
-         // Close HTTP URL connection.
-         try {
-            httpURLConnection.disconnect();
-         } catch (Throwable t) {}
-
-         throw new RemoteConnectionException("服务器无法支持POST方法", ex);
-      }
-
-      // Send message to server.
-
-      if (clientMessage != null) {
-         
-         OutputStream serverOutputStream = null;
+         // Connect to URL.
+         URLConnection urlConnection = null;
 
          try {
-            serverOutputStream = httpURLConnection.getOutputStream();
-            try {
-               serverOutputStream.write(clientMessage.getBytes("UTF-8"));
-            }catch (UnsupportedEncodingException ex) {
-               throw new RemoteInformationException("字符编码格式系统不支持", ex);
-            }
+            urlConnection = httpURL.openConnection();
          }catch(IOException ex) {
+            throw new RemoteConnectionException("无法连接到服务器", ex);
+         }
+
+         if (urlConnection == null) {
+            throw new RemoteConnectionException("无法连接到服务器");
+         }
+
+         // Detect if the connection is HTTP connection.
+         if (!(urlConnection instanceof HttpURLConnection)) {
+            throw new RemoteConnectionException("和服务器的连接不是HTTP连接");
+         }
+
+         httpURLConnection = (HttpURLConnection)urlConnection;
+
+         // Set request method.
+         try {
+            httpURLConnection.setRequestMethod("POST");
+         }catch(ProtocolException ex) {
+
+            throw new RemoteConnectionException("服务器无法支持POST方法", ex);
+         }
+
+         // Send message to server.
+
+         if (clientMessage != null) {
+
+            OutputStream serverOutputStream = null;
+
             try {
-               if (httpURLConnection.getResponseCode() == 401) {
+               serverOutputStream = httpURLConnection.getOutputStream();
+               try {
+                  serverOutputStream.write(clientMessage.getBytes("UTF-8"));
+               }catch (UnsupportedEncodingException ex) {
+                  throw new RemoteInformationException("字符编码格式系统不支持", ex);
+               }
+            }catch(IOException ex) {
+               try {
+                  if (httpURLConnection.getResponseCode() == 401) {
 
-                  // Close HTTP URL connection.
-                  try {
-                     httpURLConnection.disconnect();
-                  } catch (Throwable t) {}
+                     throw new RemoteAuthorizationException("没有权限");
+                  }
+               }catch(IOException e) {
+               }
 
+               throw new RemoteConnectionException("无法向服务器发送数据", ex);
+            }finally {
+
+               // Close server output stream.
+               try {
+                  serverOutputStream.close();
+               } catch (Throwable t) {}
+            }
+         }
+
+
+         // Preparing to receive information from server.
+
+         try {
+            serverInputStream = httpURLConnection.getInputStream();
+         }catch(IOException ex) {
+
+            int httpResponseCode = 0;
+
+            try {
+
+               httpResponseCode = httpURLConnection.getResponseCode();
+
+               if (httpResponseCode == 401) {
                   throw new RemoteAuthorizationException("没有权限");
                }
             }catch(IOException e) {
             }
 
-            // Close HTTP URL connection.
-            try {
-               httpURLConnection.disconnect();
-            } catch (Throwable t) {}
-
-            throw new RemoteConnectionException("无法向服务器发送数据", ex);
-         }finally {
-
-            // Close server output stream.
-            try {
-               serverOutputStream.close();
-            } catch (Throwable t) {}
+            throw new RemoteConnectionException(
+                    "无法从服务器读入数据，服务器返回：HTTP" + httpResponseCode, ex);
          }
-      }
-      
 
-      // Preparing to receive information from server.
-      InputStream serverInputStream = null;
+         // Receiving information from server.
 
-      try {
-         serverInputStream = httpURLConnection.getInputStream();
-      }catch(IOException ex) {
-         try {
-            if (httpURLConnection.getResponseCode() == 401) {
+         int serverReadCount = 0;
+         byte serverReadBuffer[] = new byte[512];
+         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-               // Close server input stream.
-               try {
-                  serverInputStream.close();
-               } catch (Throwable t) {}
-
-               // Close HTTP URL connection.
-               try {
-                  httpURLConnection.disconnect();
-               } catch (Throwable t) {}
-
-               throw new RemoteAuthorizationException("没有权限");
+         while (serverReadCount > -1) {
+            try {
+               serverReadCount = serverInputStream.read(serverReadBuffer);
+            } catch (IOException ex) {
+               
+               throw new RemoteConnectionException("从服务器读入数据时发生错误", ex);
             }
-         }catch(IOException e) {
+            byteArrayOutputStream.write(serverReadBuffer, 0, serverReadCount);
          }
+
+         serverByteMessage = byteArrayOutputStream.toByteArray();
+
+
+      }finally {
 
          // Close server input stream.
          try {
@@ -349,47 +364,7 @@ public class RWSUtil {
          try {
             httpURLConnection.disconnect();
          } catch (Throwable t) {}
-
-         throw new RemoteConnectionException("无法从服务器读入数据", ex);
       }
-
-      // Receiving information from server.
-
-      int serverReadCount = 0;
-      byte serverReadBuffer[] = new byte[512];
-      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-      while (serverReadCount > -1) {
-         try {
-            serverReadCount = serverInputStream.read(serverReadBuffer);
-         } catch (IOException ex) {
-
-            // Close server input stream.
-            try {
-               serverInputStream.close();
-            } catch (Throwable t) {}
-
-            // Close HTTP URL connection.
-            try {
-               httpURLConnection.disconnect();
-            } catch (Throwable t) {}
-
-            throw new RemoteConnectionException("从服务器读入数据时发生错误", ex);
-         }
-         byteArrayOutputStream.write(serverReadBuffer, 0, serverReadCount);
-      }
-
-      byte[] serverByteMessage = byteArrayOutputStream.toByteArray();
-
-      // Close server input stream.
-      try {
-         serverInputStream.close();
-      } catch (Throwable t) {}
-
-      // Close HTTP URL connection.
-      try {
-         httpURLConnection.disconnect();
-      } catch (Throwable t) {}
 
       // Extract result from the message sent by server.
 
@@ -399,6 +374,28 @@ public class RWSUtil {
       } catch (UnsupportedEncodingException ex) {
          throw new RemoteInformationException("服务器返回信息的编码格式不正确", ex);
       }
+   }
+
+   public static JSONArray getRWSResultViaPOST(
+           String urlString, String clientMessage) throws
+            RemoteConnectionException,
+            RemoteAuthorizationException,
+            RemoteInformationException,
+            RemoteBusinessLogicException  {
+
+      if (urlString == null) {
+         throw new RemoteConnectionException("URL为空");
+      }
+
+      URL url = null;
+
+      try {
+         url = new URL(urlString);
+      } catch (MalformedURLException ex) {
+         throw new RemoteConnectionException("URL格式不正确", ex);
+      }
+
+      return getRWSResultViaPOST(url, clientMessage);
    }
 
    private static JSONArray getResult(String serverString) throws

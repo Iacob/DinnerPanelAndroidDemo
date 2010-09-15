@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import org.apache.commons.beanutils.DynaClass;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaBean;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -210,6 +213,58 @@ public class JsonBeanUtil {
                // Nothing else.
             }
          }
+      }
+   }
+
+   public static abstract class JSONArrayExtractor<T> {
+
+      private JSONArray jsonArray = null;
+
+      public JSONArrayExtractor(JSONArray jsonArray) {
+         this.jsonArray = jsonArray;
+      }
+
+      abstract protected T getInstance();
+
+      public List<T> extract() {
+
+         JSONObject currentJsonObject = null;
+
+         T currentInstance = null;
+
+         if (this.jsonArray == null) {
+            return null;
+         }
+
+         LinkedList<T> list = new LinkedList<T>();
+
+         int arrayLength = jsonArray.length();
+
+         for (int i=0; i<arrayLength; i++) {
+
+            currentInstance = this.getInstance();
+
+            if (currentInstance == null) {
+               continue;
+            }
+
+            try {
+               currentJsonObject = jsonArray.getJSONObject(i);
+            } catch (JSONException ex) {
+               ex.printStackTrace(System.err);
+               continue;
+            }
+
+            if (currentJsonObject == null) {
+               continue;
+            }
+
+            JsonBeanUtil.jsonObjectToBean(currentJsonObject, currentInstance);
+
+            list.add(currentInstance);
+         }
+
+         return list;
       }
    }
 }
