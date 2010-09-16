@@ -23,8 +23,10 @@ import luoyong.dinnerpanel.dao.model.ExistKey;
 import luoyong.dinnerpanel.dao.model.Food;
 import luoyong.dinnerpanel.dao.model.FoodCategory;
 import luoyong.dinnerpanel.dao.model.FoodStatus;
-import luoyong.dinnerpanel.service.FoodManagement;
+import luoyong.dinnerpanel.rwsclient.FoodServiceClient;
+import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
+import luoyong.dinnerpanel.ui.component.RWSExceptionDialog;
 import luoyong.dinnerpanel.ui.component.SelectItemActionListener;
 import luoyong.dinnerpanel.ui.component.UpdateActionListener;
 
@@ -41,7 +43,7 @@ public class FoodInformationUpdateDialog extends JDialog {
    AddNewActionListener addNewActionListener = null;
    UpdateActionListener updateActionListener = null;
 
-   FoodManagement foodManagement = null;
+   FoodServiceClient foodManagement = null;
 
    JLabel labelName = null;
    JLabel labelCode = null;
@@ -69,7 +71,7 @@ public class FoodInformationUpdateDialog extends JDialog {
 
       this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-      foodManagement = new FoodManagement();
+      foodManagement = new FoodServiceClient();
 
       labelName = new JLabel("餐品名称:");
       labelCode = new JLabel("餐品代号:");
@@ -196,7 +198,13 @@ public class FoodInformationUpdateDialog extends JDialog {
                return;
             }
 
-            foodCategory = foodManagement.getFoodCategory(foodCategory);
+            try {
+               foodCategory = foodManagement.getFoodCategory(foodCategory);
+            } catch (RWSException ex) {
+               RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+               return;
+            }
+            
             if (foodCategory == null) {
                showErrorMessage("所选的餐品分类不存在", "输入错误");
                return;
@@ -235,7 +243,12 @@ public class FoodInformationUpdateDialog extends JDialog {
 
             if (f.getId() ==null) {
                // Add food information to system.
-               foodManagement.addFoodInformation(f);
+               try {
+                  foodManagement.addFoodInformation(f);
+               } catch (RWSException ex) {
+                  RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+                  return;
+               }
                // Tell the added food information to listener.
                if (addNewActionListener != null) {
                   addNewActionListener.addNewActionPerformed(f);
@@ -247,9 +260,21 @@ public class FoodInformationUpdateDialog extends JDialog {
             }else {
                // Check if the food information needed to be updated
                // is still exists in system. If not, show error message.
-               if (foodManagement.getFoodInformation(f) != null) {
+               Food foodInSystem = null;
+               try {
+                  foodInSystem = foodManagement.getFoodInformation(f);
+               } catch (RWSException ex) {
+                  RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+                  return;
+               }
+               if (foodInSystem != null) {
                   // Update food information from system.
-                  foodManagement.updateFood(f);
+                  try {
+                     foodManagement.updateFoodInformation(f);
+                  } catch (RWSException ex) {
+                     RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+                     return;
+                  }
                   // TODO Do not use update methods in UI components.
                   // tell the updated food information to listener.
                   if (updateActionListener != null) {

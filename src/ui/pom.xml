@@ -57,5 +57,17 @@
          <version>1.0</version>
          <scope>compile</scope>
       </dependency>
+      <dependency>
+         <groupId>luoyong.dinnerpanel</groupId>
+         <artifactId>DinnerPanelRWSCommon</artifactId>
+         <version>1.0</version>
+         <scope>compile</scope>
+      </dependency>
+      <dependency>
+         <groupId>luoyong.dinnerpanel</groupId>
+         <artifactId>DinnerPanelRWSClient</artifactId>
+         <version>1.0</version>
+         <scope>compile</scope>
+      </dependency>
    </dependencies>
 </project>

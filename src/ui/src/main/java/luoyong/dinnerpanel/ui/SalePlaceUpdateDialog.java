@@ -20,8 +20,10 @@ import luoyong.dinnerpanel.dao.model.ExistKey;
 import luoyong.dinnerpanel.dao.model.SalePlace;
 import luoyong.dinnerpanel.dao.model.SalePlaceServiceStatus;
 import luoyong.dinnerpanel.dao.model.SalePlaceStatus;
-import luoyong.dinnerpanel.service.SalePlaceManagement;
+import luoyong.dinnerpanel.rwsclient.SalePlaceServiceClient;
+import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
+import luoyong.dinnerpanel.ui.component.RWSExceptionDialog;
 import luoyong.dinnerpanel.ui.component.UpdateActionListener;
 
 /**
@@ -33,7 +35,7 @@ public class SalePlaceUpdateDialog extends JDialog {
    // Invisible field.
    private Long salePlaceId = null;
 
-   SalePlaceManagement salePlaceManagement = null;
+   SalePlaceServiceClient salePlaceServiceClient = null;
 
    private AddNewActionListener addNewActionListener = null;
    private UpdateActionListener updateActionListener = null;
@@ -55,7 +57,7 @@ public class SalePlaceUpdateDialog extends JDialog {
 
       this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-      salePlaceManagement = new SalePlaceManagement();
+      salePlaceServiceClient = new SalePlaceServiceClient();
 
       labelName = new JLabel("餐桌名称");
       labelServiceStatus = new JLabel("工作状态");
@@ -158,15 +160,28 @@ public class SalePlaceUpdateDialog extends JDialog {
                        comboBoxStatus.getSelectedItem());
             }
 
-            SalePlace salePlaceInSystem
-                    = salePlaceManagement.getSalePlace(salePlace);
+            SalePlace salePlaceInSystem = null;
+
+            try {
+               salePlaceInSystem = salePlaceServiceClient.getSalePlace(salePlace);
+            } catch (RWSException ex) {
+               RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+               return;
+            }
 
             if (salePlace.getId() != null) {
                if (salePlaceInSystem == null) {
                   showErrorMessage("所要更新的餐桌信息不存在，请取消", "错误");
                   return;
                }else {
-                  salePlaceManagement.updateSalePlace(salePlace);
+                  
+                  try {
+                     salePlaceServiceClient.updateSalePlace(salePlace);
+                  } catch (RWSException ex) {
+                     RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+                     return;
+                  }
+
                   showMessage("餐桌信息成功更新", "成功");
                   if (updateActionListener != null) {
                      updateActionListener.updateActionPerformed(salePlace);
@@ -179,7 +194,14 @@ public class SalePlaceUpdateDialog extends JDialog {
                   showErrorMessage("所要添加的餐桌已存在，请取消", "错误");
                   return;
                }else {
-                  salePlaceManagement.addSalePlace(salePlace);
+
+                  try {
+                     salePlaceServiceClient.addSalePlace(salePlace);
+                  } catch (RWSException ex) {
+                     RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+                     return;
+                  }
+
                   showMessage("餐桌信息成功添加", "成功");
                   if (addNewActionListener != null) {
                      addNewActionListener.addNewActionPerformed(salePlace);

@@ -11,7 +11,8 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import luoyong.dinnerpanel.dao.model.Food;
 import luoyong.dinnerpanel.dao.model.FoodCategory;
-import luoyong.dinnerpanel.service.FoodManagement;
+import luoyong.dinnerpanel.rwsclient.FoodServiceClient;
+import luoyong.dinnerpanel.rwscommon.info.RWSException;
 
 /**
  *
@@ -24,7 +25,7 @@ public class FoodCategoryTree extends JTree {
 
    private LinkedList<DefaultMutableTreeNode> nodeList = null;
 
-   FoodManagement foodManagement = null;
+   private FoodServiceClient foodServiceClient = null;
 
    public FoodCategoryTree() {
       super();
@@ -42,7 +43,7 @@ public class FoodCategoryTree extends JTree {
 
       nodeList = new LinkedList<DefaultMutableTreeNode>();
 
-      foodManagement = new FoodManagement();
+      foodServiceClient = new FoodServiceClient();
    }
 
    public void addTopLevelCategory(FoodCategory c) {
@@ -51,7 +52,12 @@ public class FoodCategoryTree extends JTree {
       }
 
       // Add food category.
-      foodManagement.addFoodCategory(c);
+      try {
+         foodServiceClient.addFoodCategory(c);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.addTopLevelCategoryToTree(c);
    }
@@ -76,7 +82,15 @@ public class FoodCategoryTree extends JTree {
          return;
       }
 
-      List<Food> foodList = foodManagement.getFoodListFromFoodCategory(c);
+      List<Food> foodList = null;
+
+      try {
+         foodList = foodServiceClient.getFoodListFromFoodCategory(c);
+      }catch (RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
+
       if ((foodList != null) && (foodList.size() > 0)) {
          JOptionPane.showMessageDialog(this, "此分类下尚存在餐品信息，无法删除此分类",
                  "错误", JOptionPane.ERROR_MESSAGE);
@@ -84,9 +98,14 @@ public class FoodCategoryTree extends JTree {
       }
 
       this.removeTopLevelCategoryFromTree(c);
-
-      // Remove food category.
-      foodManagement.removeFoodCategory(c);
+      
+      try {
+         // Remove food category.
+         foodServiceClient.removeFoodCategory(c);
+      }catch (RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
    }
 
    public void removeTopLevelCategoryFromTree(FoodCategory c) {
@@ -115,8 +134,13 @@ public class FoodCategoryTree extends JTree {
          return;
       }
 
-      // Update food category.
-      foodManagement.updateFoodCategory(c);
+      try {
+         // Update food category.
+         foodServiceClient.updateFoodCategory(c);
+      }catch (RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.updateCategoryFromTree(c);
    }
@@ -150,7 +174,15 @@ public class FoodCategoryTree extends JTree {
 
    public void reloadTree() {
       this.clearTree();
-      List<FoodCategory> categoryList = foodManagement.getAllFoodCategories();
+
+      List<FoodCategory> categoryList = null;
+
+      try {
+         categoryList = foodServiceClient.getAllFoodCategories();
+      }catch (RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
       if (categoryList != null) {
          for (FoodCategory category : categoryList) {
             if (category != null) {

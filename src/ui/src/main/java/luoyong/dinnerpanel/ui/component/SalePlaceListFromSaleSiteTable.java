@@ -6,7 +6,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import luoyong.dinnerpanel.dao.model.SalePlace;
-import luoyong.dinnerpanel.service.SalePlaceManagement;
+import luoyong.dinnerpanel.rwsclient.SalePlaceServiceClient;
+import luoyong.dinnerpanel.rwscommon.info.RWSException;
 
 /**
  *
@@ -17,7 +18,7 @@ public class SalePlaceListFromSaleSiteTable extends JTable
 
    SalePlaceListTableModel tableModel = null;
 
-   SalePlaceManagement salePlaceManagement = null;
+   SalePlaceServiceClient salePlaceServiceClient = null;
 
    LinkedList<SalePlace> salePlaceItemList = null;
 
@@ -27,7 +28,7 @@ public class SalePlaceListFromSaleSiteTable extends JTable
       this.setAutoCreateRowSorter(true);
       this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-      salePlaceManagement = new SalePlaceManagement();
+      salePlaceServiceClient = new SalePlaceServiceClient();
 
       salePlaceItemList = new LinkedList<SalePlace>();
    }
@@ -50,7 +51,12 @@ public class SalePlaceListFromSaleSiteTable extends JTable
       }
 
       // Add sale place information.
-      salePlaceManagement.addSalePlace(s);
+      try {
+         salePlaceServiceClient.addSalePlace(s);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.addSalePlaceToTable(s);
    }
@@ -76,7 +82,12 @@ public class SalePlaceListFromSaleSiteTable extends JTable
 
       this.removeSalePlaceFromList(s);
 
-      salePlaceManagement.removeSalePlace(s);
+      try {
+         salePlaceServiceClient.removeSalePlace(s);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
    }
 
    public void updateSalePlaceFromList(SalePlace s) {
@@ -99,7 +110,12 @@ public class SalePlaceListFromSaleSiteTable extends JTable
          return;
       }
 
-      salePlaceManagement.updateSalePlace(s);
+      try {
+         salePlaceServiceClient.updateSalePlace(s);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.updateSalePlaceFromList(s);
    }
@@ -117,9 +133,20 @@ public class SalePlaceListFromSaleSiteTable extends JTable
    public void reloadTable() {
       // Clear table first.
       this.clearTable();
+
       // Reload content.
-      List<SalePlace> salePlaceList
-              = salePlaceManagement.getAllSalePlaces();
+      List<SalePlace> salePlaceList = null;
+      try {
+         salePlaceList = salePlaceServiceClient.getAllSalePlaces();
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
+
+      if (salePlaceList == null) {
+         return;
+      }
+      
       for (SalePlace salePlace : salePlaceList) {
          this.addSalePlaceToTable(salePlace);
       }

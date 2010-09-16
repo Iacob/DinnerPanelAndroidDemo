@@ -20,8 +20,10 @@ import javax.swing.JTextField;
 import luoyong.dinnerpanel.dao.model.ExistKey;
 import luoyong.dinnerpanel.dao.model.Operator;
 import luoyong.dinnerpanel.dao.model.OperatorStatus;
-import luoyong.dinnerpanel.service.OperatorManagement;
+import luoyong.dinnerpanel.rwsclient.OperatorServiceClient;
+import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
+import luoyong.dinnerpanel.ui.component.RWSExceptionDialog;
 import luoyong.dinnerpanel.ui.component.UpdateActionListener;
 
 /**
@@ -36,7 +38,7 @@ public class OperatorInformationUpdateDialog extends JDialog {
    private AddNewActionListener addNewActionListener = null;
    private UpdateActionListener updateActionListener = null;
 
-   private OperatorManagement operatorManagement = null;
+   private OperatorServiceClient operatorServiceClient = null;
 
    private JLabel labelId;
    private JLabel labelName;
@@ -59,7 +61,7 @@ public class OperatorInformationUpdateDialog extends JDialog {
 
       this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-      operatorManagement = new OperatorManagement();
+      operatorServiceClient = new OperatorServiceClient();
 
       labelId = new JLabel("ID:");
       labelName = new JLabel("姓名:");
@@ -208,16 +210,30 @@ public class OperatorInformationUpdateDialog extends JDialog {
             }
             operator.setDescription(textAreaDesc.getText());
 
+            Operator operatorInSystem = null;
+
             // Get the correspond operator information from system.
-            Operator operatorInSystem = operatorManagement
-                    .getOperatorInformation(operator);
+            try {
+               operatorInSystem
+                       = operatorServiceClient.getOperatorInformation(operator);
+            }catch (RWSException ex) {
+               RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+               return;
+            }
 
             if (update) {
                if (operatorInSystem == null) {
                   showErrorMessage("所要更新的用户不存在，请取消", "错误");
                   return;
                }else {
-                  operatorManagement.updateOperatorInformation(operator);
+
+                  try {
+                     operatorServiceClient.updateOperatorInformation(operator);
+                  } catch (RWSException ex) {
+                     RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+                     return;
+                  }
+                  
                   // Tell the updated operator to listener.
                   if (updateActionListener != null) {
                      updateActionListener.updateActionPerformed(operator);
@@ -231,7 +247,14 @@ public class OperatorInformationUpdateDialog extends JDialog {
                   showErrorMessage("所要添加的用户已存在，请取消", "错误");
                   return;
                }else {
-                  operatorManagement.addOperator(operator);
+
+                  try {
+                     operatorServiceClient.addOperator(operator);
+                  } catch (RWSException ex) {
+                     RWSExceptionDialog.showRWSExceptionDialog(rootPane, ex);
+                     return;
+                  }
+                  
                   if (addNewActionListener != null) {
                      addNewActionListener.addNewActionPerformed(operator);
                   }

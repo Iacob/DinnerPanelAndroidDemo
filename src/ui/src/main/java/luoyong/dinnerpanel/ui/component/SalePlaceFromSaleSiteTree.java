@@ -9,7 +9,8 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import luoyong.dinnerpanel.dao.model.SalePlace;
-import luoyong.dinnerpanel.service.SalePlaceManagement;
+import luoyong.dinnerpanel.rwsclient.SalePlaceServiceClient;
+import luoyong.dinnerpanel.rwscommon.info.RWSException;
 
 /**
  *
@@ -22,7 +23,7 @@ public class SalePlaceFromSaleSiteTree extends JTree {
 
    private LinkedList<DefaultMutableTreeNode> nodeList = null;
 
-   SalePlaceManagement salePlaceManagement = null;
+   SalePlaceServiceClient salePlaceServiceClient = null;
 
    public SalePlaceFromSaleSiteTree() {
       super();
@@ -40,7 +41,7 @@ public class SalePlaceFromSaleSiteTree extends JTree {
 
       nodeList = new LinkedList<DefaultMutableTreeNode>();
 
-      salePlaceManagement = new SalePlaceManagement();
+      salePlaceServiceClient = new SalePlaceServiceClient();
    }
 
    public void addTopLevelSalePlace(SalePlace s) {
@@ -49,7 +50,12 @@ public class SalePlaceFromSaleSiteTree extends JTree {
       }
       
       // Add sale place.
-      salePlaceManagement.addSalePlace(s);
+      try {
+         salePlaceServiceClient.addSalePlace(s);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.addTopLevelSalePlaceToTree(s);
    }
@@ -77,7 +83,12 @@ public class SalePlaceFromSaleSiteTree extends JTree {
       this.removeTopLevelSalePlaceFromTree(s);
       
       // Remove sale place.
-      salePlaceManagement.removeSalePlace(s);
+      try {
+         salePlaceServiceClient.removeSalePlace(s);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
    }
 
    public void removeTopLevelSalePlaceFromTree(SalePlace s) {
@@ -109,7 +120,12 @@ public class SalePlaceFromSaleSiteTree extends JTree {
       }
 
       // Update sale place.
-      salePlaceManagement.updateSalePlace(s);
+      try {
+         salePlaceServiceClient.updateSalePlace(s);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.updateSalePlaceFromTree(s);
    }
@@ -143,7 +159,16 @@ public class SalePlaceFromSaleSiteTree extends JTree {
 
    public void reloadTree() {
       this.clearTree();
-      List<SalePlace> salePlaceList = salePlaceManagement.getAllSalePlaces();
+
+      List<SalePlace> salePlaceList = null;
+
+      try {
+         salePlaceList = salePlaceServiceClient.getAllSalePlaces();
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
+      
       if (salePlaceList != null) {
          for (SalePlace salePlace : salePlaceList) {
             if (salePlace != null) {

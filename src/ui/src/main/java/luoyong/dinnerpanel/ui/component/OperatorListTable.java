@@ -6,7 +6,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import luoyong.dinnerpanel.dao.model.Operator;
-import luoyong.dinnerpanel.service.OperatorManagement;
+import luoyong.dinnerpanel.rwsclient.OperatorServiceClient;
+import luoyong.dinnerpanel.rwscommon.info.RWSException;
 
 /**
  *
@@ -15,11 +16,11 @@ import luoyong.dinnerpanel.service.OperatorManagement;
 public class OperatorListTable extends JTable
         implements AddNewActionListener, UpdateActionListener {
 
-   OperatorListTableModel tableModel = null;
+   private OperatorListTableModel tableModel = null;
 
-   OperatorManagement operatorManagement = null;
+   private OperatorServiceClient operatorServiceClient = null;
 
-   LinkedList<Operator> operatorItemList = null;
+   private LinkedList<Operator> operatorItemList = null;
 
    public OperatorListTable() {
       tableModel = new OperatorListTableModel();
@@ -27,7 +28,7 @@ public class OperatorListTable extends JTable
       this.setAutoCreateRowSorter(true);
       this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-      operatorManagement = new OperatorManagement();
+      operatorServiceClient = new OperatorServiceClient();
 
       operatorItemList = new LinkedList<Operator>();
    }
@@ -49,7 +50,12 @@ public class OperatorListTable extends JTable
       }
 
       // Add operator information.
-      operatorManagement.addOperator(o);
+      try {
+         operatorServiceClient.addOperator(o);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.addOperatorToTable(o);
    }
@@ -75,7 +81,12 @@ public class OperatorListTable extends JTable
 
       this.removeOperatorFromList(o);
 
-      operatorManagement.removeOperatorInformation(o);
+      try {
+         operatorServiceClient.removeOperatorInformation(o);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
    }
 
    public void updateOperatorFromList(Operator o) {
@@ -98,7 +109,12 @@ public class OperatorListTable extends JTable
          return;
       }
 
-      operatorManagement.updateOperatorInformation(o);
+      try {
+         operatorServiceClient.updateOperatorInformation(o);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.updateOperatorFromList(o);
    }
@@ -114,11 +130,24 @@ public class OperatorListTable extends JTable
    }
 
    public void reloadTable() {
+      
       // Clear table first.
       this.clearTable();
+
+      List<Operator> operatorList = null;
+
       // Reload content.
-      List<Operator> operatorList
-              = operatorManagement.getAllOperatorInformation();
+      try {
+         operatorList = operatorServiceClient.getAllOperatorInformation();
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
+
+      if (operatorList == null) {
+         return;
+      }
+
       for (Operator operator : operatorList) {
          this.addOperatorToTable(operator);
       }
