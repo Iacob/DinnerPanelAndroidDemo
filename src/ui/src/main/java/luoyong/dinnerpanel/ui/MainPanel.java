@@ -6,20 +6,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyVetoException;
-import java.util.LinkedHashMap;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
-import luoyong.dinnerpanel.dao.report.ReportDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
+//import luoyong.dinnerpanel.dao.report.ReportDataSource;
+//import net.sf.jasperreports.engine.JRException;
+//import net.sf.jasperreports.engine.JasperCompileManager;
+//import net.sf.jasperreports.engine.JasperFillManager;
+//import net.sf.jasperreports.engine.JasperPrint;
+//import net.sf.jasperreports.engine.JasperReport;
 
 /**
  *
@@ -48,7 +46,7 @@ public class MainPanel extends JPanel {
       buttonReport = new JButton("制作报表");
 
       popupMenuReport = new JPopupMenu();
-      JMenuItem menuItemTest = popupMenuReport.add("餐品报表");
+//      JMenuItem menuItemTest = popupMenuReport.add("餐品报表");
 
       JToolBar toolBar = new JToolBar();
       toolBar.setFloatable(false);
@@ -121,27 +119,27 @@ public class MainPanel extends JPanel {
          @Override
          public void actionPerformed(ActionEvent e) {
 
-            JInternalFrame internalFrame = MainFrame
-                    .getFrameFromFrameRecord(BillManagementPanel.NAME);
-
-            if (internalFrame != null) {
-               try {
-                  internalFrame.setMaximum(false);
-                  internalFrame.setMaximum(true);
-               } catch (PropertyVetoException ex) {
-                  ex.printStackTrace(System.err);
-               }
-            } else {
-
-               BillManagementPanel panel = new BillManagementPanel();
-
-               JInternalFrame frame = MainFrame.createDefaultInternalFrame();
-               frame.setTitle("帐单操作");
-               MainFrame.addInternalFrame(BillManagementPanel.NAME, frame);
-               frame.add(panel, BorderLayout.CENTER);
-               frame.pack();
-               frame.setVisible(true);
-            }
+//            JInternalFrame internalFrame = MainFrame
+//                    .getFrameFromFrameRecord(BillManagementPanel.NAME);
+//
+//            if (internalFrame != null) {
+//               try {
+//                  internalFrame.setMaximum(false);
+//                  internalFrame.setMaximum(true);
+//               } catch (PropertyVetoException ex) {
+//                  ex.printStackTrace(System.err);
+//               }
+//            } else {
+//
+//               BillManagementPanel panel = new BillManagementPanel();
+//
+//               JInternalFrame frame = MainFrame.createDefaultInternalFrame();
+//               frame.setTitle("帐单操作");
+//               MainFrame.addInternalFrame(BillManagementPanel.NAME, frame);
+//               frame.add(panel, BorderLayout.CENTER);
+//               frame.pack();
+//               frame.setVisible(true);
+//            }
          }
       });
 
@@ -192,55 +190,55 @@ public class MainPanel extends JPanel {
          }
       });
 
-      menuItemTest.addActionListener(new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-
-            JInternalFrame internalFrame = MainFrame
-                    .getFrameFromFrameRecord(ReportPanel.NAME);
-
-            if (internalFrame != null) {
-               try {
-                  internalFrame.setMaximum(false);
-                  internalFrame.setMaximum(true);
-               } catch (PropertyVetoException ex) {
-                  ex.printStackTrace(System.err);
-               }
-            } else {
-
-               ReportPanel panel = new ReportPanel();
-
-               ReportDataSource reportDataSource = new ReportDataSource("select f from Food f");
-               reportDataSource.startQuery();
-
-               JasperReport jasperReport = null;
-               JasperPrint jasperPrint = null;
-               try {
-                  jasperReport = JasperCompileManager.compileReport(Thread.currentThread().getClass().getResourceAsStream("/report/ReportCurrentStatus.jrxml"));
-                  jasperPrint = JasperFillManager.fillReport(jasperReport, new LinkedHashMap(), reportDataSource);
-               } catch (JRException ex) {
-                  ex.printStackTrace(System.err);
-               }
-
-               JInternalFrame frame = MainFrame.createDefaultInternalFrame();
-               frame.setTitle("餐品报表");
-               MainFrame.addInternalFrame(ReportPanel.NAME, frame);
-               frame.add(panel, BorderLayout.CENTER);
-               frame.setVisible(true);
-               frame.setSize(750, 550);
-               try {
-                  frame.setMaximum(false);
-                  frame.setMaximum(true);
-               } catch (PropertyVetoException ex) {
-                  ex.printStackTrace(System.err);
-               }
-               panel.setJasperPrint(jasperPrint);
-               panel.switchToTextReport();
-
-               reportDataSource.close();
-            }
-         }
-      });
+//      menuItemTest.addActionListener(new ActionListener() {
+//         @Override
+//         public void actionPerformed(ActionEvent e) {
+//
+//            JInternalFrame internalFrame = MainFrame
+//                    .getFrameFromFrameRecord(ReportPanel.NAME);
+//
+//            if (internalFrame != null) {
+//               try {
+//                  internalFrame.setMaximum(false);
+//                  internalFrame.setMaximum(true);
+//               } catch (PropertyVetoException ex) {
+//                  ex.printStackTrace(System.err);
+//               }
+//            } else {
+//
+//               ReportPanel panel = new ReportPanel();
+//
+//               ReportDataSource reportDataSource = new ReportDataSource("select f from Food f");
+//               reportDataSource.startQuery();
+//
+//               JasperReport jasperReport = null;
+//               JasperPrint jasperPrint = null;
+//               try {
+//                  jasperReport = JasperCompileManager.compileReport(Thread.currentThread().getClass().getResourceAsStream("/report/ReportCurrentStatus.jrxml"));
+//                  jasperPrint = JasperFillManager.fillReport(jasperReport, new LinkedHashMap(), reportDataSource);
+//               } catch (JRException ex) {
+//                  ex.printStackTrace(System.err);
+//               }
+//
+//               JInternalFrame frame = MainFrame.createDefaultInternalFrame();
+//               frame.setTitle("餐品报表");
+//               MainFrame.addInternalFrame(ReportPanel.NAME, frame);
+//               frame.add(panel, BorderLayout.CENTER);
+//               frame.setVisible(true);
+//               frame.setSize(750, 550);
+//               try {
+//                  frame.setMaximum(false);
+//                  frame.setMaximum(true);
+//               } catch (PropertyVetoException ex) {
+//                  ex.printStackTrace(System.err);
+//               }
+//               panel.setJasperPrint(jasperPrint);
+//               panel.switchToTextReport();
+//
+//               reportDataSource.close();
+//            }
+//         }
+//      });
    }
 
    public JDesktopPane getDesktopPanel() {

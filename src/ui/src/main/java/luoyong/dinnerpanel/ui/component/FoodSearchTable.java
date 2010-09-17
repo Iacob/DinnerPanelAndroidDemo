@@ -7,7 +7,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import luoyong.dinnerpanel.dao.model.Food;
-import luoyong.dinnerpanel.service.FoodManagement;
+import luoyong.dinnerpanel.rwsclient.FoodServiceClient;
+import luoyong.dinnerpanel.rwscommon.info.RWSException;
 
 /**
  *
@@ -18,7 +19,7 @@ public class FoodSearchTable extends JTable
 
    private FoodListTableModel tableModel = null;
 
-   private FoodManagement foodManagement = null;
+   private FoodServiceClient foodManagement = null;
 
    private LinkedList<Food> foodItemList = null;
 
@@ -28,7 +29,7 @@ public class FoodSearchTable extends JTable
       this.setAutoCreateRowSorter(true);
       this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-      foodManagement = new FoodManagement();
+//      foodManagement = new FoodManagement();
 
       foodItemList = new LinkedList<Food>();
    }
@@ -55,7 +56,12 @@ public class FoodSearchTable extends JTable
       }
 
       // Add food information.
-      foodManagement.addFoodInformation(f);
+      try {
+         foodManagement.addFoodInformation(f);
+      } catch (RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.addFoodToTable(f);
    }
@@ -81,7 +87,12 @@ public class FoodSearchTable extends JTable
 
       this.removeFoodFromList(f);
 
-      foodManagement.removeFoodInformation(f);
+      try {
+         foodManagement.removeFoodInformation(f);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
    }
 
    public synchronized void updateFoodFromTable(Food f) {
@@ -107,10 +118,21 @@ public class FoodSearchTable extends JTable
          return;
       }
 
-      foodManagement.updateFood(f);
+      try {
+         foodManagement.updateFoodInformation(f);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       // Reload food information.
-      Food foodUpdated = foodManagement.getFoodInformation(f);
+      Food foodUpdated = null;
+      try {
+         foodUpdated = foodManagement.getFoodInformation(f);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
 
       this.updateFoodFromTable(foodUpdated);
    }
@@ -129,7 +151,18 @@ public class FoodSearchTable extends JTable
       // Clear table first.
       this.clearTable();
       // Reload content.
-      List<Food> foodList = foodManagement.searchFoodByCode(keyword);
+      List<Food> foodList = null;
+      try {
+         foodList = foodManagement.searchFoodByCode(keyword);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
+
+      if (foodList == null) {
+         return;
+      }
+
       for (Food food : foodList) {
          this.addFoodToTable(food);
       }
@@ -139,7 +172,18 @@ public class FoodSearchTable extends JTable
       // Clear table first.
       this.clearTable();
       // Reload content.
-      List<Food> foodList = foodManagement.searchFoodByKeyword(keyword);
+      List<Food> foodList = null;
+      try {
+         foodList = foodManagement.searchFoodByKeyword(keyword);
+      }catch(RWSException ex) {
+         RWSExceptionDialog.showRWSExceptionDialog(this, ex);
+         return;
+      }
+
+      if (foodList == null) {
+         return;
+      }
+
       for (Food food : foodList) {
          this.addFoodToTable(food);
       }

@@ -1,8 +1,6 @@
 package luoyong.dinnerpanel.ui.main;
 
-import luoyong.dinnerpanel.dao.EntityManagerBuilder;
 import luoyong.dinnerpanel.ui.LoginFrame;
-import luoyong.dinnerpanel.ui.MainFrame;
 
 /**
  *
@@ -11,8 +9,6 @@ import luoyong.dinnerpanel.ui.MainFrame;
 public class App {
 
    public static void main(String[] args) {
-
-      EntityManagerBuilder.buildEntityManager();
 
       LoginFrame loginFrame = new LoginFrame();
       loginFrame.setVisible(true);

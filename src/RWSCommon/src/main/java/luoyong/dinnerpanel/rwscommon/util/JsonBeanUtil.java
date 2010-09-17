@@ -86,7 +86,7 @@ public class JsonBeanUtil {
                }catch(JSONException ex) {
                   ex.printStackTrace(System.err);
                }
-            }else if (fieldType.equals(Enum.class)) {
+            }else if (fieldType.isEnum()) {
                try {
                   fieldValue = wrapDynaBean.get(dynaProperty.getName());
                   result.put(dynaProperty.getName(),
