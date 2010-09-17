@@ -13,6 +13,7 @@ import luoyong.dinnerpanel.service.FoodManagement;
 import luoyong.dinnerpanel.rwscommon.util.JsonBeanUtil;
 import luoyong.dinnerpanel.rwscommon.util.RWSUtil;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -373,10 +374,25 @@ public class RWSFood {
       }
 
       JSONObject foodJsonObject =  JsonBeanUtil.beanToJsonObject(food);
+      
       if (foodJsonObject == null) {
          RWSUtil.setJsonObjectResult(result, 0, resultArray);
          return result.toString();
       }else {
+
+         // Set food category ID.
+         FoodCategory foodCategory = food.getCategory();
+         if (foodCategory != null) {
+            foodCategory = foodManagement.getFoodCategory(foodCategory);
+            if ((foodCategory != null) && (foodCategory.getId() != null)) {
+               try {
+                  foodJsonObject.put("foodCategoryId", foodCategory.getId());
+               } catch (JSONException ex) {
+                  ex.printStackTrace(System.err);
+               }
+            }
+         }
+
          // Return food information in json form.
          resultArray.put(foodJsonObject);
          RWSUtil.setJsonObjectResult(result, 0, resultArray);

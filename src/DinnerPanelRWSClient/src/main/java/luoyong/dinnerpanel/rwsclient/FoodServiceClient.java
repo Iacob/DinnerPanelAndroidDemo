@@ -3,8 +3,6 @@ package luoyong.dinnerpanel.rwsclient;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import luoyong.dinnerpanel.dao.model.Food;
 import luoyong.dinnerpanel.dao.model.FoodCategory;
 import luoyong.dinnerpanel.rwscommon.info.RemoteAuthorizationException;
@@ -268,6 +266,25 @@ public class FoodServiceClient {
 
       Food food = new Food();
       JsonBeanUtil.jsonObjectToBean(jsonObject, food);
+
+      // Get and set food category to food information.
+      Long foodCategoryId = null;
+      if (jsonObject.has("foodCategoryId")) {
+         try {
+            // Get food category ID.
+            foodCategoryId = jsonObject.getLong("foodCategoryId");
+            // Get food category information.
+            FoodCategory foodCategory = this.getFoodCategory(foodCategoryId);
+            // Set food category.
+            food.setCategory(foodCategory);
+         }catch(JSONException ex) {
+            food.setCategory(null);
+            throw new RemoteInformationException(
+                    "服务器返回的餐品所属的餐品分类信息格式不正确", ex);
+         }
+      }else {
+         food.setCategory(null);
+      }
 
       return food;
    }

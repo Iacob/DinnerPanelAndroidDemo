@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import luoyong.dinnerpanel.rwsclient.RWSURLHolder;
 
 /**
  *
@@ -19,6 +20,7 @@ import javax.swing.JTextField;
  */
 public class LoginFrame extends JFrame {
 
+   private JTextField textFieldEndPoint = null;
    private JTextField textFieldUsername = null;
    private JPasswordField passwordFieldPassword = null;
 
@@ -32,6 +34,7 @@ public class LoginFrame extends JFrame {
 
       this.setTitle("登陆");
 
+      textFieldEndPoint = new JTextField(10);
       textFieldUsername = new JTextField(10);
       passwordFieldPassword = new JPasswordField(10);
 
@@ -49,18 +52,24 @@ public class LoginFrame extends JFrame {
       layout.setAutoCreateGaps(true);
       layout.setAutoCreateContainerGaps(true);
 
+      JLabel labelEndPoint = new JLabel("服务器URL");
       JLabel labelUsername = new JLabel("用户名");
       JLabel labelPassword = new JLabel("密码");
 
       layout.setHorizontalGroup(layout.createSequentialGroup()
               .addGroup(layout.createParallelGroup()
+                  .addComponent(labelEndPoint)
                   .addComponent(labelUsername)
                   .addComponent(labelPassword))
               .addGroup(layout.createParallelGroup()
+                  .addComponent(textFieldEndPoint)
                   .addComponent(textFieldUsername)
                   .addComponent(passwordFieldPassword)));
 
       layout.setVerticalGroup(layout.createSequentialGroup()
+              .addGroup(layout.createParallelGroup()
+                  .addComponent(labelEndPoint)
+                  .addComponent(textFieldEndPoint))
               .addGroup(layout.createParallelGroup()
                   .addComponent(labelUsername)
                   .addComponent(textFieldUsername))
@@ -72,11 +81,11 @@ public class LoginFrame extends JFrame {
          @Override
          public void actionPerformed(ActionEvent e) {
 
-            Authenticator.setDefault(new Authenticator() {
+            RWSURLHolder.setBaseURL(textFieldEndPoint.getText());
 
+            Authenticator.setDefault(new Authenticator() {
                @Override
                protected PasswordAuthentication getPasswordAuthentication() {
-                  
                   return new PasswordAuthentication(
                           textFieldUsername.getText(),
                           passwordFieldPassword.getPassword());
@@ -84,6 +93,9 @@ public class LoginFrame extends JFrame {
             });
 
             MainFrame.showMainFrame();
+
+            // Close the login frame.
+            dispose();
          }
       });
 

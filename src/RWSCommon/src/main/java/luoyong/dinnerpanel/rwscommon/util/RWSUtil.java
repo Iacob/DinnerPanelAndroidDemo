@@ -176,9 +176,13 @@ public class RWSUtil {
          byte serverReadBuffer[] = new byte[512];
          ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-         while (serverReadCount > -1) {
+         for (;;) {
             try {
                serverReadCount = serverInputStream.read(serverReadBuffer);
+               // Quit the read loop if reach the end of the stream.
+               if (serverReadCount < 0) {
+                  break;
+               }
             } catch (IOException ex) {
 
                throw new RemoteConnectionException("从服务器读入数据时发生错误", ex);
@@ -279,6 +283,10 @@ public class RWSUtil {
             throw new RemoteConnectionException("服务器无法支持POST方法", ex);
          }
 
+         httpURLConnection.setDoOutput(true);
+         httpURLConnection.setRequestProperty(
+                 "Content-Type", "application/json");
+
          // Send message to server.
 
          if (clientMessage != null) {
@@ -293,15 +301,23 @@ public class RWSUtil {
                   throw new RemoteInformationException("字符编码格式系统不支持", ex);
                }
             }catch(IOException ex) {
+
+               int httpResponseCode = 0;
+
                try {
-                  if (httpURLConnection.getResponseCode() == 401) {
+
+                  httpResponseCode = httpURLConnection.getResponseCode();
+
+                  if (httpResponseCode == 401) {
 
                      throw new RemoteAuthorizationException("没有权限");
                   }
                }catch(IOException e) {
                }
 
-               throw new RemoteConnectionException("无法向服务器发送数据", ex);
+               throw new RemoteConnectionException(
+                       "无法向服务器发送数据，服务器返回：HTTP"
+                           + httpResponseCode, ex);
             }finally {
 
                // Close server output stream.
@@ -340,9 +356,13 @@ public class RWSUtil {
          byte serverReadBuffer[] = new byte[512];
          ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-         while (serverReadCount > -1) {
+         for (;;) {
             try {
                serverReadCount = serverInputStream.read(serverReadBuffer);
+               // Quit the read loop if reach the end of the stream.
+               if (serverReadCount < 0) {
+                  break;
+               }
             } catch (IOException ex) {
                
                throw new RemoteConnectionException("从服务器读入数据时发生错误", ex);
@@ -459,7 +479,7 @@ public class RWSUtil {
       }
 
       try {
-         return jsonObject.getJSONArray(serverString);
+         return jsonObject.getJSONArray(RWSConstant.FIELD_RESULT);
       }catch(JSONException ex) {
          throw new RemoteInformationException("服务器返回的结果格式不正确");
       }
