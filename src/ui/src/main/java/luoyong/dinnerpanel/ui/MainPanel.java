@@ -40,10 +40,12 @@ public class MainPanel extends JPanel {
       panelDesktop = new JDesktopPane();
 
       buttonBillManagement = new JButton("帐单操作");
+      buttonBillManagement.setEnabled(false);
       buttonFoodManagement = new JButton("餐品管理");
       buttonOperatorManagement = new JButton("操作员管理");
       buttonSalePlaceManagement = new JButton("餐桌管理");
       buttonReport = new JButton("制作报表");
+      buttonReport.setEnabled(false);
 
       popupMenuReport = new JPopupMenu();
 //      JMenuItem menuItemTest = popupMenuReport.add("餐品报表");
