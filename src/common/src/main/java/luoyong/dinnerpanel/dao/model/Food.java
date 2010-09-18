@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -19,7 +20,7 @@ import javax.persistence.Table;
  * @author Luo Yong &lt; luo.yong.name@gmail.com &gt;
  */
 @Entity
-@Table
+@Table(name="food")
 @NamedQueries({@NamedQuery(name=Food.QUERY_GET_FOOD_INFORMATION,
       query="select f from Food f where f.id=?1 "
          + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
@@ -59,34 +60,36 @@ public class Food implements Serializable {
            = "get_all_food_from_food_category";
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="ek")
    private ExistKey ek;
 
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO,
       generator = "sequence_food")
+   @Column(name="id")
    private Long id;
 
-   @Column(length=100)
+   @Column(length=100, name="name")
    private String name;
 
-   @Column(length=100)
+   @Column(length=100, name="abbreviation")
    private String abbreviation;
 
-   @Column(length=100)
+   @Column(length=100, name="code")
    private String code;
 
-   @Column(length=3000)
+   @Column(length=3000, name="description")
    private String description;
 
    @ManyToOne
+   @JoinColumn(name="category")
    private FoodCategory category;
 
-   @Column(precision=10,scale=2)
+   @Column(precision=10, scale=2, name="price")
    private BigDecimal price;
    
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="status")
    private FoodStatus status;
 
    @ElementCollection

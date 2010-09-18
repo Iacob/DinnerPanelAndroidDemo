@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * @author Luo Yong &lt; luo.yong.name@gmail.com &gt;
  */
 @Entity
-@Table
+@Table(name="operator")
 @NamedQueries({@NamedQuery(name=Operator.QUERY_REMOVE_OPERATOR_INFORMATION,
    query="update Operator o "
       + "set o.ek=luoyong.dinnerpanel.dao.model.ExistKey.D "
@@ -35,24 +35,24 @@ public class Operator implements Serializable {
            = "get_all_operator_information";
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="ek")
    private ExistKey ek;
 
    @Id
-   @Column(length=50)
+   @Column(length=50, name="id")
    private String id;
 
-   @Column(length=100)
+   @Column(length=100, name="name")
    private String name;
 
-   @Column(length=100)
+   @Column(length=100, name="password")
    private String password;
 
-   @Column(length=3000)
+   @Column(length=3000, name="description")
    private String description;
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="status")
    private OperatorStatus status;
 
    public String getDescription() {

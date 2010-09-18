@@ -8,6 +8,13 @@
    <version>1.0</version>
    <name>DinnerPanelRWSCommon</name>
    <url>http://maven.apache.org</url>
+
+   <parent>
+      <groupId>luoyong.dinnerpanel</groupId>
+      <artifactId>DinnerPanelFullProject</artifactId>
+      <version>1.0</version>
+   </parent>
+
    <build>
       <plugins>
          <plugin>

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -16,7 +17,7 @@ import javax.persistence.Table;
  * @author Luo Yong &lt; luo.yong.name@gmail.com &gt;
  */
 @Entity
-@Table
+@Table(name="sale_place")
 @NamedQueries({@NamedQuery(name=SalePlace.QUERY_GET_ALL_SALE_PLACES,
       query="select s from SalePlace s "
          + "where s.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
@@ -37,32 +38,34 @@ public class SalePlace implements Serializable {
    
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="ek")
    private ExistKey ek;
 
    @Id
    @GeneratedValue(strategy=GenerationType.AUTO,
       generator="sequence_sale_place")
+   @Column(name="id")
    private Long id;
 
-   @Column(length=100)
+   @Column(length=100, name="name")
    private String name;
 
-   @Column(length=3000)
+   @Column(length=3000, name="description")
    private String description;
 
-   @Column(length=1)
+   @Column(length=1, name="type")
    private String type;
 
    @ManyToOne
+   @JoinColumn(name="sale_site")
    private SaleSite saleSite;
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="service_status")
    private SalePlaceServiceStatus serviceStatus;
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="status")
    private SalePlaceStatus status;
 
    public String getDescription() {

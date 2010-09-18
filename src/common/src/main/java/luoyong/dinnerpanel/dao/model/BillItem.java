@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -19,7 +20,7 @@ import javax.persistence.Temporal;
  * @author Luo Yong &lt; luo.yong.name@gmail.com &gt;
  */
 @Entity
-@Table
+@Table(name="bill_item")
 @NamedQueries({@NamedQuery(name=BillItem.QUERY_REMOVE_ITEM_FROM_BILL,
       query="update BillItem i "
          + "set i.ek=luoyong.dinnerpanel.dao.model.ExistKey.D "
@@ -100,47 +101,49 @@ public class BillItem implements Serializable {
            = "write_bill_item_hasten_count";
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="ek")
    private ExistKey ek;
 
    @Id
    @GeneratedValue(strategy=GenerationType.AUTO,
       generator="sequence_bill_item")
+   @Column(name="id")
    private Long id;
 
    @ManyToOne
+   @JoinColumn(name="bill")
    private Bill bill;
 
-   @Column
+   @Column(name="food_id")
    private Long foodId;
 
-   @Column
+   @Column(name="added_time")
    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
    private Date addedTime;
 
-   @Column(length=1000)
+   @Column(length=1000, name="food_name")
    private String foodName;
 
-   @Column
+   @Column(name="food_count")
    private Integer foodCount;
 
-   @Column
+   @Column(name="price")
    private BigDecimal price;
 
-   @Column
+   @Column(name="operator_id")
    private Long operatorId;
 
-   @Column(length=100)
+   @Column(length=100, name="operator_name")
    private String operatorName;
 
-   @Column
+   @Column(name="hasten_count")
    private Integer hastenCount;
 
-   @Column(length=3000)
+   @Column(length=3000, name="comment")
    private String comment;
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="status")
    private BillItemStatus status;
 
    public Bill getBill() {

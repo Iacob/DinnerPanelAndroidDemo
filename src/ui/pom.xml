@@ -8,6 +8,13 @@
    <version>1.0</version>
    <name>DinnerPanelUI</name>
    <url>http://maven.apache.org</url>
+
+   <parent>
+      <groupId>luoyong.dinnerpanel</groupId>
+      <artifactId>DinnerPanelFullProject</artifactId>
+      <version>1.0</version>
+   </parent>
+
    <repositories>
       <repository>
          <id>java.net2</id>

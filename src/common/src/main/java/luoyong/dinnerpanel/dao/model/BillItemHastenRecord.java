@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * @author Luo Yong &lt; luo.yong.name@gmail.com &gt;
  */
 @Entity
-@Table
+@Table(name="bill_item_hasten_record")
 @NamedQueries({
    @NamedQuery(
       name = BillItemHastenRecord.QUERY_CALCULATE_BILL_ITEM_HASTEN_COUNT,
@@ -30,12 +30,13 @@ public class BillItemHastenRecord implements Serializable {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO,
       generator = "sequence_bill_item_hasten_record")
+   @Column(name="id")
    private Long id;
    
-   @Column
+   @Column(name="bill")
    private Long billId;
    
-   @Column
+   @Column(name="bill_item")
    private Long billItemId;
 
    public Long getId() {

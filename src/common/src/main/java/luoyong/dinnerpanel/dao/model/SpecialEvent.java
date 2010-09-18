@@ -16,32 +16,33 @@ import javax.persistence.Temporal;
  * @author Luo Yong &lt; luo.yong.name@gmail.com &gt;
  */
 @Entity
-@Table
+@Table(name="special_event")
 public class SpecialEvent implements Serializable {
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="ek")
    private ExistKey ek;
 
    @Id
    @GeneratedValue(strategy=GenerationType.AUTO,
       generator="sequence_special_event")
+   @Column(name="id")
    private Long id;
 
-   @Column(length=1000)
+   @Column(length=1000, name="title")
    private String title;
 
-   @Column(length=3000)
+   @Column(length=3000, name="detail")
    private String detail;
 
-   @Column
+   @Column(name="happened_time")
    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-   private Date happenedDate;
+   private Date happenedTime;
 
-   @Column
+   @Column(name="cost")
    private BigDecimal cost;
 
-   @Column(length=1)
+   @Column(length=1, name="type")
    private String type;
 
    public BigDecimal getCost() {
@@ -68,12 +69,12 @@ public class SpecialEvent implements Serializable {
       this.ek = ek;
    }
 
-   public Date getHappenedDate() {
-      return happenedDate;
+   public Date getHappenedTime() {
+      return happenedTime;
    }
 
-   public void setHappenedDate(Date happenedDate) {
-      this.happenedDate = happenedDate;
+   public void setHappenedTime(Date happenedTime) {
+      this.happenedTime = happenedTime;
    }
 
    public Long getId() {

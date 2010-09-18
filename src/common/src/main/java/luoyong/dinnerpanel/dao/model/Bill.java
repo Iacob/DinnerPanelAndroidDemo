@@ -18,7 +18,7 @@ import javax.persistence.Temporal;
  * @author Luo Yong &lt; luo.yong.name@gmail.com &gt;
  */
 @Entity
-@Table
+@Table(name="bill")
 @NamedQueries({
    @NamedQuery(name = Bill.QUERY_CHECKOUT_BILL,
       query = "update Bill b set b.checkoutTime=?1 "
@@ -96,51 +96,52 @@ public class Bill implements Serializable {
    public static final String QUERY_CANCEL_BILL = "cancel_bill";
    
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="ek")
    private ExistKey ek;
 
    @Id
    @GeneratedValue(strategy=GenerationType.AUTO,
       generator="sequence_bill")
+   @Column(name="id")
    private Long id;
 
-   @Column
+   @Column(name="bought_time")
    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
    private Date boughtTime;
 
-   @Column
+   @Column(name="checkout_time")
    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
    private Date checkoutTime;
 
-   @Column
+   @Column(name="sale_place_id")
    private Long salePlaceId;
 
-   @Column(length=100)
+   @Column(length=100, name="sale_place_name")
    private String salePlaceName;
 
-   @Column
+   @Column(name="sale_site_id")
    private Long saleSiteId;
 
-   @Column(length=100)
+   @Column(length=100, name="sale_site_name")
    private String saleSiteName;
 
-   @Column
+   @Column(name="operator_id")
    private Long operatorId;
 
-   @Column(length=100)
+   @Column(length=100, name="operator_name")
    private String operatorName;
 
-   @Column
+   @Column(name="price")
    private BigDecimal price;
 
-   @Column
+   @Column(name="selling_price")
    private BigDecimal sellingPrice;
 
-   @Column(length=3000)
+   @Column(length=3000, name="comment")
    private String comment;
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="status")
    private BillStatus status;
    
    public Date getBoughtTime() {

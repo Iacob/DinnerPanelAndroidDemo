@@ -13,25 +13,26 @@ import javax.persistence.Table;
  * @author Luo Yong &lt; luo.yong.name@gmail.com &gt;
  */
 @Entity
-@Table
+@Table(name="sale_site")
 public class SaleSite implements Serializable {
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="ek")
    private ExistKey ek;
 
    @Id
    @GeneratedValue(strategy=GenerationType.AUTO,
       generator="sequence_sale_site")
+   @Column(name="id")
    private Long id;
 
-   @Column(length=100)
+   @Column(length=100, name="name")
    private String name;
 
-   @Column(length=3000)
+   @Column(length=3000, name="description")
    private String description;
 
-   @Column(length=1)
+   @Column(length=1, name="status")
    private String status;
 
    public String getDescription() {

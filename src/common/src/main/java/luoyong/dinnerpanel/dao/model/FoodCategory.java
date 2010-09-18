@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * @author Luo Yong &lt; luo.yong.name@gmail.com &gt;
  */
 @Entity
-@Table
+@Table(name="food_category")
 @javax.persistence.NamedQueries({
    @NamedQuery(name=FoodCategory.QUERY_GET_ALL_FOOD_CATEGORIES,
       query="select c from FoodCategory c "
@@ -35,7 +35,7 @@ public class FoodCategory implements Serializable {
            = "remove_food_category";
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
-   @Column(length=1)
+   @Column(length=1, name="ek")
    private ExistKey ek;
 
    @Id
