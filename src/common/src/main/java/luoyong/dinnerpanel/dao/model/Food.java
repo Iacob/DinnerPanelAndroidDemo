@@ -3,6 +3,7 @@ package luoyong.dinnerpanel.dao.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Set;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -93,6 +94,9 @@ public class Food implements Serializable {
    private FoodStatus status;
 
    @ElementCollection
+   @CollectionTable(name="food_tag", joinColumns={
+      @JoinColumn(name="food_id", referencedColumnName="id")})
+   @Column(length=100, name="tag_name")
    private Set<String> tags;
 
    public String getAbbreviation() {

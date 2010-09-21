@@ -9,7 +9,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import luoyong.dinnerpanel.dao.model.SalePlace;
+import luoyong.dinnerpanel.ui.component.IconButton;
 import luoyong.dinnerpanel.ui.component.SalePlaceListFromSaleSiteTable;
+import luoyong.dinnerpanel.ui.icon.IconConstant;
 
 /**
  *
@@ -23,9 +25,9 @@ public class SalePlaceManagementPanel extends JPanel {
 
    private SalePlaceListFromSaleSiteTable salePlaceListFromSaleSiteTable = null;
 
-   private JButton buttonAddSalePlace = null;
-   private JButton buttonModifySalePlace = null;
-   private JButton buttonRemoveSalePlace = null;
+   private IconButton buttonAddSalePlace = null;
+   private IconButton buttonModifySalePlace = null;
+   private IconButton buttonRemoveSalePlace = null;
 
    public SalePlaceManagementPanel() {
 
@@ -37,9 +39,12 @@ public class SalePlaceManagementPanel extends JPanel {
       JScrollPane scrollPanelSalePlace = new JScrollPane();
       scrollPanelSalePlace.setViewportView(salePlaceListFromSaleSiteTable);
 
-      buttonAddSalePlace = new JButton("添加餐桌");
-      buttonModifySalePlace = new JButton("修改餐桌信息");
-      buttonRemoveSalePlace = new JButton("删除餐桌");
+      buttonAddSalePlace = new IconButton(
+              "添加餐桌", IconConstant.ICON_SALE_PLACE_ADD);
+      buttonModifySalePlace = new IconButton(
+              "修改餐桌信息", IconConstant.ICON_SALE_PLACE_EDIT);
+      buttonRemoveSalePlace = new IconButton(
+              "删除餐桌", IconConstant.ICON_SALE_PLACE_REMOVE);
 
       JPanel buttonPanel = new JPanel();
       buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));

@@ -10,7 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import luoyong.dinnerpanel.dao.model.FoodCategory;
 import luoyong.dinnerpanel.ui.component.FoodCategoryTree;
+import luoyong.dinnerpanel.ui.component.IconButton;
 import luoyong.dinnerpanel.ui.component.SelectItemActionListener;
+import luoyong.dinnerpanel.ui.icon.IconConstant;
 
 /**
  *
@@ -20,8 +22,9 @@ public class SelectFoodCategoryDialog extends JDialog {
 
    private FoodCategoryTree foodCategoryTree = null;
    private JScrollPane foodCategoryScrollPanel = null;
-   private JButton buttonConfirm = null;
-   private JButton buttonCancel = null;
+   
+   private IconButton buttonConfirm = null;
+   private IconButton buttonCancel = null;
 
    SelectItemActionListener selectItemActionListener = null;
 
@@ -33,8 +36,8 @@ public class SelectFoodCategoryDialog extends JDialog {
       foodCategoryScrollPanel = new JScrollPane();
       foodCategoryScrollPanel.setViewportView(foodCategoryTree);
 
-      buttonConfirm = new JButton("确定");
-      buttonCancel = new JButton("取消");
+      buttonConfirm = new IconButton("确定", IconConstant.ICON_FOOD_CATEGORY_EDIT);
+      buttonCancel = new IconButton("取消", IconConstant.ICON_CANCEL);
 
       JPanel buttonPanel = new JPanel();
       buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));

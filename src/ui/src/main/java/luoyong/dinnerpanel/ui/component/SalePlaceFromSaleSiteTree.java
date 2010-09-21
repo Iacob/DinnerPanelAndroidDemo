@@ -23,7 +23,7 @@ public class SalePlaceFromSaleSiteTree extends JTree {
 
    private LinkedList<DefaultMutableTreeNode> nodeList = null;
 
-   SalePlaceServiceClient salePlaceServiceClient = null;
+   private SalePlaceServiceClient salePlaceServiceClient = null;
 
    public SalePlaceFromSaleSiteTree() {
       super();

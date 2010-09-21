@@ -9,7 +9,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import luoyong.dinnerpanel.dao.model.Operator;
+import luoyong.dinnerpanel.ui.component.IconButton;
 import luoyong.dinnerpanel.ui.component.OperatorListTable;
+import luoyong.dinnerpanel.ui.icon.IconConstant;
 
 /**
  *
@@ -21,9 +23,9 @@ public class OperatorManagementPanel extends JPanel {
 
    OperatorListTable operatorListTable = null;
 
-   JButton buttonAddOperator = null;
-   JButton buttonModifyOperatorInformation = null;
-   JButton buttonRemoveOperatorInformation = null;
+   IconButton buttonAddOperator = null;
+   IconButton buttonModifyOperatorInformation = null;
+   IconButton buttonRemoveOperatorInformation = null;
 
    public OperatorManagementPanel() {
 
@@ -33,9 +35,12 @@ public class OperatorManagementPanel extends JPanel {
       JScrollPane scrollPanelOperatorList = new JScrollPane();
       scrollPanelOperatorList.setViewportView(operatorListTable);
 
-      buttonAddOperator = new JButton("添加操作员");
-      buttonModifyOperatorInformation = new JButton("修改操作员信息");
-      buttonRemoveOperatorInformation = new JButton("删除操作员信息");
+      buttonAddOperator= new IconButton(
+              "添加操作员", IconConstant.ICON_OPERATOR_ADD);
+      buttonModifyOperatorInformation = new IconButton(
+              "修改操作员信息", IconConstant.ICON_OPERATOR_EDIT);
+      buttonRemoveOperatorInformation = new IconButton(
+              "删除操作员信息", IconConstant.ICON_OPERATOR_REMOVE);
 
       JPanel buttonPanel = new JPanel();
       buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));

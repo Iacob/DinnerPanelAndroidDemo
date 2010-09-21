@@ -12,6 +12,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
+import luoyong.dinnerpanel.ui.component.IconButton;
+import luoyong.dinnerpanel.ui.icon.IconConstant;
 //import luoyong.dinnerpanel.dao.report.ReportDataSource;
 //import net.sf.jasperreports.engine.JRException;
 //import net.sf.jasperreports.engine.JasperCompileManager;
@@ -27,11 +29,11 @@ public class MainPanel extends JPanel {
 
    JDesktopPane panelDesktop = null;
 
-   JButton buttonBillManagement = null;
-   JButton buttonFoodManagement = null;
-   JButton buttonOperatorManagement = null;
-   JButton buttonSalePlaceManagement = null;
-   JButton buttonReport = null;
+   IconButton buttonBillManagement = null;
+   IconButton buttonFoodManagement = null;
+   IconButton buttonOperatorManagement = null;
+   IconButton buttonSalePlaceManagement = null;
+   IconButton buttonReport = null;
 
    JPopupMenu popupMenuReport = null;
 
@@ -39,12 +41,17 @@ public class MainPanel extends JPanel {
 
       panelDesktop = new JDesktopPane();
 
-      buttonBillManagement = new JButton("帐单操作");
+      buttonBillManagement = new IconButton(
+              "帐单操作", IconConstant.ICON_BILL_MANAGEMENT);
       buttonBillManagement.setEnabled(false);
-      buttonFoodManagement = new JButton("餐品管理");
-      buttonOperatorManagement = new JButton("操作员管理");
-      buttonSalePlaceManagement = new JButton("餐桌管理");
-      buttonReport = new JButton("制作报表");
+      buttonFoodManagement = new IconButton(
+              "餐品管理", IconConstant.ICON_FOOD_MANAGEMENT);
+      buttonOperatorManagement = new IconButton(
+              "操作员管理", IconConstant.ICON_OPERATOR_MANAGEMENT);
+      buttonSalePlaceManagement = new IconButton(
+              "餐桌管理", IconConstant.ICON_SALE_PLACE_MANAGEMENT);
+      buttonReport = new IconButton(
+              "制作报表", IconConstant.ICON_REPORT_MANAGEMENT);
       buttonReport.setEnabled(false);
 
       popupMenuReport = new JPopupMenu();

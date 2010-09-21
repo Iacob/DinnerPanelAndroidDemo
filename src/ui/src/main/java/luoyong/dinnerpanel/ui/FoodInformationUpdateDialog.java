@@ -26,9 +26,11 @@ import luoyong.dinnerpanel.dao.model.FoodStatus;
 import luoyong.dinnerpanel.rwsclient.FoodServiceClient;
 import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
+import luoyong.dinnerpanel.ui.component.IconButton;
 import luoyong.dinnerpanel.ui.component.RWSExceptionDialog;
 import luoyong.dinnerpanel.ui.component.SelectItemActionListener;
 import luoyong.dinnerpanel.ui.component.UpdateActionListener;
+import luoyong.dinnerpanel.ui.icon.IconConstant;
 
 /**
  *
@@ -63,9 +65,9 @@ public class FoodInformationUpdateDialog extends JDialog {
 
    JScrollPane scrollPanelDesc = null;
 
-   JButton buttonChooseFoodCategory = null;
-   JButton buttonConfirm = null;
-   JButton buttonCancel = null;
+   IconButton buttonChooseFoodCategory = null;
+   IconButton buttonConfirm = null;
+   IconButton buttonCancel = null;
 
    public FoodInformationUpdateDialog() {
 
@@ -97,9 +99,10 @@ public class FoodInformationUpdateDialog extends JDialog {
       scrollPanelDesc = new JScrollPane();
       scrollPanelDesc.setViewportView(textAreaDesc);
 
-      buttonChooseFoodCategory = new JButton("选择分类");
-      buttonConfirm = new JButton("确认");
-      buttonCancel = new JButton("取消");
+      buttonChooseFoodCategory
+              = new IconButton("选择分类", IconConstant.ICON_FOOD_CATEGORY_EDIT);
+      buttonConfirm = new IconButton("确认", IconConstant.ICON_FOOD_EDIT);
+      buttonCancel = new IconButton("取消", IconConstant.ICON_CANCEL);
 
       JPanel inputPanel = new JPanel();
       JPanel parameterPanel = new JPanel();
@@ -294,6 +297,7 @@ public class FoodInformationUpdateDialog extends JDialog {
 
       // Set the default size.
       this.setSize(400, 350);
+      this.pack();
    }
 
    public void setFoodInformation(Food f) {

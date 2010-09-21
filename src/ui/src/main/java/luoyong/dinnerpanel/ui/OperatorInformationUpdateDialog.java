@@ -23,8 +23,10 @@ import luoyong.dinnerpanel.dao.model.OperatorStatus;
 import luoyong.dinnerpanel.rwsclient.OperatorServiceClient;
 import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
+import luoyong.dinnerpanel.ui.component.IconButton;
 import luoyong.dinnerpanel.ui.component.RWSExceptionDialog;
 import luoyong.dinnerpanel.ui.component.UpdateActionListener;
+import luoyong.dinnerpanel.ui.icon.IconConstant;
 
 /**
  *
@@ -54,8 +56,8 @@ public class OperatorInformationUpdateDialog extends JDialog {
 
    private JTextArea textAreaDesc;
 
-   private JButton buttonConfirm;
-   private JButton buttonCancel;
+   private IconButton buttonConfirm;
+   private IconButton buttonCancel;
 
    public OperatorInformationUpdateDialog() {
 
@@ -87,8 +89,8 @@ public class OperatorInformationUpdateDialog extends JDialog {
 
       textAreaDesc = new JTextArea();
 
-      buttonConfirm = new JButton("确定");
-      buttonCancel = new JButton("取消");
+      buttonConfirm = new IconButton("确定", IconConstant.ICON_OPERATOR_EDIT);
+      buttonCancel = new IconButton("取消", IconConstant.ICON_CANCEL);
 
       JPanel parameterPanel = new JPanel();
 

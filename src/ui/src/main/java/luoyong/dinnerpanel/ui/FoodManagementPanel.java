@@ -18,6 +18,8 @@ import luoyong.dinnerpanel.dao.model.Food;
 import luoyong.dinnerpanel.dao.model.FoodCategory;
 import luoyong.dinnerpanel.ui.component.FoodCategoryTree;
 import luoyong.dinnerpanel.ui.component.FoodListFromFoodCategoryTable;
+import luoyong.dinnerpanel.ui.component.IconButton;
+import luoyong.dinnerpanel.ui.icon.IconConstant;
 
 /**
  *
@@ -34,13 +36,13 @@ public class FoodManagementPanel extends JPanel {
    JScrollPane foodCategoryScrollPanel = null;
    JScrollPane foodListScrollPanel = null;
 
-   JButton buttonAddFood = null;
-   JButton buttonAddCategory = null;
-   JButton buttonModifyCategory = null;
-   JButton buttonRemoveCategory = null;
+   IconButton buttonAddFood = null;
+   IconButton buttonAddCategory = null;
+   IconButton buttonModifyCategory = null;
+   IconButton buttonRemoveCategory = null;
 
-   JButton buttonModifyFood = null;
-   JButton buttonRemoveFood = null;
+   IconButton buttonModifyFood = null;
+   IconButton buttonRemoveFood = null;
 
    JPanel foodCategoryButtonPanel = null;
    JPanel foodListButtonPanel = null;
@@ -60,10 +62,13 @@ public class FoodManagementPanel extends JPanel {
       foodCategoryScrollPanel = new JScrollPane(foodCategoryTree);
       foodListScrollPanel = new JScrollPane(foodListTable);
 
-      buttonAddFood = new JButton("增加餐品");
-      buttonAddCategory = new JButton("增加分类");
-      buttonModifyCategory = new JButton("修改分类");
-      buttonRemoveCategory = new JButton("删除分类");
+      buttonAddFood = new IconButton("增加餐品", IconConstant.ICON_FOOD_ADD);
+      buttonAddCategory = new IconButton(
+              "增加分类", IconConstant.ICON_FOOD_CATEGORY_ADD);
+      buttonModifyCategory = new IconButton(
+              "修改分类", IconConstant.ICON_FOOD_CATEGORY_EDIT);
+      buttonRemoveCategory = new IconButton(
+              "删除分类", IconConstant.ICON_FOOD_CATEGORY_REMOVE);
 
       foodCategoryButtonPanel = new JPanel();
       foodCategoryButtonPanel.setLayout(new BorderLayout());
@@ -76,8 +81,8 @@ public class FoodManagementPanel extends JPanel {
       foodCategoryButtonPanel.add(panel1, BorderLayout.NORTH);
       foodCategoryButtonPanel.add(panel2, BorderLayout.SOUTH);
 
-      buttonModifyFood = new JButton("修改餐品资料");
-      buttonRemoveFood = new JButton("删除餐品资料");
+      buttonModifyFood = new IconButton("修改餐品资料", IconConstant.ICON_FOOD_EDIT);
+      buttonRemoveFood = new IconButton("删除餐品资料", IconConstant.ICON_FOOD_REMOVE);
 
       foodListButtonPanel = new JPanel();
       foodListButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));

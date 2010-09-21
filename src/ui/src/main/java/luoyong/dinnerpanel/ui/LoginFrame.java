@@ -6,13 +6,14 @@ import java.awt.event.ActionListener;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import javax.swing.GroupLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import luoyong.dinnerpanel.rwsclient.RWSURLHolder;
+import luoyong.dinnerpanel.ui.component.IconButton;
+import luoyong.dinnerpanel.ui.icon.IconConstant;
 
 /**
  *
@@ -24,7 +25,7 @@ public class LoginFrame extends JFrame {
    private JTextField textFieldUsername = null;
    private JPasswordField passwordFieldPassword = null;
 
-   private JButton buttonLogin = null;
+   private IconButton buttonLogin = null;
 
    public LoginFrame() {
       
@@ -38,7 +39,7 @@ public class LoginFrame extends JFrame {
       textFieldUsername = new JTextField(10);
       passwordFieldPassword = new JPasswordField(10);
 
-      buttonLogin = new JButton("登陆");
+      buttonLogin = new IconButton("登陆", IconConstant.ICON_LOGIN);
 
       JPanel panelUserInput = new JPanel();
 

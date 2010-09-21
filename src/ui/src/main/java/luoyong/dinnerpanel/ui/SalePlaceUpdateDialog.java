@@ -23,8 +23,10 @@ import luoyong.dinnerpanel.dao.model.SalePlaceStatus;
 import luoyong.dinnerpanel.rwsclient.SalePlaceServiceClient;
 import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
+import luoyong.dinnerpanel.ui.component.IconButton;
 import luoyong.dinnerpanel.ui.component.RWSExceptionDialog;
 import luoyong.dinnerpanel.ui.component.UpdateActionListener;
+import luoyong.dinnerpanel.ui.icon.IconConstant;
 
 /**
  *
@@ -50,8 +52,8 @@ public class SalePlaceUpdateDialog extends JDialog {
 
    private JTextArea textAreaDesc = null;
 
-   private JButton buttonConfirm;
-   private JButton buttonCancel;
+   private IconButton buttonConfirm;
+   private IconButton buttonCancel;
 
    public SalePlaceUpdateDialog() {
 
@@ -117,8 +119,8 @@ public class SalePlaceUpdateDialog extends JDialog {
       inputPanel.add(parameterPanel);
       inputPanel.add(scrollPanelDesc);
 
-      buttonConfirm = new JButton("确认");
-      buttonCancel = new JButton("取消");
+      buttonConfirm = new IconButton("确认", IconConstant.ICON_SALE_PLACE_EDIT);
+      buttonCancel = new IconButton("取消", IconConstant.ICON_SALE_PLACE_REMOVE);
 
       JPanel buttonPanel = new JPanel();
       buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
