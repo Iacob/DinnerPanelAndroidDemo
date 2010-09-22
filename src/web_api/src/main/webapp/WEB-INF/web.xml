@@ -29,6 +29,7 @@
       <auth-constraint>
          <role-name>customer</role-name>
          <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
          <role-name>clerk</role-name>
          <role-name>manager</role-name>
          <role-name>admin</role-name>
@@ -45,6 +46,7 @@
       <auth-constraint>
          <role-name>customer</role-name>
          <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
          <role-name>clerk</role-name>
          <role-name>manager</role-name>
          <role-name>admin</role-name>
@@ -59,6 +61,21 @@
       </web-resource-collection>
       <auth-constraint>
          <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Sale Place API for Kitchen</web-resource-name>
+         <url-pattern>/resources/sale-place/kitchen/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>kitchen</role-name>
          <role-name>clerk</role-name>
          <role-name>manager</role-name>
          <role-name>admin</role-name>
@@ -93,6 +110,334 @@
       <web-resource-collection>
          <web-resource-name>Protected Sale Place API for Admin</web-resource-name>
          <url-pattern>/resources/sale-place/admin/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Bill Management API for Customer</web-resource-name>
+         <url-pattern>/resources/bill/customer/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>customer</role-name>
+         <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Bill Management API for Operator</web-resource-name>
+         <url-pattern>/resources/bill/operator/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Bill Management API for Kitchen</web-resource-name>
+         <url-pattern>/resources/bill/kitchen/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Bill Management API for Clerk</web-resource-name>
+         <url-pattern>/resources/bill/clerk/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Bill Management API for Manager</web-resource-name>
+         <url-pattern>/resources/bill/manager/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Bill Management API for Admin</web-resource-name>
+         <url-pattern>/resources/bill/admin/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Food Management API for Customer</web-resource-name>
+         <url-pattern>/resources/food/customer/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>customer</role-name>
+         <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Food Management API for Operator</web-resource-name>
+         <url-pattern>/resources/food/operator/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Food Management API for Kitchen</web-resource-name>
+         <url-pattern>/resources/food/kitchen/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Food Management API for Clerk</web-resource-name>
+         <url-pattern>/resources/food/clerk/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Food Management API for Manager</web-resource-name>
+         <url-pattern>/resources/food/manager/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Food Management API for Admin</web-resource-name>
+         <url-pattern>/resources/food/admin/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Operator Management API for Customer</web-resource-name>
+         <url-pattern>/resources/operator/customer/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>customer</role-name>
+         <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Operator Management API for Operator</web-resource-name>
+         <url-pattern>/resources/operator/operator/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Operator Management API for Kitchen</web-resource-name>
+         <url-pattern>/resources/operator/kitchen/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Operator Management API for Clerk</web-resource-name>
+         <url-pattern>/resources/operator/clerk/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Operator Management API for Manager</web-resource-name>
+         <url-pattern>/resources/operator/manager/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected Operator Management API for Admin</web-resource-name>
+         <url-pattern>/resources/operator/admin/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected System API for Customer</web-resource-name>
+         <url-pattern>/resources/system/customer/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>customer</role-name>
+         <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected System API for Operator</web-resource-name>
+         <url-pattern>/resources/system/operator/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>operator</role-name>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected System API for Kitchen</web-resource-name>
+         <url-pattern>/resources/system/kitchen/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>kitchen</role-name>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected System API for Clerk</web-resource-name>
+         <url-pattern>/resources/system/clerk/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>clerk</role-name>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected System API for Manager</web-resource-name>
+         <url-pattern>/resources/system/manager/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>manager</role-name>
+         <role-name>admin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Protected System API for Admin</web-resource-name>
+         <url-pattern>/resources/system/admin/*</url-pattern>
          <http-method>GET</http-method>
          <http-method>POST</http-method>
       </web-resource-collection>
