@@ -408,6 +408,7 @@ public class BillManagement {
          if (item != null) {
             record.setBillId(item.getBill().getId());
             record.setBillItemId(item.getId());
+            record.setHastenTime(new Date()); // Set hasten time.
             em.getTransaction().begin();
             em.persist(record);
             em.getTransaction().commit();

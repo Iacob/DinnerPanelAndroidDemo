@@ -1,6 +1,7 @@
 package luoyong.dinnerpanel.dao.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -39,6 +42,10 @@ public class BillItemHastenRecord implements Serializable {
    @Column(name="bill_item")
    private Long billItemId;
 
+   @Column(name="hasten_time")
+   @Temporal(TemporalType.TIMESTAMP)
+   private Date hastenTime;
+
    public Long getId() {
       return id;
    }
@@ -61,6 +68,14 @@ public class BillItemHastenRecord implements Serializable {
 
    public void setBillItemId(Long billItemId) {
       this.billItemId = billItemId;
+   }
+
+   public Date getHastenTime() {
+      return hastenTime;
+   }
+
+   public void setHastenTime(Date hastenTime) {
+      this.hastenTime = hastenTime;
    }
 
    @Override

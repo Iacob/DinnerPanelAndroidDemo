@@ -99,6 +99,9 @@ public class Food implements Serializable {
    @Column(length=100, name="tag_name")
    private Set<String> tags;
 
+   @Column(name="image")
+   private byte[] image;
+
    public String getAbbreviation() {
       return abbreviation;
    }
@@ -177,6 +180,14 @@ public class Food implements Serializable {
 
    public void setTags(Set<String> tags) {
       this.tags = tags;
+   }
+
+   public byte[] getImage() {
+      return image;
+   }
+
+   public void setImage(byte[] image) {
+      this.image = image;
    }
 
    @Override

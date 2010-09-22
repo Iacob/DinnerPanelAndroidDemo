@@ -10,7 +10,6 @@ import java.math.MathContext;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -39,35 +38,36 @@ import luoyong.dinnerpanel.ui.icon.IconConstant;
 public class FoodInformationUpdateDialog extends JDialog {
 
    // Stores the invisible paramter.
-   Long foodId = null;
-   FoodCategory foodCategory = null;
+   private Long foodId = null;
+   private FoodCategory foodCategory = null;
 
-   AddNewActionListener addNewActionListener = null;
-   UpdateActionListener updateActionListener = null;
+   private AddNewActionListener addNewActionListener = null;
+   private UpdateActionListener updateActionListener = null;
 
-   FoodServiceClient foodManagement = null;
+   private FoodServiceClient foodManagement = null;
 
-   JLabel labelName = null;
-   JLabel labelCode = null;
-   JLabel labelCategory = null;
-   JLabel labelPrice = null;
-   JLabel labelStatus = null;
-   JLabel labelDesc = null;
+   private JLabel labelName = null;
+   private JLabel labelCode = null;
+   private JLabel labelTag = null;
+   private JLabel labelCategory = null;
+   private JLabel labelPrice = null;
+   private JLabel labelStatus = null;
 
-   JTextField textFieldName = null;
-   JTextField textFieldCode = null;
-   JTextField textFieldCategory = null;
-   JTextField textFieldPrice = null;
+   private JTextField textFieldName = null;
+   private JTextField textFieldCode = null;
+   private JTextField textFieldTag = null;
+   private JTextField textFieldCategory = null;
+   private JTextField textFieldPrice = null;
 
-   JComboBox comboBoxStatus = null;
+   private JComboBox comboBoxStatus = null;
 
-   JTextArea textAreaDesc = null;
+   private JTextArea textAreaDesc = null;
 
-   JScrollPane scrollPanelDesc = null;
+   private JScrollPane scrollPanelDesc = null;
 
-   IconButton buttonChooseFoodCategory = null;
-   IconButton buttonConfirm = null;
-   IconButton buttonCancel = null;
+   private IconButton buttonChooseFoodCategory = null;
+   private IconButton buttonConfirm = null;
+   private IconButton buttonCancel = null;
 
    public FoodInformationUpdateDialog() {
 
@@ -77,13 +77,14 @@ public class FoodInformationUpdateDialog extends JDialog {
 
       labelName = new JLabel("餐品名称:");
       labelCode = new JLabel("餐品代号:");
+      labelTag = new JLabel("餐品标签");
       labelCategory = new JLabel("所属分类:");
       labelPrice = new JLabel("价格:");
       labelStatus = new JLabel("状态:");
-      labelDesc = new JLabel("餐品描述:");
 
       textFieldName = new JTextField(10);
       textFieldCode = new JTextField(10);
+      textFieldTag = new JTextField(10);
       textFieldCategory = new JTextField(5);
       textFieldCategory.setEditable(false);
       textFieldPrice = new JTextField(10);
@@ -135,12 +136,14 @@ public class FoodInformationUpdateDialog extends JDialog {
               .addGroup(layout.createParallelGroup(Alignment.TRAILING)
                   .addComponent(labelName)
                   .addComponent(labelCode)
+                  .addComponent(labelTag)
                   .addComponent(labelCategory)
                   .addComponent(labelPrice)
                   .addComponent(labelStatus))
               .addGroup(layout.createParallelGroup()
                   .addComponent(textFieldName)
                   .addComponent(textFieldCode)
+                  .addComponent(textFieldTag)
                   .addGroup(layout.createSequentialGroup()
                         .addComponent(textFieldCategory)
                         .addComponent(buttonChooseFoodCategory))
@@ -154,6 +157,9 @@ public class FoodInformationUpdateDialog extends JDialog {
               .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                   .addComponent(labelCode)
                   .addComponent(textFieldCode))
+              .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                  .addComponent(labelTag)
+                  .addComponent(textFieldTag))
               .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                   .addComponent(labelCategory)
                   .addComponent(textFieldCategory)
