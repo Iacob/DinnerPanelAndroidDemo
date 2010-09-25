@@ -5,7 +5,6 @@ import java.awt.Dialog.ModalityType;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,27 +29,27 @@ public class FoodManagementPanel extends JPanel {
    public static final String NAME = "FOOD_MANAGEMENT";
 
    // Stores the invisible information.
-   FoodCategoryTree foodCategoryTree = null;
-   FoodListFromFoodCategoryTable foodListTable = null;
+   private FoodCategoryTree foodCategoryTree = null;
+   private FoodListFromFoodCategoryTable foodListTable = null;
 
-   JScrollPane foodCategoryScrollPanel = null;
-   JScrollPane foodListScrollPanel = null;
+   private JScrollPane foodCategoryScrollPanel = null;
+   private JScrollPane foodListScrollPanel = null;
 
-   IconButton buttonAddFood = null;
-   IconButton buttonAddCategory = null;
-   IconButton buttonModifyCategory = null;
-   IconButton buttonRemoveCategory = null;
+   private IconButton buttonAddFood = null;
+   private IconButton buttonAddCategory = null;
+   private IconButton buttonModifyCategory = null;
+   private IconButton buttonRemoveCategory = null;
 
-   IconButton buttonModifyFood = null;
-   IconButton buttonRemoveFood = null;
+   private IconButton buttonModifyFood = null;
+   private IconButton buttonRemoveFood = null;
 
-   JPanel foodCategoryButtonPanel = null;
-   JPanel foodListButtonPanel = null;
+   private JPanel foodCategoryButtonPanel = null;
+   private JPanel foodListButtonPanel = null;
 
-   JPanel foodCategoryPanel = null;
-   JPanel foodListPanel = null;
+   private JPanel foodCategoryPanel = null;
+   private JPanel foodListPanel = null;
 
-   JSplitPane splitPanel = null;
+   private JSplitPane splitPanel = null;
 
    public FoodManagementPanel() {
 

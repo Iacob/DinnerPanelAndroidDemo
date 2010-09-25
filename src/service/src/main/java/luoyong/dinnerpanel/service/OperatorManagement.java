@@ -6,6 +6,7 @@ import javax.persistence.Query;
 import luoyong.dinnerpanel.dao.EntityManagerBuilder;
 import luoyong.dinnerpanel.dao.model.ExistKey;
 import luoyong.dinnerpanel.dao.model.Operator;
+import luoyong.dinnerpanel.dao.model.OperatorGroup;
 
 /**
  *

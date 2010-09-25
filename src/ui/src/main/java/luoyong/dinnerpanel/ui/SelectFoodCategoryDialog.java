@@ -26,7 +26,7 @@ public class SelectFoodCategoryDialog extends JDialog {
    private IconButton buttonConfirm = null;
    private IconButton buttonCancel = null;
 
-   SelectItemActionListener selectItemActionListener = null;
+   private SelectItemActionListener selectItemActionListener = null;
 
    public SelectFoodCategoryDialog() {
 

@@ -1,11 +1,17 @@
 package luoyong.dinnerpanel.dao.model;
 
 import java.io.Serializable;
+import java.util.Set;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 /**
@@ -14,6 +20,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="operator")
+@SecondaryTable(name="login_operator", pkJoinColumns={
+   @PrimaryKeyJoinColumn(name="user_id")})
 @NamedQueries({@NamedQuery(name=Operator.QUERY_REMOVE_OPERATOR_INFORMATION,
    query="update Operator o "
       + "set o.ek=luoyong.dinnerpanel.dao.model.ExistKey.D "
@@ -54,6 +62,17 @@ public class Operator implements Serializable {
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
    @Column(length=1, name="status")
    private OperatorStatus status;
+
+   @Column(table="login_operator", name="password", length=100)
+   private String loginPassword;
+
+   @ElementCollection
+   @CollectionTable(name="login_operator_group", joinColumns = {
+      @JoinColumn(table="login_operator",
+         name="user_id", referencedColumnName="user_id")})
+   @Column(table="login_operator_group", length=100, name="group_name")
+   @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
+   private Set<OperatorGroup> groups;
 
    public String getDescription() {
       return description;
@@ -101,6 +120,22 @@ public class Operator implements Serializable {
 
    public void setStatus(OperatorStatus status) {
       this.status = status;
+   }
+
+   public Set<OperatorGroup> getGroups() {
+      return groups;
+   }
+
+   public void setGroups(Set<OperatorGroup> groups) {
+      this.groups = groups;
+   }
+
+   public String getLoginPassword() {
+      return loginPassword;
+   }
+
+   public void setLoginPassword(String loginPassword) {
+      this.loginPassword = loginPassword;
    }
 
    @Override

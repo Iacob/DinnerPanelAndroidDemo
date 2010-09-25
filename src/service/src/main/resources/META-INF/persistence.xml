@@ -11,8 +11,6 @@
     <class>luoyong.dinnerpanel.dao.model.SalePlace</class>
     <class>luoyong.dinnerpanel.dao.model.SaleSite</class>
     <class>luoyong.dinnerpanel.dao.model.SpecialEvent</class>
-    <class>luoyong.dinnerpanel.dao.model.LoginOperator</class>
-    <class>luoyong.dinnerpanel.dao.model.LoginOperatorGroup</class>
     <properties>
       <!-- The parameters will be set in EntityManagerBuilder -->
       <property name="eclipselink.ddl-generation" value="create-tables"/>

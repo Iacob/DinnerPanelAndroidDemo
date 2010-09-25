@@ -52,6 +52,7 @@ public class FoodInformationUpdateDialog extends JDialog {
    private JLabel labelCategory = null;
    private JLabel labelPrice = null;
    private JLabel labelStatus = null;
+   private JLabel labelRecommend = null;
 
    private JTextField textFieldName = null;
    private JTextField textFieldCode = null;
@@ -60,6 +61,8 @@ public class FoodInformationUpdateDialog extends JDialog {
    private JTextField textFieldPrice = null;
 
    private JComboBox comboBoxStatus = null;
+
+   private JTextField textFieldRecommend = null;
 
    private JTextArea textAreaDesc = null;
 
@@ -81,6 +84,7 @@ public class FoodInformationUpdateDialog extends JDialog {
       labelCategory = new JLabel("所属分类:");
       labelPrice = new JLabel("价格:");
       labelStatus = new JLabel("状态:");
+      labelRecommend = new JLabel("推荐度：");
 
       textFieldName = new JTextField(10);
       textFieldCode = new JTextField(10);
@@ -94,6 +98,8 @@ public class FoodInformationUpdateDialog extends JDialog {
       for (FoodStatus s : foodStatusArray) {
          comboBoxStatus.addItem(s);
       }
+
+      textFieldRecommend = new JTextField();
 
       textAreaDesc = new JTextArea();
 
@@ -139,7 +145,8 @@ public class FoodInformationUpdateDialog extends JDialog {
                   .addComponent(labelTag)
                   .addComponent(labelCategory)
                   .addComponent(labelPrice)
-                  .addComponent(labelStatus))
+                  .addComponent(labelStatus)
+                  .addComponent(labelRecommend))
               .addGroup(layout.createParallelGroup()
                   .addComponent(textFieldName)
                   .addComponent(textFieldCode)
@@ -148,7 +155,8 @@ public class FoodInformationUpdateDialog extends JDialog {
                         .addComponent(textFieldCategory)
                         .addComponent(buttonChooseFoodCategory))
                   .addComponent(textFieldPrice)
-                  .addComponent(comboBoxStatus))
+                  .addComponent(comboBoxStatus)
+                  .addComponent(textFieldRecommend))
               .addContainerGap());
       layout.setVerticalGroup(layout.createSequentialGroup()
               .addGroup(layout.createParallelGroup(Alignment.BASELINE)
@@ -170,6 +178,9 @@ public class FoodInformationUpdateDialog extends JDialog {
               .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                   .addComponent(labelStatus)
                   .addComponent(comboBoxStatus))
+              .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                  .addComponent(labelRecommend)
+                  .addComponent(textFieldRecommend))
               );
       
       buttonCancel.addActionListener(new ActionListener(){
@@ -235,6 +246,16 @@ public class FoodInformationUpdateDialog extends JDialog {
                return;
             }
 
+            // Set recommend degree.
+            Integer recommend = null;
+            try {
+               recommend = Integer.valueOf(textFieldRecommend.getText());
+            }catch(Throwable t) {}
+            if (price == null) {
+               showErrorMessage("输入的推荐度无效", "输入错误");
+               return;
+            }
+
             Food f = new Food();
             f.setEk(ExistKey.E);
             f.setId(foodId);
@@ -242,6 +263,9 @@ public class FoodInformationUpdateDialog extends JDialog {
             f.setCode(textFieldCode.getText());
             f.setCategory(foodCategory);
             f.setPrice(price);
+            f.setRecommend(recommend);
+            // Set food information status.
+            f.setStatus(null); // Clear the value before change it.
             Object comboBoxStatusSelectedItem
                     = comboBoxStatus.getSelectedItem();
             if ((comboBoxStatusSelectedItem != null)

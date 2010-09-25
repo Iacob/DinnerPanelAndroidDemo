@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -37,7 +36,7 @@ public class SalePlaceUpdateDialog extends JDialog {
    // Invisible field.
    private Long salePlaceId = null;
 
-   SalePlaceServiceClient salePlaceServiceClient = null;
+   private SalePlaceServiceClient salePlaceServiceClient = null;
 
    private AddNewActionListener addNewActionListener = null;
    private UpdateActionListener updateActionListener = null;
@@ -147,6 +146,8 @@ public class SalePlaceUpdateDialog extends JDialog {
             salePlace.setName(textFieldName.getText());
             salePlace.setType("D");
             salePlace.setDescription(textAreaDesc.getText());
+            // Change sale place service status.
+            salePlace.setServiceStatus(null); // Clear value before change it.
             if ((comboBoxServiceStatus.getSelectedItem() != null)
                     && (comboBoxServiceStatus.getSelectedItem()
                         instanceof SalePlaceServiceStatus)) {
@@ -154,6 +155,8 @@ public class SalePlaceUpdateDialog extends JDialog {
                salePlace.setServiceStatus((SalePlaceServiceStatus)
                        comboBoxServiceStatus.getSelectedItem());
             }
+            // Change sale place status.
+            salePlace.setStatus(null); // Clear value before change it.
             if ((comboBoxStatus.getSelectedItem() != null)
                     && (comboBoxStatus.getSelectedItem()
                         instanceof SalePlaceStatus)) {

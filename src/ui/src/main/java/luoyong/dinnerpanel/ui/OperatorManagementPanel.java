@@ -21,11 +21,11 @@ public class OperatorManagementPanel extends JPanel {
 
    public static final String NAME = "OPERATOR_MANAGEMENT";
 
-   OperatorListTable operatorListTable = null;
+   private OperatorListTable operatorListTable = null;
 
-   IconButton buttonAddOperator = null;
-   IconButton buttonModifyOperatorInformation = null;
-   IconButton buttonRemoveOperatorInformation = null;
+   private IconButton buttonAddOperator = null;
+   private IconButton buttonModifyOperatorInformation = null;
+   private IconButton buttonRemoveOperatorInformation = null;
 
    public OperatorManagementPanel() {
 

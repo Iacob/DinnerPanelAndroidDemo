@@ -5,9 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EnumSet;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -19,7 +19,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import luoyong.dinnerpanel.dao.model.ExistKey;
 import luoyong.dinnerpanel.dao.model.Operator;
+import luoyong.dinnerpanel.dao.model.OperatorGroup;
 import luoyong.dinnerpanel.dao.model.OperatorStatus;
+import luoyong.dinnerpanel.dao.model.enumwrapper.OperatorGroupEnum;
 import luoyong.dinnerpanel.rwsclient.OperatorServiceClient;
 import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
@@ -47,12 +49,14 @@ public class OperatorInformationUpdateDialog extends JDialog {
    private JLabel labelPassword;
    private JLabel labelPasswordConfirm;
    private JLabel labelStatus;
+   private JLabel labelGroup;
 
    private JTextField textFieldId;
    private JTextField textFieldName;
    private JPasswordField passwordFieldPassword;
    private JPasswordField passwordFieldPasswordConfirm;
    private JComboBox comboBoxStatus;
+   private JComboBox comboBoxGroup;
 
    private JTextArea textAreaDesc;
 
@@ -70,6 +74,7 @@ public class OperatorInformationUpdateDialog extends JDialog {
       labelPassword = new JLabel("密码:");
       labelPasswordConfirm = new JLabel("确认密码");
       labelStatus = new JLabel("状态:");
+      labelGroup = new JLabel("权限：");
 
       textFieldId = new JTextField(10);
       textFieldName = new JTextField(10);
@@ -86,6 +91,15 @@ public class OperatorInformationUpdateDialog extends JDialog {
          comboBoxStatus.addItem(operatorStatus);
       }
       comboBoxStatus.setSelectedItem(OperatorStatus.P);
+
+      comboBoxGroup = new JComboBox();
+      OperatorGroup operatorGroupArray[] = OperatorGroup.values();
+      for (OperatorGroup operatorGroup : operatorGroupArray) {
+         comboBoxGroup.addItem(new OperatorGroupEnum(operatorGroup));
+      }
+      if (comboBoxGroup.getItemCount() > 1) {
+         comboBoxGroup.setSelectedIndex(1);
+      }
 
       textAreaDesc = new JTextArea();
 
@@ -104,12 +118,14 @@ public class OperatorInformationUpdateDialog extends JDialog {
                   .addComponent(labelId)
                   .addComponent(labelName)
                   .addComponent(labelStatus)
+                  .addComponent(labelGroup)
                   .addComponent(labelPassword)
                   .addComponent(labelPasswordConfirm))
               .addGroup(layout.createParallelGroup()
                   .addComponent(textFieldId)
                   .addComponent(textFieldName)
                   .addComponent(comboBoxStatus)
+                  .addComponent(comboBoxGroup)
                   .addComponent(passwordFieldPassword)
                   .addComponent(passwordFieldPasswordConfirm)));
 
@@ -123,6 +139,9 @@ public class OperatorInformationUpdateDialog extends JDialog {
               .addGroup(layout.createParallelGroup()
                   .addComponent(labelStatus)
                   .addComponent(comboBoxStatus))
+              .addGroup(layout.createParallelGroup()
+                  .addComponent(labelGroup)
+                  .addComponent(comboBoxGroup))
               .addGroup(layout.createParallelGroup()
                   .addComponent(labelPassword)
                   .addComponent(passwordFieldPassword))
@@ -203,13 +222,26 @@ public class OperatorInformationUpdateDialog extends JDialog {
             operator.setName(textFieldName.getText());
             operator.setPassword(operatorPassword);
             // Set operator status from the combo box.
+            operator.setStatus(null);
             if ((comboBoxStatus.getSelectedItem() != null)
                     && (comboBoxStatus.getSelectedItem()
                         instanceof OperatorStatus)) {
-
+               
                operator.setStatus(
                        (OperatorStatus)comboBoxStatus.getSelectedItem());
             }
+            // Set operator status from the combo box.
+            operator.setGroups(null);
+            if ((comboBoxGroup.getSelectedItem() != null)
+                    && (comboBoxGroup.getSelectedItem()
+                        instanceof OperatorGroupEnum)) {
+
+               OperatorGroupEnum operatorGroupEnum
+                       = (OperatorGroupEnum)comboBoxGroup.getSelectedItem();
+               OperatorGroup operatorGroup = operatorGroupEnum.getEnum();
+               operator.setGroups(EnumSet.of(operatorGroup));
+            }
+            
             operator.setDescription(textAreaDesc.getText());
 
             Operator operatorInSystem = null;

@@ -102,6 +102,9 @@ public class Food implements Serializable {
    @Column(name="image")
    private byte[] image;
 
+   @Column(name="recommend")
+   private Integer recommend;
+
    public String getAbbreviation() {
       return abbreviation;
    }
@@ -188,6 +191,14 @@ public class Food implements Serializable {
 
    public void setImage(byte[] image) {
       this.image = image;
+   }
+
+   public Integer getRecommend() {
+      return recommend;
+   }
+
+   public void setRecommend(Integer recommend) {
+      this.recommend = recommend;
    }
 
    @Override
