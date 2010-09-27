@@ -22,19 +22,30 @@ import javax.persistence.Table;
       query="select s from SalePlace s "
          + "where s.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "order by s.name"),
+   @NamedQuery(name=SalePlace.QUERY_GET_ALL_AVAILABLE_SALE_PLACES,
+      query="select s from SalePlace s "
+         + "where s.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "order by s.name"),
    @NamedQuery(name=SalePlace.QUERY_REMOVE_SALE_PLACE,
       query="update SalePlace s "
          + "set s.ek=luoyong.dinnerpanel.dao.model.ExistKey.D "
          + "where s.id=?1"),
    @NamedQuery(name=SalePlace.QUERY_GET_SALE_PLACE,query="select s "
       + "from SalePlace s "
+      + "where s.id = ?1 and s.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+   @NamedQuery(name=SalePlace.QUERY_GET_AVAILABLE_SALE_PLACE,query="select s "
+      + "from SalePlace s "
       + "where s.id = ?1 and s.ek=luoyong.dinnerpanel.dao.model.ExistKey.E")
 })
 public class SalePlace implements Serializable {
 
    public static final String QUERY_GET_ALL_SALE_PLACES = "get_all_sale_places";
+   public static final String QUERY_GET_ALL_AVAILABLE_SALE_PLACES
+           = "get_all_available_sale_places";
    public static final String QUERY_REMOVE_SALE_PLACE = "remove_sale_place";
    public static final String QUERY_GET_SALE_PLACE = "get_sale_place";
+   public static final String QUERY_GET_AVAILABLE_SALE_PLACE
+           = "get_available_sale_place";
    
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)

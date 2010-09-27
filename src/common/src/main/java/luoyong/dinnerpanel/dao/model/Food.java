@@ -24,41 +24,111 @@ import javax.persistence.Table;
 @Table(name="food")
 @NamedQueries({@NamedQuery(name=Food.QUERY_GET_FOOD_INFORMATION,
       query="select f from Food f where f.id=?1 "
-         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+   @NamedQuery(name=Food.QUERY_GET_AVAILABLE_FOOD_INFORMATION,
+      query="select f from Food f where f.id=?1 "
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A"),
    @NamedQuery(name=Food.QUERY_REMOVE_FOOD_INFORMATION,query="update Food f "
       + "set f.ek=luoyong.dinnerpanel.dao.model.ExistKey.D "
-      + "where f.id=?1"),
+      + "where f.id=?1 and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
    @NamedQuery(name=Food.QUERY_SEARCH_FOOD_INFORMATION_BY_NAME,
       query="select f from Food f where f.name like ?1 "
-         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"
+         + "order by f.recommend"),
+   @NamedQuery(name=Food.QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_NAME,
+      query="select f from Food f where f.name like ?1 "
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A "
+         + "order by f.recommend"),
    @NamedQuery(name=Food.QUERY_SEARCH_FOOD_INFORMATION_BY_ABBREVIATION,
       query="select f from Food f where f.abbreviation like ?1 "
-         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"
+         + "order by f.recommend"),
+   @NamedQuery(
+      name=Food.QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_ABBREVIATION,
+      query="select f from Food f where f.abbreviation like ?1 "
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A "
+         + "order by f.recommend"),
    @NamedQuery(name=Food.QUERY_SEARCH_FOOD_INFORMATION_BY_CODE,
       query="select f from Food f where f.code like ?1 "
-         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"
+         + "order by f.recommend"),
+   @NamedQuery(name=Food.QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_CODE,
+      query="select f from Food f where f.code like ?1 "
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A "
+         + "order by f.recommend"),
    @NamedQuery(name=Food.QUERY_SEARCH_FOOD_INFORMATION_BY_TAG,
       query="select f from Food f, IN(f.tags) t where t like ?1 "
-         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"
+         + "order by f.recommend"),
+   @NamedQuery(name=Food.QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_TAG,
+      query="select f from Food f, IN(f.tags) t where t like ?1 "
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A "
+         + "order by f.recommend"),
    @NamedQuery(name=Food.QUERY_GET_ALL_FOOD_FROM_FOOD_CATEGORY,
       query="select f from Food f where f.category = ?1 "
-         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E")})
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),
+   @NamedQuery(name=Food.QUERY_GET_ALL_AVAILABLE_FOOD_FROM_FOOD_CATEGORY,
+      query="select f from Food f where f.category = ?1 "
+         + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.category is not null "
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A ")})
 public class Food implements Serializable {
 
    public static final String QUERY_GET_FOOD_INFORMATION
            = "get_food_information";
+   public static final String QUERY_GET_AVAILABLE_FOOD_INFORMATION
+           = "get_available_food_information";
    public static final String QUERY_REMOVE_FOOD_INFORMATION
            = "remove_food_information";
    public static final String QUERY_SEARCH_FOOD_INFORMATION_BY_NAME
            = "search_food_information_by_name";
+   public static final String QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_NAME
+           = "search_available_food_information_by_name";
    public static final String QUERY_SEARCH_FOOD_INFORMATION_BY_ABBREVIATION
            = "search_food_information_by_abbreviation";
+   public static final String
+           QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_ABBREVIATION
+           = "search_available_food_information_by_abbreviation";
    public static final String QUERY_SEARCH_FOOD_INFORMATION_BY_CODE
            = "search_food_information_by_code";
+   public static final String QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_CODE
+           = "search_available_food_information_by_code";
    public static final String QUERY_SEARCH_FOOD_INFORMATION_BY_TAG
            = "search_food_information_by_tag";
+   public static final String QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_TAG
+           = "search_available_food_information_by_tag";
    public static final String QUERY_GET_ALL_FOOD_FROM_FOOD_CATEGORY
            = "get_all_food_from_food_category";
+   public static final String QUERY_GET_ALL_AVAILABLE_FOOD_FROM_FOOD_CATEGORY
+           = "get_all_available_food_from_food_category";
 
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
    @Column(length=1, name="ek")

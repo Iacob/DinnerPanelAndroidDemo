@@ -105,7 +105,7 @@ public class RWSFood {
       return result.toString();
    }
 
-   @Path("customer/search-food-by-code/{code}")
+   @Path("operator/search-food-by-code/{code}")
    @Produces("application/json")
    @GET
    public String searchFoodByCode(@PathParam("code") String code) {
@@ -130,8 +130,11 @@ public class RWSFood {
       for (Food food : foodList) {
          if ((food != null) && (food.getId() != null)) {
 
-            JSONObject jsonObjectFood = JsonBeanUtil.beanToJsonObject(food);
-            resultArray.put(jsonObjectFood);
+            JSONObject jsonObjectFood = foodInformationToJsonObject(food);
+
+            if (jsonObjectFood != null) {
+               resultArray.put(jsonObjectFood);
+            }
          }
       }
 
@@ -139,7 +142,44 @@ public class RWSFood {
       return result.toString();
    }
 
-   @Path("customer/search-food-by-keyword/{keyword}")
+   @Path("customer/search-available-food-by-code/{code}")
+   @Produces("application/json")
+   @GET
+   public String searchAvailableFoodByCode(@PathParam("code") String code) {
+
+      JSONObject result = new JSONObject();
+
+      JSONArray resultArray = new JSONArray();
+
+      if ((code == null) || (code.trim().length() < 1)) {
+         RWSUtil.setJsonObjectErrorMessage(
+                 result, 1, "搜索中使用的餐品代号不能为空");
+         return result.toString();
+      }
+
+      List<Food> foodList = foodManagement.searchAvailableFoodByCode(code);
+
+      if (foodList == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
+      }
+
+      for (Food food : foodList) {
+         if ((food != null) && (food.getId() != null)) {
+
+            JSONObject jsonObjectFood = foodInformationToJsonObject(food);
+
+            if (jsonObjectFood != null) {
+               resultArray.put(jsonObjectFood);
+            }
+         }
+      }
+
+      RWSUtil.setJsonObjectResult(result, 0, resultArray);
+      return result.toString();
+   }
+
+   @Path("operator/search-food-by-keyword/{keyword}")
    @Produces("application/json")
    @GET
    public String searchFoodByKeyword(@PathParam("keyword") String keyword) {
@@ -164,8 +204,11 @@ public class RWSFood {
       for (Food food : foodList) {
          if ((food != null) && (food.getId() != null)) {
 
-            JSONObject jsonObjectFood = JsonBeanUtil.beanToJsonObject(food);
-            resultArray.put(jsonObjectFood);
+            JSONObject jsonObjectFood = foodInformationToJsonObject(food);
+
+            if (jsonObjectFood != null) {
+               resultArray.put(jsonObjectFood);
+            }
          }
       }
 
@@ -173,7 +216,46 @@ public class RWSFood {
       return result.toString();
    }
 
-   @Path("customer/search-food-by-name/{food-name}")
+   @Path("customer/search-available-food-by-keyword/{keyword}")
+   @Produces("application/json")
+   @GET
+   public String searchAvailableFoodByKeyword(
+           @PathParam("keyword") String keyword) {
+
+      JSONObject result = new JSONObject();
+
+      JSONArray resultArray = new JSONArray();
+
+      if ((keyword == null) || (keyword.trim().length() <= 0)) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "搜索中使用的关键词不能为空");
+         return result.toString();
+      }
+
+      // Search available food by keyword.
+      List<Food> foodList
+              = foodManagement.searchAvailableFoodByKeyword(keyword);
+
+      if (foodList == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
+      }
+
+      for (Food food : foodList) {
+         if ((food != null) && (food.getId() != null)) {
+
+            JSONObject jsonObjectFood = foodInformationToJsonObject(food);
+
+            if (jsonObjectFood != null) {
+               resultArray.put(jsonObjectFood);
+            }
+         }
+      }
+
+      RWSUtil.setJsonObjectResult(result, 0, resultArray);
+      return result.toString();
+   }
+
+   @Path("operator/search-food-by-name/{food-name}")
    @Produces("application/json")
    @GET
    public String searchFoodByName(@PathParam("food-name") String foodName) {
@@ -199,7 +281,47 @@ public class RWSFood {
          
          if ((food != null) && (food.getId() != null)) {
 
-            JSONObject jsonObjectFood = JsonBeanUtil.beanToJsonObject(food);
+            JSONObject jsonObjectFood = foodInformationToJsonObject(food);
+            
+            if (jsonObjectFood != null) {
+               resultArray.put(jsonObjectFood);
+            }
+         }
+      }
+
+      RWSUtil.setJsonObjectResult(result, 0, resultArray);
+      return result.toString();
+   }
+
+   @Path("customer/search-available-food-by-name/{food-name}")
+   @Produces("application/json")
+   @GET
+   public String searchAvailableFoodByName(
+           @PathParam("food-name") String foodName) {
+
+      JSONObject result = new JSONObject();
+
+      JSONArray resultArray = new JSONArray();
+
+      if ((foodName == null) || (foodName.trim().length() <= 0)) {
+         RWSUtil.setJsonObjectErrorMessage(
+                 result, 1, "搜索中使用的餐品名称不能为空");
+         return result.toString();
+      }
+
+      List<Food> foodList = foodManagement.searchAvailableFoodByName(foodName);
+
+      if (foodList == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
+      }
+
+      for (Food food : foodList) {
+
+         if ((food != null) && (food.getId() != null)) {
+
+            JSONObject jsonObjectFood = foodInformationToJsonObject(food);
+            
             if (jsonObjectFood != null) {
                resultArray.put(jsonObjectFood);
             }
@@ -342,7 +464,7 @@ public class RWSFood {
       return result.toString();
    }
 
-   @Path("customer/get-food-information/{food-id}")
+   @Path("operator/get-food-information/{food-id}")
    @Produces("application/json")
    @GET
    public String getFoodInformation(@PathParam("food-id") String foodIdString) {
@@ -373,25 +495,12 @@ public class RWSFood {
          return result.toString();
       }
 
-      JSONObject foodJsonObject =  JsonBeanUtil.beanToJsonObject(food);
+      JSONObject foodJsonObject =  foodInformationToJsonObject(food);
       
       if (foodJsonObject == null) {
          RWSUtil.setJsonObjectResult(result, 0, resultArray);
          return result.toString();
       }else {
-
-         // Set food category ID.
-         FoodCategory foodCategory = food.getCategory();
-         if (foodCategory != null) {
-            foodCategory = foodManagement.getFoodCategory(foodCategory);
-            if ((foodCategory != null) && (foodCategory.getId() != null)) {
-               try {
-                  foodJsonObject.put("foodCategoryId", foodCategory.getId());
-               } catch (JSONException ex) {
-                  ex.printStackTrace(System.err);
-               }
-            }
-         }
 
          // Return food information in json form.
          resultArray.put(foodJsonObject);
@@ -400,7 +509,53 @@ public class RWSFood {
       }
    }
 
-   @Path("customer/get-food-list-from-food-category/{food-category-id}")
+   @Path("customer/get-available-food-information/{food-id}")
+   @Produces("application/json")
+   @GET
+   public String getAvailableFoodInformation(
+           @PathParam("food-id") String foodIdString) {
+
+      JSONObject result = new JSONObject();
+
+      JSONArray resultArray = new JSONArray();
+
+      if ((foodIdString == null) || (foodIdString.trim().length() < 1)) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "餐品ID不能为空");
+         return result.toString();
+      }
+
+      Long foodId = null;
+      try {
+         foodId = Long.valueOf(foodIdString);
+      }catch(Throwable t) {}
+
+      if (foodId == null) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "餐品ID不是合法的整数");
+         return result.toString();
+      }
+
+      Food food = foodManagement.getAvailableFoodInformation(foodId);
+
+      if (food == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
+      }
+
+      JSONObject foodJsonObject =  foodInformationToJsonObject(food);
+
+      if (foodJsonObject == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
+      }else {
+
+         // Return food information in json form.
+         resultArray.put(foodJsonObject);
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
+      }
+   }
+
+   @Path("operator/get-food-list-from-food-category/{food-category-id}")
    @Produces("application/json")
    @GET
    public String getFoodListFromFoodCategory(
@@ -446,7 +601,67 @@ public class RWSFood {
       JSONObject foodJsonObject = null;
       for (Food food : foodList) {
          if (food != null) {
-            foodJsonObject = JsonBeanUtil.beanToJsonObject(food);
+            foodJsonObject = foodInformationToJsonObject(food);
+            if (foodJsonObject != null) {
+               resultArray.put(foodJsonObject);
+            }
+         }
+      }
+
+      RWSUtil.setJsonObjectResult(result, 0, resultArray);
+      return result.toString();
+   }
+
+   @Path(
+      "customer/get-available-food-list-from-food-category/{food-category-id}")
+   @Produces("application/json")
+   @GET
+   public String getAvailableFoodListFromFoodCategory(
+           @PathParam("food-category-id") String foodCategoryIdString) {
+
+      JSONObject result = new JSONObject();
+
+      JSONArray resultArray = new JSONArray();
+
+      if ((foodCategoryIdString == null)
+              || (foodCategoryIdString.trim().length() < 1)) {
+
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "餐品分类ID不能为空");
+         return result.toString();
+      }
+
+      Long foodCategoryId = null;
+      try {
+         foodCategoryId = Long.valueOf(foodCategoryIdString);
+      }catch(Throwable t) {}
+
+      if (foodCategoryId == null) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "餐品分类ID不是合法的整数");
+         return result.toString();
+      }
+
+      FoodCategory foodCategory
+              = foodManagement.getFoodCategory(foodCategoryId);
+
+      if (foodCategory == null) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "所指定的餐品分类不存在");
+         return result.toString();
+      }
+
+      List<Food> foodList = foodManagement.getAvailableFoodListFromFoodCategory(
+              foodCategory);
+
+      if (foodList == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
+      }
+
+      JSONObject foodJsonObject = null;
+      for (Food food : foodList) {
+         if (food != null) {
+            
+            foodJsonObject = foodInformationToJsonObject(food);
+            
             if (foodJsonObject != null) {
                resultArray.put(foodJsonObject);
             }
@@ -524,5 +739,27 @@ public class RWSFood {
 
       RWSUtil.setJsonObjectReturnCode(result, 0);
       return result.toString();
+   }
+
+   private JSONObject foodInformationToJsonObject(Food f) {
+      
+      if (f == null) {
+         return null;
+      }
+
+      JSONObject foodJsonObject = JsonBeanUtil.beanToJsonObject(f);
+
+      if ((foodJsonObject != null)
+              && (f.getCategory() != null)
+              && (f.getCategory().getId() != null)) {
+         
+         try {
+            foodJsonObject.put("foodCategoryId", f.getCategory().getId());
+         } catch (JSONException ex) {
+            ex.printStackTrace(System.err);
+         }
+      }
+
+      return foodJsonObject;
    }
 }

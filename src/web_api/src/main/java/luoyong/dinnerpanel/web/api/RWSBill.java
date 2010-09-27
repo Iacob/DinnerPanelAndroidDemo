@@ -15,6 +15,7 @@ import luoyong.dinnerpanel.dao.model.BillItemStatus;
 import luoyong.dinnerpanel.dao.model.BillStatus;
 import luoyong.dinnerpanel.dao.model.Food;
 import luoyong.dinnerpanel.dao.model.SalePlace;
+import luoyong.dinnerpanel.dao.model.SalePlaceServiceStatus;
 import luoyong.dinnerpanel.service.BillManagement;
 import luoyong.dinnerpanel.service.FoodManagement;
 import luoyong.dinnerpanel.service.SalePlaceManagement;
@@ -242,9 +243,9 @@ public class RWSBill {
          return result.toString();
       }
 
-      Food food = foodManagement.getFoodInformation(foodId);
+      Food food = foodManagement.getAvailableFoodInformation(foodId);
       if (food == null) {
-         RWSUtil.setJsonObjectErrorMessage(result, 1, "所指定的餐品信息不存在");
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "所指定的餐品信息不可用");
          return result.toString();
       }
 
@@ -444,6 +445,21 @@ public class RWSBill {
 
       if (salePlace == null) {
          RWSUtil.setJsonObjectErrorMessage(result, 1, "所指定的餐桌不存在");
+         return result.toString();
+      }
+
+      if (SalePlaceServiceStatus.B.equals(salePlace.getServiceStatus())) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "所指定的餐桌已被预定");
+         return result.toString();
+      }
+
+      if (SalePlaceServiceStatus.T.equals(salePlace.getServiceStatus())) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "所指定的餐桌已被占用");
+         return result.toString();
+      }
+
+      if (!SalePlaceServiceStatus.A.equals(salePlace.getServiceStatus())) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "所指定的餐桌不可用");
          return result.toString();
       }
 

@@ -21,19 +21,29 @@ public class RWSURLHolder {
    public static final String FOOD_ADD_FOOD_INFORMATION
            = "/food/manager/add-food-information";
    public static final String FOOD_GET_FOOD_INFORMATION
-           = "/food/customer/get-food-information";
+           = "/food/operator/get-food-information";
+   public static final String FOOD_GET_AVAILABLE_FOOD_INFORMATION
+           = "/food/customer/get-available-food-information";
    public static final String FOOD_GET_FOOD_LIST_FROM_FOOD_CATEFORY
-           = "/food/customer/get-food-list-from-food-category";
+           = "/food/operator/get-food-list-from-food-category";
+   public static final String FOOD_GET_AVAILABLE_FOOD_LIST_FROM_FOOD_CATEFORY
+           = "/food/customer/get-available-food-list-from-food-category";
    public static final String FOOD_REMOVE_FOOD_INFORMATION
            = "/food/manager/remove-food-information";
    public static final String FOOD_UPDATE_FOOD
            = "/food/manager/update-food-information";
    public static final String FOOD_SEARCH_FOOD_BY_NAME
-           = "/food/customer/search-food-by-name";
+           = "/food/operator/search-food-by-name";
+   public static final String FOOD_SEARCH_AVAILABLE_FOOD_BY_NAME
+           = "/food/customer/search-available-food-by-name";
    public static final String FOOD_SEARCH_FOOD_BY_CODE
-           = "/food/customer/search-food-by-code";
+           = "/food/operator/search-food-by-code";
+   public static final String FOOD_SEARCH_AVAILABLE_FOOD_BY_CODE
+           = "/food/customer/search-available-food-by-code";
    public static final String FOOD_SEARCH_FOOD_BY_KEYWORD
-           = "/food/search-food-by-keyword";
+           = "/food/operator/search-food-by-keyword";
+   public static final String FOOD_SEARCH_AVAILABLE_FOOD_BY_KEYWORD
+           = "/food/customer/search-available-food-by-keyword";
 
    public static final String SALE_PLACE_ADD_SALE_PLACE
            = "/manager/add-sale-place";

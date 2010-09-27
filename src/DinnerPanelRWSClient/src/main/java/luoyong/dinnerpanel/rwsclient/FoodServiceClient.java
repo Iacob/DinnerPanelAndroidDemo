@@ -302,6 +302,82 @@ public class FoodServiceClient {
       return this.getFoodInformation(f.getId());
    }
 
+   public Food getAvailableFoodInformation(Long id) throws
+           RemoteConnectionException,
+           RemoteAuthorizationException,
+           RemoteInformationException,
+           RemoteBusinessLogicException {
+
+      if (id == null) {
+         throw new RemoteBusinessLogicException("餐品信息ID不能为空");
+      }
+
+      String url = null;
+      url = RWSURLHolder.getBaseURL()
+              + RWSURLHolder.FOOD_GET_AVAILABLE_FOOD_INFORMATION
+              + "/"
+              + id.longValue();
+
+      JSONArray resultArray = RWSUtil.getRWSResultViaGET(url);
+
+      if (resultArray == null) {
+         return null;
+      }
+
+      if (resultArray.length() == 0) {
+         return null;
+      }
+
+      JSONObject jsonObject = null;
+
+      try {
+         jsonObject = resultArray.getJSONObject(0);
+      }catch(JSONException ex) {
+         throw new RemoteInformationException("服务器返回的结果格式不正确", ex);
+      }
+
+      if (jsonObject == null) {
+         return null;
+      }
+
+      Food food = new Food();
+      JsonBeanUtil.jsonObjectToBean(jsonObject, food);
+
+      // Get and set food category to food information.
+      Long foodCategoryId = null;
+      if (jsonObject.has("foodCategoryId")) {
+         try {
+            // Get food category ID.
+            foodCategoryId = jsonObject.getLong("foodCategoryId");
+            // Get food category information.
+            FoodCategory foodCategory = this.getFoodCategory(foodCategoryId);
+            // Set food category.
+            food.setCategory(foodCategory);
+         }catch(JSONException ex) {
+            food.setCategory(null);
+            throw new RemoteInformationException(
+                    "服务器返回的餐品所属的餐品分类信息格式不正确", ex);
+         }
+      }else {
+         food.setCategory(null);
+      }
+
+      return food;
+   }
+
+   public Food getAvailableFoodInformation(Food f) throws
+           RemoteConnectionException,
+           RemoteAuthorizationException,
+           RemoteInformationException,
+           RemoteBusinessLogicException {
+
+      if (f == null) {
+         throw new RemoteBusinessLogicException("餐品信息不能为空");
+      }
+
+      return this.getAvailableFoodInformation(f.getId());
+   }
+
    public List<Food> getFoodListFromFoodCategory(Long foodCategoryId) throws
            RemoteConnectionException,
            RemoteAuthorizationException,
@@ -346,6 +422,53 @@ public class FoodServiceClient {
       }
 
       return this.getFoodListFromFoodCategory(c.getId());
+   }
+
+   public List<Food> getAvailableFoodListFromFoodCategory(
+           Long foodCategoryId) throws
+            RemoteConnectionException,
+            RemoteAuthorizationException,
+            RemoteInformationException,
+            RemoteBusinessLogicException {
+
+      if (foodCategoryId == null) {
+         throw new RemoteBusinessLogicException("餐品分类ID不能为空");
+      }
+
+      String url = RWSURLHolder.getBaseURL()
+              + RWSURLHolder.FOOD_GET_AVAILABLE_FOOD_LIST_FROM_FOOD_CATEFORY
+              + "/"
+              + foodCategoryId.longValue();
+
+      JSONArray jsonArray = RWSUtil.getRWSResultViaGET(url);
+
+      if (jsonArray == null) {
+         return null;
+      }
+
+      JsonBeanUtil.JSONArrayExtractor<Food> extractor
+              = new JsonBeanUtil.JSONArrayExtractor<Food>(jsonArray) {
+
+         @Override
+         protected Food getInstance() {
+            return new Food();
+         }
+      };
+
+      return extractor.extract();
+   }
+
+   public List<Food> getAvailableFoodListFromFoodCategory(FoodCategory c) throws
+           RemoteConnectionException,
+           RemoteAuthorizationException,
+           RemoteInformationException,
+           RemoteBusinessLogicException {
+
+      if (c == null) {
+         throw new RemoteBusinessLogicException("餐品分类信息不能为空");
+      }
+
+      return this.getAvailableFoodListFromFoodCategory(c.getId());
    }
 
    public void removeFoodInformation(Long id) throws
@@ -439,6 +562,44 @@ public class FoodServiceClient {
       return extractor.extract();
    }
 
+   public List<Food> searchAvailableFoodByName(String foodName) throws
+           RemoteConnectionException,
+           RemoteAuthorizationException,
+           RemoteInformationException,
+           RemoteBusinessLogicException {
+
+      if ((foodName == null) || (foodName.trim().length() < 1)) {
+         throw new RemoteBusinessLogicException("搜索词不能为空");
+      }
+
+      String url = null;
+      try {
+         url = RWSURLHolder.getBaseURL()
+              + RWSURLHolder.FOOD_SEARCH_AVAILABLE_FOOD_BY_NAME
+              + "/"
+              + URLEncoder.encode(foodName, "UTF-8");
+      } catch (UnsupportedEncodingException ex) {
+         throw new RemoteInformationException("字符编码系统不支持", ex);
+      }
+
+      JSONArray jsonArray = RWSUtil.getRWSResultViaGET(url);
+
+      if (jsonArray == null) {
+         return null;
+      }
+
+      JsonBeanUtil.JSONArrayExtractor<Food> extractor
+              = new JsonBeanUtil.JSONArrayExtractor<Food>(jsonArray) {
+
+         @Override
+         protected Food getInstance() {
+            return new Food();
+         }
+      };
+
+      return extractor.extract();
+   }
+
    public List<Food> searchFoodByCode(String code) throws
            RemoteConnectionException,
            RemoteAuthorizationException,
@@ -453,6 +614,44 @@ public class FoodServiceClient {
       try {
          url = RWSURLHolder.getBaseURL()
               + RWSURLHolder.FOOD_SEARCH_FOOD_BY_NAME
+              + "/"
+              + URLEncoder.encode(code, "UTF-8");
+      } catch (UnsupportedEncodingException ex) {
+         throw new RemoteInformationException("字符编码系统不支持", ex);
+      }
+
+      JSONArray jsonArray = RWSUtil.getRWSResultViaGET(url);
+
+      if (jsonArray == null) {
+         return null;
+      }
+
+      JsonBeanUtil.JSONArrayExtractor<Food> extractor
+              = new JsonBeanUtil.JSONArrayExtractor<Food>(jsonArray) {
+
+         @Override
+         protected Food getInstance() {
+            return new Food();
+         }
+      };
+
+      return extractor.extract();
+   }
+
+   public List<Food> searchAvailableFoodByCode(String code) throws
+           RemoteConnectionException,
+           RemoteAuthorizationException,
+           RemoteInformationException,
+           RemoteBusinessLogicException {
+
+      if ((code == null) || (code.trim().length() < 1)) {
+         throw new RemoteBusinessLogicException("搜索词不能为空");
+      }
+
+      String url = null;
+      try {
+         url = RWSURLHolder.getBaseURL()
+              + RWSURLHolder.FOOD_SEARCH_AVAILABLE_FOOD_BY_NAME
               + "/"
               + URLEncoder.encode(code, "UTF-8");
       } catch (UnsupportedEncodingException ex) {
@@ -515,5 +714,41 @@ public class FoodServiceClient {
       return extractor.extract();
    }
 
-   
+   public List<Food> searchAvailableFoodByKeyword(String keyword) throws
+           RemoteConnectionException,
+           RemoteAuthorizationException,
+           RemoteInformationException,
+           RemoteBusinessLogicException {
+
+      if ((keyword == null) || (keyword.trim().length() < 1)) {
+         throw new RemoteBusinessLogicException("搜索词不能为空");
+      }
+
+      String url = null;
+      try {
+         url = RWSURLHolder.getBaseURL()
+              + RWSURLHolder.FOOD_SEARCH_AVAILABLE_FOOD_BY_NAME
+              + "/"
+              + URLEncoder.encode(keyword, "UTF-8");
+      } catch (UnsupportedEncodingException ex) {
+         throw new RemoteInformationException("字符编码系统不支持", ex);
+      }
+
+      JSONArray jsonArray = RWSUtil.getRWSResultViaGET(url);
+
+      if (jsonArray == null) {
+         return null;
+      }
+
+      JsonBeanUtil.JSONArrayExtractor<Food> extractor
+              = new JsonBeanUtil.JSONArrayExtractor<Food>(jsonArray) {
+
+         @Override
+         protected Food getInstance() {
+            return new Food();
+         }
+      };
+
+      return extractor.extract();
+   }
 }

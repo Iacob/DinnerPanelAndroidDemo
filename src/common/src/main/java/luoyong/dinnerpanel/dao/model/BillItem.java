@@ -53,29 +53,44 @@ import javax.persistence.Temporal;
       + "from BillItem i "
       + "where i.id=?1 and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
       + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C "
-      + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.R"),
+      + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.R "
+      + "and i.bill is not null "
+      + "and i.bill.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+      + "and i.bill.status <> luoyong.dinnerpanel.dao.model.BillStatus.C"),
    @NamedQuery(name=BillItem.QUERY_GET_ALL_BILL_ITEMS_FROM_BILL,
       query="select i from BillItem i "
          + "where i.bill=?1 "
          + "and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.R"),
+         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.R "
+         + "and i.bill is not null "
+         + "and i.bill.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and i.bill.status <> luoyong.dinnerpanel.dao.model.BillStatus.C"),
    @NamedQuery(name=BillItem.QUERY_CALCULATE_BILL_PRICE,
       query="select sum(i.price) from BillItem i "
          + "where i.bill=?1 "
          + "and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.R"),
+         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.R "
+         + "and i.bill is not null "
+         + "and i.bill.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and i.bill.status <> luoyong.dinnerpanel.dao.model.BillStatus.C"),
    @NamedQuery(name=BillItem.QUERY_SET_COMMENT_TO_BILL_ITEM,
       query="update BillItem i set i.comment=?1 "
          + "where i.id = ?2 "
          + "and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
-         + "and i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.W"),
+         + "and i.status=luoyong.dinnerpanel.dao.model.BillItemStatus.W "
+         + "and i.bill is not null "
+         + "and i.bill.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and i.bill.status <> luoyong.dinnerpanel.dao.model.BillStatus.C"),
    @NamedQuery(name=BillItem.QUERY_WRITE_BILL_ITEM_HASTEN_COUNT,
       query="update BillItem i set i.hastenCount=?1 "
          + "where i.id = ?2 "
          + "and i.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
-         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C")
+         + "and i.status<>luoyong.dinnerpanel.dao.model.BillItemStatus.C "
+         + "and i.bill is not null "
+         + "and i.bill.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
+         + "and i.bill.status <> luoyong.dinnerpanel.dao.model.BillStatus.C")
 })
 public class BillItem implements Serializable {
 
