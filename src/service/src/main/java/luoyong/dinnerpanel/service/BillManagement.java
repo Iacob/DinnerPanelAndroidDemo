@@ -138,6 +138,7 @@ public class BillManagement {
    }
 
    public void addItemToBill(BillItem item) {
+
       EntityManager em = null;
       try {
          em = EntityManagerBuilder.buildEntityManager();

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/main_view"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent">
+
+   <!-- Food Category View -->
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_weight="1"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+
+         <GridView
+            android:id="@+id/food_category_view_grid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="auto_fit"
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="10dp"
+            android:stretchMode="columnWidth" />
+
+      </LinearLayout>
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:orientation="vertical"
+         android:layout_weight="0"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center" >
+
+         <Button android:id="@+id/food_category_view_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回餐品列表" />
+
+      </LinearLayout>
+
+   </LinearLayout>
+
+   <!-- Food List View -->
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_weight="1"
+         android:orientation="vertical"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+
+         <Gallery xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/food_list_view_gallery"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:spacing="10dp"
+            android:isScrollContainer="true"
+            android:scrollbars="horizontal" />
+
+      </LinearLayout>
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_weight="0"
+         android:orientation="horizontal"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:spacing="30dp"
+         android:gravity="center">
+
+         <Button android:id="@+id/food_list_view_button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加入菜单" />
+
+         <Button android:id="@+id/food_list_view_button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回" />
+
+      </LinearLayout>
+
+   </LinearLayout>
+
+</ViewSwitcher>
