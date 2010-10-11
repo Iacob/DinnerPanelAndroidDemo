@@ -468,6 +468,29 @@ public class BillManagement {
       return this.getBillInformation(bill.getId());
    }
 
+   public Bill getBillInformation(BillItem i) {
+      
+      if (i == null) {
+         return null;
+      }
+
+      i = this.getBillItemInformation(i);
+
+      if (i == null) {
+         return null;
+      }
+
+      Bill bill = i.getBill();
+
+      if (bill == null) {
+         return null;
+      }
+
+      bill = this.getBillInformation(bill);
+
+      return bill;
+   }
+
    public BillItem getBillItemInformation(Long id) {
       EntityManager em = null;
       try {

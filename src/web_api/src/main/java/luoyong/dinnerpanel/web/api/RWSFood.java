@@ -1,6 +1,8 @@
 package luoyong.dinnerpanel.web.api;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -727,7 +729,7 @@ public class RWSFood {
       }
 
       Food food = new Food();
-      JsonBeanUtil.jsonObjectToBean(foodInfoJsonObject, food);
+      jsonObjectToFoodInformation(foodInfoJsonObject, food);
 
       Food foodInSystem = foodManagement.getFoodInformation(food);
       if (foodInSystem == null) {
@@ -752,14 +754,87 @@ public class RWSFood {
       if ((foodJsonObject != null)
               && (f.getCategory() != null)
               && (f.getCategory().getId() != null)) {
+
+         JSONObject foodCategoryJsonObject
+                 = JsonBeanUtil.beanToJsonObject(f.getCategory());
          
          try {
-            foodJsonObject.put("foodCategoryId", f.getCategory().getId());
+            foodJsonObject.put("category", foodCategoryJsonObject);
+         } catch (JSONException ex) {
+            ex.printStackTrace(System.err);
+         }
+
+         try {
+            Set<String> foodTagsSet = f.getTags();
+            
+            if (foodTagsSet != null) {
+
+               JSONArray foodTagsJsonArray = new JSONArray();
+
+               for (String foodTag : foodTagsSet) {
+                  if (foodTag != null) {
+                     foodTagsJsonArray.put(foodTag);
+                  }
+               }
+
+               foodJsonObject.put("tags", foodTagsJsonArray);
+            }
+            
          } catch (JSONException ex) {
             ex.printStackTrace(System.err);
          }
       }
 
       return foodJsonObject;
+   }
+
+   private void jsonObjectToFoodInformation(JSONObject foodJsonObject, Food f) {
+
+      if ((foodJsonObject == null) || (f == null)) {
+         return;
+      }
+
+      JsonBeanUtil.jsonObjectToBean(foodJsonObject, f);
+
+      // Handle food category.
+      JSONObject foodCategoryJsonObject = null;
+      try {
+         foodCategoryJsonObject = foodJsonObject.getJSONObject("category");
+      }catch(Throwable t) {
+         t.printStackTrace(System.err);
+      }
+
+      FoodCategory foodCategory = null;
+      if (foodCategoryJsonObject != null) {
+         foodCategory = new FoodCategory();
+         JsonBeanUtil.jsonObjectToBean(foodCategoryJsonObject, foodCategory);
+      }
+
+      f.setCategory(foodCategory);
+
+      // Handle food information tags.
+      Set<String> foodTagsSet = new HashSet<String>();
+      try {
+          JSONArray foodTagsJsonArray = foodJsonObject.getJSONArray("tags");
+          if (foodTagsJsonArray != null) {
+             int foodTagsCount = foodTagsJsonArray.length();
+             String foodTag = null;
+             for (int i=0; i<foodTagsCount; i++) {
+                foodTag = null;
+                try {
+                  foodTag = foodTagsJsonArray.getString(i);
+                }catch(Throwable t) {
+                   t.printStackTrace(System.err);
+                }
+
+                if (foodTag != null) {
+                  foodTagsSet.add(foodTag);
+               }
+             }
+          }
+      }catch(Throwable t) {
+         t.printStackTrace(System.err);
+      }
+      f.setTags(foodTagsSet);
    }
 }

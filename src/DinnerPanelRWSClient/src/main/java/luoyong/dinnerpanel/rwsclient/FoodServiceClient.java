@@ -2,7 +2,9 @@ package luoyong.dinnerpanel.rwsclient;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import luoyong.dinnerpanel.dao.model.Food;
 import luoyong.dinnerpanel.dao.model.FoodCategory;
 import luoyong.dinnerpanel.rwscommon.info.RemoteAuthorizationException;
@@ -265,7 +267,7 @@ public class FoodServiceClient {
       }
 
       Food food = new Food();
-      JsonBeanUtil.jsonObjectToBean(jsonObject, food);
+      this.jsonObjectToFoodInformation(jsonObject, food);
 
       // Get and set food category to food information.
       Long foodCategoryId = null;
@@ -341,26 +343,8 @@ public class FoodServiceClient {
       }
 
       Food food = new Food();
-      JsonBeanUtil.jsonObjectToBean(jsonObject, food);
-
-      // Get and set food category to food information.
-      Long foodCategoryId = null;
-      if (jsonObject.has("foodCategoryId")) {
-         try {
-            // Get food category ID.
-            foodCategoryId = jsonObject.getLong("foodCategoryId");
-            // Get food category information.
-            FoodCategory foodCategory = this.getFoodCategory(foodCategoryId);
-            // Set food category.
-            food.setCategory(foodCategory);
-         }catch(JSONException ex) {
-            food.setCategory(null);
-            throw new RemoteInformationException(
-                    "服务器返回的餐品所属的餐品分类信息格式不正确", ex);
-         }
-      }else {
-         food.setCategory(null);
-      }
+      // Extract content of json object into food information model.
+      this.jsonObjectToFoodInformation(jsonObject, food);
 
       return food;
    }
@@ -405,6 +389,13 @@ public class FoodServiceClient {
          @Override
          protected Food getInstance() {
             return new Food();
+         }
+
+         @Override
+         protected void extractJsonObjectToBean(
+                 JSONObject jsonObject, Food bean) {
+
+            jsonObjectToFoodInformation(jsonObject, bean);
          }
       };
 
@@ -452,6 +443,13 @@ public class FoodServiceClient {
          @Override
          protected Food getInstance() {
             return new Food();
+         }
+
+         @Override
+         protected void extractJsonObjectToBean(
+                 JSONObject jsonObject, Food bean) {
+
+            jsonObjectToFoodInformation(jsonObject, bean);
          }
       };
 
@@ -512,7 +510,7 @@ public class FoodServiceClient {
          throw new RemoteBusinessLogicException("餐品信息不能为空");
       }
 
-      JSONObject jsonObject = JsonBeanUtil.beanToJsonObject(f);
+      JSONObject jsonObject = this.foodInformationToJsonObject(f);
 
       if (jsonObject == null) {
          throw new RemoteBusinessLogicException("上传的餐品信息不能为空");
@@ -557,6 +555,13 @@ public class FoodServiceClient {
          protected Food getInstance() {
             return new Food();
          }
+
+         @Override
+         protected void extractJsonObjectToBean(
+                 JSONObject jsonObject, Food bean) {
+
+            jsonObjectToFoodInformation(jsonObject, bean);
+         }
       };
 
       return extractor.extract();
@@ -594,6 +599,13 @@ public class FoodServiceClient {
          @Override
          protected Food getInstance() {
             return new Food();
+         }
+
+         @Override
+         protected void extractJsonObjectToBean(
+                 JSONObject jsonObject, Food bean) {
+
+            jsonObjectToFoodInformation(jsonObject, bean);
          }
       };
 
@@ -633,6 +645,13 @@ public class FoodServiceClient {
          protected Food getInstance() {
             return new Food();
          }
+
+         @Override
+         protected void extractJsonObjectToBean(
+                 JSONObject jsonObject, Food bean) {
+
+            jsonObjectToFoodInformation(jsonObject, bean);
+         }
       };
 
       return extractor.extract();
@@ -670,6 +689,13 @@ public class FoodServiceClient {
          @Override
          protected Food getInstance() {
             return new Food();
+         }
+
+         @Override
+         protected void extractJsonObjectToBean(
+                 JSONObject jsonObject, Food bean) {
+
+            jsonObjectToFoodInformation(jsonObject, bean);
          }
       };
 
@@ -709,6 +735,13 @@ public class FoodServiceClient {
          protected Food getInstance() {
             return new Food();
          }
+
+         @Override
+         protected void extractJsonObjectToBean(
+                 JSONObject jsonObject, Food bean) {
+
+            jsonObjectToFoodInformation(jsonObject, bean);
+         }
       };
 
       return extractor.extract();
@@ -747,8 +780,110 @@ public class FoodServiceClient {
          protected Food getInstance() {
             return new Food();
          }
+
+         @Override
+         protected void extractJsonObjectToBean(
+                 JSONObject jsonObject, Food bean) {
+
+            jsonObjectToFoodInformation(jsonObject, bean);
+         }
       };
 
       return extractor.extract();
+   }
+
+   private JSONObject foodInformationToJsonObject(Food f) {
+
+      if (f == null) {
+         return null;
+      }
+
+      JSONObject foodJsonObject = JsonBeanUtil.beanToJsonObject(f);
+
+      if ((foodJsonObject != null)
+              && (f.getCategory() != null)
+              && (f.getCategory().getId() != null)) {
+
+         JSONObject foodCategoryJsonObject
+                 = JsonBeanUtil.beanToJsonObject(f.getCategory());
+
+         try {
+            foodJsonObject.put("category", foodCategoryJsonObject);
+         } catch (JSONException ex) {
+            ex.printStackTrace(System.err);
+         }
+
+         try {
+            Set<String> foodTagsSet = f.getTags();
+
+            if (foodTagsSet != null) {
+
+               JSONArray foodTagsJsonArray = new JSONArray();
+
+               for (String foodTag : foodTagsSet) {
+                  if (foodTag != null) {
+                     foodTagsJsonArray.put(foodTag);
+                  }
+               }
+
+               foodJsonObject.put("tags", foodTagsJsonArray);
+            }
+
+         } catch (JSONException ex) {
+            ex.printStackTrace(System.err);
+         }
+      }
+
+      return foodJsonObject;
+   }
+
+   private void jsonObjectToFoodInformation(JSONObject foodJsonObject, Food f) {
+
+      if ((foodJsonObject == null) || (f == null)) {
+         return;
+      }
+
+      JsonBeanUtil.jsonObjectToBean(foodJsonObject, f);
+
+      // Handle food category.
+      JSONObject foodCategoryJsonObject = null;
+      try {
+         foodCategoryJsonObject = foodJsonObject.getJSONObject("category");
+      }catch(Throwable t) {
+         t.printStackTrace(System.err);
+      }
+
+      FoodCategory foodCategory = null;
+      if (foodCategoryJsonObject != null) {
+         foodCategory = new FoodCategory();
+         JsonBeanUtil.jsonObjectToBean(foodCategoryJsonObject, foodCategory);
+      }
+
+      f.setCategory(foodCategory);
+
+      // Handle food information tags.
+      Set<String> foodTagsSet = new HashSet<String>();
+      try {
+          JSONArray foodTagsJsonArray = foodJsonObject.getJSONArray("tags");
+          if (foodTagsJsonArray != null) {
+             int foodTagsCount = foodTagsJsonArray.length();
+             String foodTag = null;
+             for (int i=0; i<foodTagsCount; i++) {
+                foodTag = null;
+                try {
+                  foodTag = foodTagsJsonArray.getString(i);
+                }catch(Throwable t) {
+                   t.printStackTrace(System.err);
+                }
+
+                if (foodTag != null) {
+                  foodTagsSet.add(foodTag);
+               }
+             }
+          }
+      }catch(Throwable t) {
+         t.printStackTrace(System.err);
+      }
+      f.setTags(foodTagsSet);
    }
 }

@@ -140,6 +140,59 @@ public class RWSBill {
       return result.toString();
    }
 
+   @Path("operator/get-bill-information-from-bill-item/{bill-item-id}")
+   @Produces("application/json")
+   @GET
+   public String getBillInformationFromBillItem(
+           @PathParam("bill-item-id") String billItemIdString) {
+
+      JSONObject result = new JSONObject();
+
+      JSONArray resultArray = new JSONArray();
+
+      if ((billItemIdString == null) || (billItemIdString.trim().length() < 1)) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "账单ID不能为空");
+         return result.toString();
+      }
+
+      Long billItemId = null;
+      try {
+         billItemId = Long.valueOf(billItemIdString);
+      }catch(Throwable t) {}
+
+      // If bill item id is invalid, return empty result.
+      if (billItemId == null) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "账单条目ID不是合法的整数");
+         return result.toString();
+      }
+
+      BillItem billItem = billManagement.getBillItemInformation(billItemId);
+
+      if (billItem == null) {
+         RWSUtil.setJsonObjectErrorMessage(result, 1, "所指定的账单条目不存在");
+         return result.toString();
+      }
+
+      JSONObject jsonObjectBillItem = null;
+
+      Bill bill = billManagement.getBillInformation(billItem);
+      if (bill == null) {
+         RWSUtil.setJsonObjectResult(result, 0, resultArray);
+         return result.toString();
+      }else {
+         jsonObjectBillItem = JsonBeanUtil.beanToJsonObject(bill);
+         if (jsonObjectBillItem == null) {
+            RWSUtil.setJsonObjectResult(result, 0, resultArray);
+            return result.toString();
+         }else {
+            resultArray.put(jsonObjectBillItem);
+         }
+      }
+
+      RWSUtil.setJsonObjectResult(result, 0, resultArray);
+      return result.toString();
+   }
+
    @Path("customer/get-all-bill-items-from-bill/{bill-id}")
    @Produces("application/json")
    @GET

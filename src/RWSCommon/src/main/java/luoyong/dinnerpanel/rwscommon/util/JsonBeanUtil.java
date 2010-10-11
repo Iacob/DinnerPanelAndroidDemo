@@ -226,6 +226,12 @@ public class JsonBeanUtil {
 
       abstract protected T getInstance();
 
+      protected void extractJsonObjectToBean(
+              JSONObject jsonObject, T bean) {
+         
+         JsonBeanUtil.jsonObjectToBean(jsonObject, bean);
+      }
+
       public List<T> extract() {
 
          JSONObject currentJsonObject = null;
@@ -259,7 +265,7 @@ public class JsonBeanUtil {
                continue;
             }
 
-            JsonBeanUtil.jsonObjectToBean(currentJsonObject, currentInstance);
+            this.extractJsonObjectToBean(currentJsonObject, currentInstance);
 
             list.add(currentInstance);
          }
