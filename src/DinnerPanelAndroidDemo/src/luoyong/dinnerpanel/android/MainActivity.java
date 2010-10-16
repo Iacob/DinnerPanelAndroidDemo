@@ -3,6 +3,7 @@ package luoyong.dinnerpanel.android;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 /**
@@ -102,14 +104,32 @@ public class MainActivity extends Activity {
          public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
             
             if (position == 2) {
+               Toast toast = Toast.makeText(activityContext, "请稍候，正在获取数据", Toast.LENGTH_LONG);
+               toast.show();
+               activityContext.showDialog(0);
                gallery.setAdapter(new FoodListViewAdapter(activityContext));
                mainView.setDisplayedChild(1);
+               activityContext.dismissDialog(0);
             }else {
-               gallery.setAdapter(new EmptyFoodListViewAdapter(activityContext));
-               mainView.setDisplayedChild(1);
+               Toast toast = Toast.makeText(activityContext, "很抱歉，此分类下没有餐品", Toast.LENGTH_SHORT);
+               toast.show();
             }
          }
       });
+   }
+
+   private void getData() {
+      this.showDialog(0);
+      // Get the data.
+   }
+
+   @Override
+   protected Dialog onCreateDialog(int id) {
+      ProgressDialog dialog = new ProgressDialog(this);
+      dialog.setTitle("请稍候");
+      dialog.setMessage("请稍候，正在获取数据");
+      return dialog;
+      // Dialog dialog = ProgressDialog.show(activityContext, "请稍候", "请稍候，正在获取数据");
    }
 
    public static class FoodCategoryViewAdapter extends BaseAdapter {
@@ -117,28 +137,14 @@ public class MainActivity extends Activity {
       static final private int IMAGE_DEFAULT_WIDTH = 100;
       static final private int IMAGE_DEFAULT_HEIGHT = 70;
 
+      private LinearLayout views[] = new LinearLayout[10];
+
       private Activity activity = null;
 
       public FoodCategoryViewAdapter(Activity activity) {
          this.activity = activity;
-      }
 
-      public int getCount() {
-         return 15;
-      }
-
-      public Object getItem(int arg0) {
-         return arg0;
-      }
-
-      public long getItemId(int arg0) {
-         return arg0;
-      }
-
-      public View getView(int arg0, View arg1, ViewGroup arg2) {
-
-         if (arg0 == 0) {
-
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.hot_dish);
@@ -153,17 +159,19 @@ public class MainActivity extends Activity {
             TextView textView = new TextView(activity);
             textView.setText("热菜");
             textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
 
             // Build linear layout and add the image view and text view.
             LinearLayout linearLayout = new LinearLayout(activity);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
-            
-            return linearLayout;
-            
-         } else if (arg0 == 1) {
-            
+
+            views[0] = linearLayout;
+         }
+
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.cold_dish);
@@ -178,6 +186,8 @@ public class MainActivity extends Activity {
             TextView textView = new TextView(activity);
             textView.setText("冷菜");
             textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
 
             // Build linear layout and add the image view and text view.
             LinearLayout linearLayout = new LinearLayout(activity);
@@ -185,10 +195,10 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
-            
-         } else if (arg0 == 2) {
+            views[1] = linearLayout;
+         }
 
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.staple_food);
@@ -203,6 +213,8 @@ public class MainActivity extends Activity {
             TextView textView = new TextView(activity);
             textView.setText("主食");
             textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
 
             // Build linear layout and add the image view and text view.
             LinearLayout linearLayout = new LinearLayout(activity);
@@ -210,10 +222,10 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
-            
-         } else if (arg0 == 3) {
+            views[2] = linearLayout;
+         }
 
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.soup);
@@ -228,6 +240,8 @@ public class MainActivity extends Activity {
             TextView textView = new TextView(activity);
             textView.setText("汤");
             textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
 
             // Build linear layout and add the image view and text view.
             LinearLayout linearLayout = new LinearLayout(activity);
@@ -235,10 +249,10 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
-            
-         } else {
+            views[3] = linearLayout;
+         }
 
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.soup);
@@ -253,6 +267,8 @@ public class MainActivity extends Activity {
             TextView textView = new TextView(activity);
             textView.setText("测试分类");
             textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
 
             // Build linear layout and add the image view and text view.
             LinearLayout linearLayout = new LinearLayout(activity);
@@ -260,32 +276,147 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
-            
-            //return new LinearLayout(activity);
+            views[4] = linearLayout;
          }
-      }
-   }
 
-   public static class FoodListViewAdapter extends BaseAdapter {
+         {
+            // Load scaled bitmap.
+            Bitmap bitmap = BitmapFactory.decodeResource(
+                    activity.getResources(), R.drawable.soup);
+            bitmap = Bitmap.createScaledBitmap(
+                    bitmap, IMAGE_DEFAULT_WIDTH, IMAGE_DEFAULT_HEIGHT, true);
 
-      private int imageWidth = 200;
-      private int imageHeight = 200;
+            // Build image view.
+            ImageView imageView = new ImageView(activity);
+            imageView.setImageBitmap(bitmap);
 
-      private Activity activity = null;
+            // Build text view.
+            TextView textView = new TextView(activity);
+            textView.setText("测试分类");
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
 
-      public FoodListViewAdapter(Activity activity) {
-         this.activity = activity;
-//         imageWidth =
-//                 this.activity.getWindowManager().getDefaultDisplay().getWidth()
-//                  * 3 / 4;
-//         imageHeight =
-//                 this.activity.getWindowManager().getDefaultDisplay().getHeight()
-//                  * 3 / 4;
+            // Build linear layout and add the image view and text view.
+            LinearLayout linearLayout = new LinearLayout(activity);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.addView(imageView);
+            linearLayout.addView(textView);
+
+            views[5] = linearLayout;
+         }
+
+         {
+            // Load scaled bitmap.
+            Bitmap bitmap = BitmapFactory.decodeResource(
+                    activity.getResources(), R.drawable.soup);
+            bitmap = Bitmap.createScaledBitmap(
+                    bitmap, IMAGE_DEFAULT_WIDTH, IMAGE_DEFAULT_HEIGHT, true);
+
+            // Build image view.
+            ImageView imageView = new ImageView(activity);
+            imageView.setImageBitmap(bitmap);
+
+            // Build text view.
+            TextView textView = new TextView(activity);
+            textView.setText("测试分类");
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
+
+            // Build linear layout and add the image view and text view.
+            LinearLayout linearLayout = new LinearLayout(activity);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.addView(imageView);
+            linearLayout.addView(textView);
+
+            views[6] = linearLayout;
+         }
+
+         {
+            // Load scaled bitmap.
+            Bitmap bitmap = BitmapFactory.decodeResource(
+                    activity.getResources(), R.drawable.soup);
+            bitmap = Bitmap.createScaledBitmap(
+                    bitmap, IMAGE_DEFAULT_WIDTH, IMAGE_DEFAULT_HEIGHT, true);
+
+            // Build image view.
+            ImageView imageView = new ImageView(activity);
+            imageView.setImageBitmap(bitmap);
+
+            // Build text view.
+            TextView textView = new TextView(activity);
+            textView.setText("测试分类");
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
+
+            // Build linear layout and add the image view and text view.
+            LinearLayout linearLayout = new LinearLayout(activity);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.addView(imageView);
+            linearLayout.addView(textView);
+
+            views[7] = linearLayout;
+         }
+
+         {
+            // Load scaled bitmap.
+            Bitmap bitmap = BitmapFactory.decodeResource(
+                    activity.getResources(), R.drawable.soup);
+            bitmap = Bitmap.createScaledBitmap(
+                    bitmap, IMAGE_DEFAULT_WIDTH, IMAGE_DEFAULT_HEIGHT, true);
+
+            // Build image view.
+            ImageView imageView = new ImageView(activity);
+            imageView.setImageBitmap(bitmap);
+
+            // Build text view.
+            TextView textView = new TextView(activity);
+            textView.setText("测试分类");
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
+
+            // Build linear layout and add the image view and text view.
+            LinearLayout linearLayout = new LinearLayout(activity);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.addView(imageView);
+            linearLayout.addView(textView);
+
+            views[8] = linearLayout;
+         }
+
+         {
+            // Load scaled bitmap.
+            Bitmap bitmap = BitmapFactory.decodeResource(
+                    activity.getResources(), R.drawable.soup);
+            bitmap = Bitmap.createScaledBitmap(
+                    bitmap, IMAGE_DEFAULT_WIDTH, IMAGE_DEFAULT_HEIGHT, true);
+
+            // Build image view.
+            ImageView imageView = new ImageView(activity);
+            imageView.setImageBitmap(bitmap);
+
+            // Build text view.
+            TextView textView = new TextView(activity);
+            textView.setText("测试分类");
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(activity.getResources().getColorStateList(
+                    R.color.food_list_selector));
+
+            // Build linear layout and add the image view and text view.
+            LinearLayout linearLayout = new LinearLayout(activity);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.addView(imageView);
+            linearLayout.addView(textView);
+
+            views[9] = linearLayout;
+         }
       }
 
       public int getCount() {
-         return 7;
+         return views.length;
       }
 
       public Object getItem(int arg0) {
@@ -298,7 +429,33 @@ public class MainActivity extends Activity {
 
       public View getView(int arg0, View arg1, ViewGroup arg2) {
 
-         if (arg0 == 0) {
+         if ((arg0 >= 0) && (arg0 <this.getCount())) {
+            return views[arg0];
+         }else {
+            return null;
+         }
+      }
+   }
+
+   public static class FoodListViewAdapter extends BaseAdapter {
+
+      private int imageWidth = 200;
+      private int imageHeight = 200;
+
+      private LinearLayout views[] = new LinearLayout[7];
+
+      private Activity activity = null;
+
+      public FoodListViewAdapter(Activity activity) {
+         this.activity = activity;
+//         imageWidth =
+//                 this.activity.getWindowManager().getDefaultDisplay().getWidth()
+//                  * 3 / 4;
+//         imageHeight =
+//                 this.activity.getWindowManager().getDefaultDisplay().getHeight()
+//                  * 3 / 4;
+
+         {
 
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
@@ -323,9 +480,11 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
+            views[0] = linearLayout;
 
-         } else if (arg0 == 1) {
+         }
+
+         {
 
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
@@ -350,10 +509,11 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
+            views[1] = linearLayout;
 
-         } else if (arg0 == 2) {
+         }
 
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.pasta_macaroni);
@@ -377,10 +537,11 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
+            views[2] = linearLayout;
 
-         } else if (arg0 == 3) {
+         }
 
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.pasta_conchiglie);
@@ -404,10 +565,11 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
+            views[3] = linearLayout;
 
-         } else if (arg0 == 4) {
+         }
 
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.pasta_rotini);
@@ -431,10 +593,11 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
+            views[4] = linearLayout;
 
-         } else if (arg0 == 5) {
+         }
 
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.pasta_spahetti);
@@ -458,10 +621,11 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
+            views[5] = linearLayout;
 
-         } else if (arg0 == 6) {
+         }
 
+         {
             // Load scaled bitmap.
             Bitmap bitmap = BitmapFactory.decodeResource(
                     activity.getResources(), R.drawable.pasta_ziti);
@@ -485,36 +649,28 @@ public class MainActivity extends Activity {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
 
-            return linearLayout;
+            views[6] = linearLayout;
+         }
+      }
 
-         } else {
+      public int getCount() {
+         return views.length;
+      }
 
-            // Load scaled bitmap.
-            Bitmap bitmap = BitmapFactory.decodeResource(
-                    activity.getResources(), R.drawable.soup);
-            bitmap = Bitmap.createScaledBitmap(
-                    bitmap, imageWidth, imageHeight, true);
+      public Object getItem(int arg0) {
+         return arg0;
+      }
 
-            // Build image view.
-            ImageView imageView = new ImageView(activity);
-            imageView.setImageBitmap(bitmap);
+      public long getItemId(int arg0) {
+         return arg0;
+      }
 
-            // Build text view.
-            TextView textView = new TextView(activity);
-            textView.setText("测试餐品");
-            textView.setGravity(Gravity.CENTER);
-            textView.setTextColor(activity.getResources().getColorStateList(
-                    R.color.food_list_selector));
+      public View getView(int arg0, View arg1, ViewGroup arg2) {
 
-            // Build linear layout and add the image view and text view.
-            LinearLayout linearLayout = new LinearLayout(activity);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.addView(imageView);
-            linearLayout.addView(textView);
-
-            return linearLayout;
-
-            //return new LinearLayout(activity);
+         if ((arg0 >=0) && (arg0 < views.length)) {
+            return views[arg0];
+         }else {
+            return null;
          }
       }
    }
