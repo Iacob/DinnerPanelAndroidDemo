@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
    android:id="@+id/main_view"
    android:layout_width="fill_parent"
    android:layout_height="fill_parent">
+
+   <!-- Bill Item List View -->
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:orientation="vertical"
+         android:layout_weight="1"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+
+         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Ziti 1份 未处理" />
+
+         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Farfalle 1份 处理中" />
+
+         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="红茶 1份 已完成" />
+
+      </LinearLayout>
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:orientation="vertical"
+         android:layout_weight="0"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center" >
+
+         <Button android:id="@+id/bill_item_list_view_button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="添加餐品" />
+
+      </LinearLayout>
+
+   </LinearLayout>
 
    <!-- Food Category View -->
    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -87,4 +132,4 @@
 
    </LinearLayout>
 
-</ViewSwitcher>
+</ViewFlipper>

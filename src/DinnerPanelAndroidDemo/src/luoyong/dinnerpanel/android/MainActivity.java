@@ -17,13 +17,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 import android.widget.ViewSwitcher;
+import luoyong.dinnerpanel.android.util.AnimationUtil;
 
 /**
  *
@@ -31,7 +34,7 @@ import android.widget.ViewSwitcher;
  */
 public class MainActivity extends Activity {
 
-   private ViewSwitcher mainView = null;
+   private ViewFlipper mainView = null;
    
    private Dialog confirmDialog = null;
 
@@ -47,7 +50,8 @@ public class MainActivity extends Activity {
 
       this.setContentView(R.layout.main);
       
-      this.mainView = (ViewSwitcher)this.findViewById(R.id.main_view);
+      this.mainView = (ViewFlipper)this.findViewById(R.id.main_view);
+      mainView.setDisplayedChild(1);
 
       // Setup food category grid view.
       GridView gridView
@@ -62,6 +66,46 @@ public class MainActivity extends Activity {
       View confirmDialogView = layoutInflater.inflate(
               R.layout.confirm_dialog_layout,
               (ViewGroup)this.findViewById(R.id.confirm_dialog_main_view));
+      
+      final EditText editTextFoodCount
+              = (EditText)confirmDialogView.findViewById(
+                 R.id.confirm_dialog_view_food_count);
+      final Button buttonFoodPlus = (Button)confirmDialogView.findViewById(
+                 R.id.confirm_dialog_view_food_count_plus);
+      final Button buttonFoodMinus = (Button)confirmDialogView.findViewById(
+                 R.id.confirm_dialog_view_food_count_minus);
+
+      // Set action of the plus button on confirm dialog.
+      buttonFoodPlus.setOnClickListener(new OnClickListener() {
+         public void onClick(View arg0) {
+            int foodCount = 0;
+            try {
+               foodCount = Integer.parseInt(
+                       editTextFoodCount.getText().toString());
+            }catch(Throwable t) {}
+
+            foodCount++;
+            editTextFoodCount.setText(String.valueOf(foodCount));
+         }
+      });
+
+      // Set action of the minus button on confirm dialog.
+      buttonFoodMinus.setOnClickListener(new OnClickListener() {
+         public void onClick(View arg0) {
+            int foodCount = 0;
+            try {
+               foodCount = Integer.parseInt(
+                       editTextFoodCount.getText().toString());
+            }catch(Throwable t) {}
+
+            foodCount--;
+            if (foodCount < 1) {
+               editTextFoodCount.setText("1");
+            }else {
+               editTextFoodCount.setText(String.valueOf(foodCount));
+            }
+         }
+      });
 
       // Prepair the confirm dialog builder.
       AlertDialog.Builder confirmDialogBuilder = new AlertDialog.Builder(this);
@@ -77,6 +121,25 @@ public class MainActivity extends Activity {
       // Build the confirm dialog.
       confirmDialog = confirmDialogBuilder.create();
 
+      Button buttonBillItemListViewAdd = (Button)this.findViewById(
+              R.id.bill_item_list_view_button_add);
+      buttonBillItemListViewAdd.setOnClickListener(new OnClickListener() {
+         public void onClick(View arg0) {
+            mainView.setInAnimation(AnimationUtil.createFromNorthInAnimation());
+            mainView.setOutAnimation(AnimationUtil.createToSouthOutAnimation());
+            mainView.setDisplayedChild(1);
+         }
+      });
+
+      Button buttonFoodCategoryViewAdd = (Button)this.findViewById(
+              R.id.food_category_view_button);
+      buttonFoodCategoryViewAdd.setOnClickListener(new OnClickListener() {
+         public void onClick(View arg0) {
+            mainView.setInAnimation(AnimationUtil.createFromNorthInAnimation());
+            mainView.setOutAnimation(AnimationUtil.createToSouthOutAnimation());
+            mainView.setDisplayedChild(0);
+         }
+      });
 
       // Setup food list gallery.
       gallery = (Gallery)this.findViewById(R.id.food_list_view_gallery);
@@ -94,7 +157,9 @@ public class MainActivity extends Activity {
               = (Button)this.findViewById(R.id.food_list_view_button_back);
       buttonFoodListViewBack.setOnClickListener(new OnClickListener() {
          public void onClick(View arg0) {
-            mainView.setDisplayedChild(0);
+            mainView.setInAnimation(AnimationUtil.createFromSouthInAnimation());
+            mainView.setOutAnimation(AnimationUtil.createToNorthOutAnimation());
+            mainView.setDisplayedChild(1);
          }
       });
 
@@ -107,9 +172,12 @@ public class MainActivity extends Activity {
                Toast toast = Toast.makeText(activityContext, "请稍候，正在获取数据", Toast.LENGTH_LONG);
                toast.show();
                activityContext.showDialog(0);
-               gallery.setAdapter(new FoodListViewAdapter(activityContext));
-               mainView.setDisplayedChild(1);
+               // Fetch the data here.
                activityContext.dismissDialog(0);
+               gallery.setAdapter(new FoodListViewAdapter(activityContext));
+               mainView.setOutAnimation(AnimationUtil.createToNorthWestOutAnimation());
+               mainView.setInAnimation(AnimationUtil.createFromSouthEastInAnimation());
+               mainView.setDisplayedChild(2);
             }else {
                Toast toast = Toast.makeText(activityContext, "很抱歉，此分类下没有餐品", Toast.LENGTH_SHORT);
                toast.show();
