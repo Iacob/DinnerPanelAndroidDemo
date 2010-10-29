@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+   <item android:id="@+id/menu_main_quit"
+      android:icon="@android:drawable/ic_media_pause"
+      android:title="退出" />
+</menu>

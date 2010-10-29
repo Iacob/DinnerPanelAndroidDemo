@@ -5,11 +5,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -25,7 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-import android.widget.ViewSwitcher;
 import luoyong.dinnerpanel.android.util.AnimationUtil;
 
 /**
@@ -42,9 +47,18 @@ public class MainActivity extends Activity {
 
    private Activity activityContext = null;
 
+   private DinnerPanelApplicationContext dpAppContext = null;
+
+   public Handler messageHandler = null;
+
    @Override
    public void onCreate(Bundle icicle) {
+      android.util.Log.v("SYSTEM", "Creating activity.");
+      android.util.Log.v("SYSTEM", "Current thread instance is: "
+              + Thread.currentThread().getName());
+      
       super.onCreate(icicle);
+      this.setTitle("DinnerPanel电子菜单");
 
       this.activityContext = this;
 
@@ -52,6 +66,53 @@ public class MainActivity extends Activity {
       
       this.mainView = (ViewFlipper)this.findViewById(R.id.main_view);
       mainView.setDisplayedChild(1);
+
+      if (dpAppContext == null) {
+         dpAppContext = new DinnerPanelApplicationContext(this);
+         dpAppContext.setMainView(mainView);
+         // Start the background scene here.
+         dpAppContext.getBackgroundScene().show();
+      }
+
+//      if (messageHandler == null) {
+         
+         messageHandler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+               if (msg.what == 0x151) {
+                  android.util.Log.v("Loop Cycle", "Handling 0x151 message.");
+                  android.util.Log.v("Loop Cycle", "Current DisplayChild: "
+                          + dpAppContext.getMainView().getDisplayedChild());
+                  // Show the broadcast advertisement.
+   //               if (dpAppContext.getMainView().getDisplayedChild()
+   //                       != BackgroundScene.VIEW_INDEX) {
+
+
+
+                     
+                     dpAppContext.getMainView().setInAnimation(
+                             AnimationUtil.createFadeInAnimation(dpAppContext));
+                     dpAppContext.getMainView().setOutAnimation(
+                             AnimationUtil.createFadeOutAnimation(dpAppContext));
+
+   //                  ImageView imageView = (ImageView)dpAppContext
+   //                          .getActivityContext()
+   //                          .findViewById(R.id.advertisement_view_image_view);
+   //                  Bitmap bitmap = BitmapFactory.decodeResource(dpAppContext.getApplicationResources(), R.drawable.fruit_juice);
+   //                  bitmap = Bitmap.createScaledBitmap(
+   //                    bitmap, 100, 70, true);
+   //                  imageView.setImageBitmap(bitmap);
+
+                     android.util.Log.v("Loop Cycle", "Play the advertisement.");
+                     dpAppContext.getMainView().setDisplayedChild(
+                             BackgroundScene.VIEW_INDEX);
+   //               }
+               }
+               super.handleMessage(msg);
+            }
+         };
+//      }
 
       // Setup food category grid view.
       GridView gridView
@@ -127,6 +188,8 @@ public class MainActivity extends Activity {
          public void onClick(View arg0) {
             mainView.setInAnimation(AnimationUtil.createFromNorthInAnimation());
             mainView.setOutAnimation(AnimationUtil.createToSouthOutAnimation());
+            // Reset the background timer.
+            dpAppContext.getBackgroundScene().resetTimer();
             mainView.setDisplayedChild(1);
          }
       });
@@ -137,6 +200,8 @@ public class MainActivity extends Activity {
          public void onClick(View arg0) {
             mainView.setInAnimation(AnimationUtil.createFromNorthInAnimation());
             mainView.setOutAnimation(AnimationUtil.createToSouthOutAnimation());
+            // Reset the background timer.
+            dpAppContext.getBackgroundScene().resetTimer();
             mainView.setDisplayedChild(0);
          }
       });
@@ -159,6 +224,8 @@ public class MainActivity extends Activity {
          public void onClick(View arg0) {
             mainView.setInAnimation(AnimationUtil.createFromSouthInAnimation());
             mainView.setOutAnimation(AnimationUtil.createToNorthOutAnimation());
+            // Reset the background timer.
+            dpAppContext.getBackgroundScene().resetTimer();
             mainView.setDisplayedChild(1);
          }
       });
@@ -177,6 +244,8 @@ public class MainActivity extends Activity {
                gallery.setAdapter(new FoodListViewAdapter(activityContext));
                mainView.setOutAnimation(AnimationUtil.createToNorthWestOutAnimation());
                mainView.setInAnimation(AnimationUtil.createFromSouthEastInAnimation());
+               // Reset the background timer.
+               dpAppContext.getBackgroundScene().resetTimer();
                mainView.setDisplayedChild(2);
             }else {
                Toast toast = Toast.makeText(activityContext, "很抱歉，此分类下没有餐品", Toast.LENGTH_SHORT);
@@ -197,7 +266,27 @@ public class MainActivity extends Activity {
       dialog.setTitle("请稍候");
       dialog.setMessage("请稍候，正在获取数据");
       return dialog;
-      // Dialog dialog = ProgressDialog.show(activityContext, "请稍候", "请稍候，正在获取数据");
+   }
+
+   @Override
+   public void onConfigurationChanged(Configuration newConfig) {
+      super.onConfigurationChanged(newConfig);
+   }
+
+   @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+      if (item.getItemId() == R.id.menu_main_quit) {
+         this.finish();
+         return true; // Process here.
+      }else {
+         return super.onOptionsItemSelected(item);
+      }
+   }
+
+   @Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+      this.getMenuInflater().inflate(R.menu.main_option_menu, menu);
+      return true;
    }
 
    public static class FoodCategoryViewAdapter extends BaseAdapter {

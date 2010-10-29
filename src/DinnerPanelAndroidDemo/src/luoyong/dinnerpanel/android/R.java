@@ -15,34 +15,40 @@ public final class R {
     }
     public static final class drawable {
         public static final int cold_dish=0x7f020000;
-        public static final int hot_dish=0x7f020001;
-        public static final int pasta_conchiglie=0x7f020002;
-        public static final int pasta_farfalle=0x7f020003;
-        public static final int pasta_macaroni=0x7f020004;
-        public static final int pasta_mostaciolli=0x7f020005;
-        public static final int pasta_rotini=0x7f020006;
-        public static final int pasta_spahetti=0x7f020007;
-        public static final int pasta_ziti=0x7f020008;
-        public static final int soup=0x7f020009;
-        public static final int staple_food=0x7f02000a;
+        public static final int fruit_juice=0x7f020001;
+        public static final int hot_dish=0x7f020002;
+        public static final int pasta_conchiglie=0x7f020003;
+        public static final int pasta_farfalle=0x7f020004;
+        public static final int pasta_macaroni=0x7f020005;
+        public static final int pasta_mostaciolli=0x7f020006;
+        public static final int pasta_rotini=0x7f020007;
+        public static final int pasta_spahetti=0x7f020008;
+        public static final int pasta_ziti=0x7f020009;
+        public static final int soup=0x7f02000a;
+        public static final int staple_food=0x7f02000b;
     }
     public static final class id {
-        public static final int bill_item_list_view_button_add=0x7f060006;
-        public static final int confirm_dialog_main_view=0x7f060000;
-        public static final int confirm_dialog_view_comment=0x7f060004;
-        public static final int confirm_dialog_view_food_count=0x7f060001;
-        public static final int confirm_dialog_view_food_count_minus=0x7f060003;
-        public static final int confirm_dialog_view_food_count_plus=0x7f060002;
-        public static final int food_category_view_button=0x7f060008;
-        public static final int food_category_view_grid=0x7f060007;
-        public static final int food_list_view_button_add=0x7f06000a;
-        public static final int food_list_view_button_back=0x7f06000b;
-        public static final int food_list_view_gallery=0x7f060009;
-        public static final int main_view=0x7f060005;
+        public static final int advertisement_view_button_quit=0x7f07000c;
+        public static final int bill_item_list_view_button_add=0x7f070006;
+        public static final int confirm_dialog_main_view=0x7f070000;
+        public static final int confirm_dialog_view_comment=0x7f070004;
+        public static final int confirm_dialog_view_food_count=0x7f070001;
+        public static final int confirm_dialog_view_food_count_minus=0x7f070003;
+        public static final int confirm_dialog_view_food_count_plus=0x7f070002;
+        public static final int food_category_view_button=0x7f070008;
+        public static final int food_category_view_grid=0x7f070007;
+        public static final int food_list_view_button_add=0x7f07000a;
+        public static final int food_list_view_button_back=0x7f07000b;
+        public static final int food_list_view_gallery=0x7f070009;
+        public static final int main_view=0x7f070005;
+        public static final int menu_main_quit=0x7f07000d;
     }
     public static final class layout {
         public static final int confirm_dialog_layout=0x7f030000;
         public static final int main=0x7f030001;
+    }
+    public static final class menu {
+        public static final int main_option_menu=0x7f060000;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
