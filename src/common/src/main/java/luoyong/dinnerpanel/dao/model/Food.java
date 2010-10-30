@@ -40,7 +40,7 @@ import javax.persistence.Table;
       query="select f from Food f where f.name like ?1 "
          + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "and f.category is not null "
-         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "order by f.recommend"),
    @NamedQuery(name=Food.QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_NAME,
       query="select f from Food f where f.name like ?1 "
@@ -53,7 +53,7 @@ import javax.persistence.Table;
       query="select f from Food f where f.abbreviation like ?1 "
          + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "and f.category is not null "
-         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "order by f.recommend"),
    @NamedQuery(
       name=Food.QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_ABBREVIATION,
@@ -67,20 +67,20 @@ import javax.persistence.Table;
       query="select f from Food f where f.code like ?1 "
          + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "and f.category is not null "
-         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "order by f.recommend"),
    @NamedQuery(name=Food.QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_CODE,
       query="select f from Food f where f.code like ?1 "
          + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "and f.category is not null "
          + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
-         + "and and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A "
+         + "and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A "
          + "order by f.recommend"),
    @NamedQuery(name=Food.QUERY_SEARCH_FOOD_INFORMATION_BY_TAG,
       query="select f from Food f, IN(f.tags) t where t like ?1 "
          + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "and f.category is not null "
-         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"
+         + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "order by f.recommend"),
    @NamedQuery(name=Food.QUERY_SEARCH_AVAILABLE_FOOD_INFORMATION_BY_TAG,
       query="select f from Food f, IN(f.tags) t where t like ?1 "
@@ -99,7 +99,7 @@ import javax.persistence.Table;
          + "and f.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
          + "and f.category is not null "
          + "and f.category.ek=luoyong.dinnerpanel.dao.model.ExistKey.E "
-         + "and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A ")})
+         + "and f.status=luoyong.dinnerpanel.dao.model.FoodStatus.A")})
 public class Food implements Serializable {
 
    public static final String QUERY_GET_FOOD_INFORMATION

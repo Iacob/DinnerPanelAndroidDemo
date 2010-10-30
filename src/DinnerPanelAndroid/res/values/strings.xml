@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <resources>
     <string name="app_name">DinnerPanelAndroid</string>
+    <string name="text_default_server_address">http://192.168.1.9:8080/DinnerPanelWebApi/resources</string>
+    <string name="text_default_server_username">user_admin</string>
+    <string name="text_default_server_password">pass</string>
 </resources>

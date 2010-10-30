@@ -1,6 +1,5 @@
 package luoyong.dinnerpanel.android;
 
-import android.app.Activity;
 import android.widget.ViewFlipper;
 
 /**

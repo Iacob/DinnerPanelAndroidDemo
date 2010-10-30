@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
-   android:id="@+id/main_view"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/mainview"
    android:layout_width="fill_parent"
    android:layout_height="fill_parent">
 
-   <!-- Food Category View -->
+   <!-- Login View -->
    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
       android:orientation="vertical"
       android:layout_width="fill_parent"
@@ -13,13 +13,146 @@
 
       <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
          android:layout_weight="1"
+         android:orientation="vertical"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent">
+
+         <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+         <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="登入系统" />
+
+         <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+         <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="服务器URL" />
+
+         <EditText
+            android:id="@+id/scene_login_editext_server_url"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="@string/text_default_server_address" />
+
+         <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="用户名"/>
+
+         <EditText
+            android:id="@+id/scene_login_editext_server_username"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:text="@string/text_default_server_username" />
+
+         <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="密码"/>
+
+         <EditText
+            android:id="@+id/scene_login_editext_server_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:text="@string/text_default_server_password" />
+
+      </LinearLayout>
+
+      <!-- An Empty Space -->
+      <TextView
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:text="" />
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_weight="0"
+         android:orientation="horizontal"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent"
+         android:gravity="center" >
+
+         <Button android:id="@+id/scene_login_button_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text=" 登入 " />
+         
+      </LinearLayout>
+
+   </LinearLayout>
+
+   <!-- Bill Item List View -->
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:orientation="vertical"
+         android:layout_weight="1"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+
+         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Ziti 1份 未处理" />
+
+         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Farfalle 1份 处理中" />
+
+         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="红茶 1份 已完成" />
+
+      </LinearLayout>
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:orientation="vertical"
+         android:layout_weight="0"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center" >
+
+         <Button android:id="@+id/bill_item_list_view_button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="添加餐品" />
+
+      </LinearLayout>
+
+   </LinearLayout>
+
+   <!-- Food Category View -->
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent">
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_weight="1"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content">
 
          <GridView
-            android:id="@+id/food_category_view_grid"
+            android:id="@+id/scene_food_category_list_grid"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:numColumns="auto_fit"
             android:horizontalSpacing="10dp"
             android:verticalSpacing="10dp"
@@ -34,9 +167,9 @@
          android:layout_height="wrap_content"
          android:gravity="center" >
 
-         <Button android:id="@+id/food_category_view_button"
+         <Button android:id="@+id/scene_food_category_list_button_back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="返回餐品列表" />
 
       </LinearLayout>
@@ -87,4 +220,28 @@
 
    </LinearLayout>
 
-</ViewSwitcher>
+   <!-- Advertisement View -->
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+
+      
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:orientation="vertical"
+         android:layout_weight="0"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center" >
+
+         <Button android:id="@+id/advertisement_view_button_quit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回" />
+
+      </LinearLayout>
+
+   </LinearLayout>
+
+</ViewFlipper>

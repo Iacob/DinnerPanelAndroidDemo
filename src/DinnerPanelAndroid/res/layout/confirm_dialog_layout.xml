@@ -16,11 +16,30 @@
          android:text="份数"
          android:inputType="number" />
 
-      <EditText
-         android:id="@+id/confirm_dialog_view_food_count"
-         android:layout_width="150dp"
-         android:layout_height="wrap_content"
-         android:inputType="number" />
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:orientation="horizontal"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+         
+         <EditText
+            android:id="@+id/confirm_dialog_view_food_count"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:focusable="false"
+            android:text="1" />
+         
+         <Button android:id="@+id/confirm_dialog_view_food_count_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" + " />
+
+         <Button android:id="@+id/confirm_dialog_view_food_count_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - " />
+
+      </LinearLayout>
 
       <TextView
          android:layout_width="fill_parent"
@@ -30,7 +49,7 @@
 
       <EditText
          android:id="@+id/confirm_dialog_view_comment"
-         android:layout_width="150dp"
+         android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:inputType="text" />
 
