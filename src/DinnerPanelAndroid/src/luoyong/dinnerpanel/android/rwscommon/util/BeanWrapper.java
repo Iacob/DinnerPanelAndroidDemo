@@ -16,6 +16,8 @@ public class BeanWrapper {
    private ReadableBeanProperty[] readableProperties = null;
    private WritableBeanProperty[] writableProperties = null;
 
+   private Pattern propertyNamePattern = Pattern.compile("^(.)(.*)$");
+
    public BeanWrapper(Object object) {
       
       this.wrappedObject = object;
@@ -42,15 +44,23 @@ public class BeanWrapper {
       for (Method method : objectMethods) {
          Matcher matcher = readablePropertyPattern.matcher(method.getName());
          if (matcher.find()) {
-            readablePropertiesList.add(
-                    new ReadableBeanProperty(
-                     matcher.group(1), method, method.getReturnType()));
+
+            if (!"Class".equals(matcher.group(1))) {
+
+               readablePropertiesList.add(
+                       new ReadableBeanProperty(
+                          this.toBeanName(matcher.group(1)),
+                          method,
+                          method.getReturnType()));
+            }
          }else {
             matcher = readableBooleanPropertyPattern.matcher(method.getName());
             if (matcher.find()) {
                readablePropertiesList.add(
                     new ReadableBeanProperty(
-                     matcher.group(1), method, method.getReturnType()));
+                       this.toBeanName(matcher.group(1)),
+                       method,
+                       method.getReturnType()));
             }
          }
       }
@@ -68,7 +78,7 @@ public class BeanWrapper {
 
             writablePropertiesList.add(
                     new WritableBeanProperty(
-                       matcher.group(1),
+                       this.toBeanName(matcher.group(1)),
                        method,
                        method.getParameterTypes()[0]));
          }
@@ -83,6 +93,23 @@ public class BeanWrapper {
 
    public WritableBeanProperty[] getWritableProperties() {
       return writableProperties;
+   }
+
+   private String toBeanName(String str) {
+      if (str == null) {
+         return null;
+      }
+      if (str.length() < 2) {
+         return str.toLowerCase();
+      }
+
+      Matcher matcher = propertyNamePattern.matcher(str);
+      if (matcher.find()) {
+         return (matcher.group(1).toLowerCase() + matcher.group(2));
+      }
+
+      return str;
+      
    }
 
    public Object get(ReadableBeanProperty property) {

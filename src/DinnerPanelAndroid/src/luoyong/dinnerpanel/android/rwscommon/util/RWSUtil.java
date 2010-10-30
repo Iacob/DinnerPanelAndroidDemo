@@ -24,7 +24,9 @@ import org.json.JSONObject;
  */
 public class RWSUtil {
 
-   public static void setJsonObjectReturnCode(JSONObject jsonObject, int returnCode) {
+   public static void setJsonObjectReturnCode(
+           JSONObject jsonObject, int returnCode) {
+      
       if (jsonObject != null) {
          try {
             jsonObject.put(
@@ -174,7 +176,8 @@ public class RWSUtil {
 
          int serverReadCount = 0;
          byte serverReadBuffer[] = new byte[512];
-         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+         ByteArrayOutputStream byteArrayOutputStream
+                 = new ByteArrayOutputStream();
 
          for (;;) {
             try {
@@ -298,7 +301,8 @@ public class RWSUtil {
                try {
                   serverOutputStream.write(clientMessage.getBytes("UTF-8"));
                }catch (UnsupportedEncodingException ex) {
-                  throw new RemoteInformationException("字符编码格式系统不支持", ex);
+                  throw new RemoteInformationException(
+                          "字符编码格式系统不支持", ex);
                }
             }catch(IOException ex) {
 
@@ -354,7 +358,8 @@ public class RWSUtil {
 
          int serverReadCount = 0;
          byte serverReadBuffer[] = new byte[512];
-         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+         ByteArrayOutputStream byteArrayOutputStream
+                 = new ByteArrayOutputStream();
 
          for (;;) {
             try {

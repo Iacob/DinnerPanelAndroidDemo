@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+import luoyong.dinnerpanel.android.rwscommon.util.BeanWrapper;
+import luoyong.dinnerpanel.android.rwscommon.util.RWSUtil;
 
 /**
  *
