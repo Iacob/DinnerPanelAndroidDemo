@@ -458,7 +458,7 @@ public class RWSFood {
       }
 
       Food food = new Food();
-      JsonBeanUtil.jsonObjectToBean(foodInfoJsonObject, food);
+      this.jsonObjectToFoodInformation(foodInfoJsonObject, food);
 
       foodManagement.addFoodInformation(food);
 
@@ -729,7 +729,7 @@ public class RWSFood {
       }
 
       Food food = new Food();
-      jsonObjectToFoodInformation(foodInfoJsonObject, food);
+      this.jsonObjectToFoodInformation(foodInfoJsonObject, food);
 
       Food foodInSystem = foodManagement.getFoodInformation(food);
       if (foodInSystem == null) {
@@ -749,21 +749,25 @@ public class RWSFood {
          return null;
       }
 
+      // Convert food information to json object.
       JSONObject foodJsonObject = JsonBeanUtil.beanToJsonObject(f);
 
       if ((foodJsonObject != null)
               && (f.getCategory() != null)
               && (f.getCategory().getId() != null)) {
 
+         // Convert food category information to json object.
          JSONObject foodCategoryJsonObject
                  = JsonBeanUtil.beanToJsonObject(f.getCategory());
-         
+
+         // Put food category information into food information json object.
          try {
             foodJsonObject.put("category", foodCategoryJsonObject);
          } catch (JSONException ex) {
             ex.printStackTrace(System.err);
          }
 
+         // Put food information tags into food information json object.
          try {
             Set<String> foodTagsSet = f.getTags();
             
@@ -794,9 +798,10 @@ public class RWSFood {
          return;
       }
 
+      // Extract information from json object to food information instance.
       JsonBeanUtil.jsonObjectToBean(foodJsonObject, f);
 
-      // Handle food category.
+      // Get food category json object.
       JSONObject foodCategoryJsonObject = null;
       try {
          foodCategoryJsonObject = foodJsonObject.getJSONObject("category");
@@ -804,34 +809,39 @@ public class RWSFood {
          t.printStackTrace(System.err);
       }
 
+      // Extract information from food category json object
+      //  to food category instance.
       FoodCategory foodCategory = null;
       if (foodCategoryJsonObject != null) {
          foodCategory = new FoodCategory();
          JsonBeanUtil.jsonObjectToBean(foodCategoryJsonObject, foodCategory);
       }
 
+      // Put food category information into food information.
       f.setCategory(foodCategory);
 
       // Handle food information tags.
       Set<String> foodTagsSet = new HashSet<String>();
       try {
-          JSONArray foodTagsJsonArray = foodJsonObject.getJSONArray("tags");
-          if (foodTagsJsonArray != null) {
-             int foodTagsCount = foodTagsJsonArray.length();
-             String foodTag = null;
-             for (int i=0; i<foodTagsCount; i++) {
-                foodTag = null;
-                try {
+         // Get food information tags in json array format.
+         JSONArray foodTagsJsonArray = foodJsonObject.getJSONArray("tags");
+         if (foodTagsJsonArray != null) {
+            // Extract food information tags from json array.
+            int foodTagsCount = foodTagsJsonArray.length();
+            String foodTag = null;
+            for (int i = 0; i < foodTagsCount; i++) {
+               foodTag = null;
+               try {
                   foodTag = foodTagsJsonArray.getString(i);
-                }catch(Throwable t) {
-                   t.printStackTrace(System.err);
-                }
+               } catch (Throwable t) {
+                  t.printStackTrace(System.err);
+               }
 
-                if (foodTag != null) {
+               if (foodTag != null) {
                   foodTagsSet.add(foodTag);
                }
-             }
-          }
+            }
+         }
       }catch(Throwable t) {
          t.printStackTrace(System.err);
       }

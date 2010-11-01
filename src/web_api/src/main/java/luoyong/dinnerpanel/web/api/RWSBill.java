@@ -42,7 +42,7 @@ public class RWSBill {
       foodManagement = new FoodManagement();
    }
 
-   @Path("operator/get-current-bill-from-sale-place/{sale-place-id}")
+   @Path("customer/get-current-bill-from-sale-place/{sale-place-id}")
    @Produces("application/json")
    @GET
    public String getCurrentBillFromSalePlace(
@@ -140,7 +140,7 @@ public class RWSBill {
       return result.toString();
    }
 
-   @Path("operator/get-bill-information-from-bill-item/{bill-item-id}")
+   @Path("customer/get-bill-information-from-bill-item/{bill-item-id}")
    @Produces("application/json")
    @GET
    public String getBillInformationFromBillItem(
@@ -557,7 +557,7 @@ public class RWSBill {
       return result.toString();
    }
 
-   @Path("operator/get-current-bill-count-from-sale-place/{sale-place-id}")
+   @Path("customer/get-current-bill-count-from-sale-place/{sale-place-id}")
    @Produces("application/json")
    @GET
    public String getCurrentBillCountFromSalePlace(
@@ -721,7 +721,7 @@ public class RWSBill {
       return result.toString();
    }
 
-   @Path("operator/calculate-bill-price/{bill-id}")
+   @Path("customer/calculate-bill-price/{bill-id}")
    @Produces("application/json")
    @GET
    public String calculateBillPrice(@PathParam("bill-id") String billIdString) {

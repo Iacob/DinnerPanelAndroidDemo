@@ -46,15 +46,15 @@ public class RWSURLHolder {
            = "/food/customer/search-available-food-by-keyword";
 
    public static final String SALE_PLACE_ADD_SALE_PLACE
-           = "/manager/add-sale-place";
+           = "/sale-place/manager/add-sale-place";
    public static final String SALE_PLACE_UPDATE_SALE_PLACE
-           = "/manager/update-sale-place";
+           = "/sale-place/manager/update-sale-place";
    public static final String SALE_PLACE_REMOVE_SALE_PLACE
-           = "/manager/remove-sale-place";
+           = "/sale-place/manager/remove-sale-place";
    public static final String SALE_PLACE_GET_ALL_SALE_PLACES
-           = "/operator/sale-place/list-all";
+           = "/sale-place/operator/sale-place/list-all";
    public static final String SALE_PLACE_GET_SALE_PLACE
-           = "/customer/get-sale-place";
+           = "/sale-place/customer/get-sale-place";
 
    public static final String OPERATOR_ADD_OPERATOR
            = "/operatorManagement/admin/add-operator";
@@ -66,6 +66,51 @@ public class RWSURLHolder {
            = "/operatorManagement/admin/get-operator-information";
    public static final String OPERATOR_GET_ALL_OPERATOR_INFORMATION
            = "/operatorManagement/admin/get-all-operator-information";
+
+   public static final String BILL_GET_CURRENT_BILL_FROM_SALE_PLACE
+           = "/bill/operator/get-current-bill-from-sale-place";
+   public static final String BILL_GET_BILL = "/bill/customer/get-bill";
+   public static final String BILL_GET_BILL_INFORMATION_FROM_BILL_ITEM = "/bill/customer/get-bill-information-from-bill-item";
+   public static final String BILL_GET_ALL_BILL_ITEMS_FROM_BILL
+           = "/bill/customer/get-all-bill-items-from-bill";
+   public static final String BILL_ADD_ITEM_TO_BILL
+           = "/bill/customer/add-item-to-bill";
+   public static final String BILL_CANCEL_ITEM_FROM_BILL
+           = "/bill/customer/cancel-item-from-bill";
+   public static final String BILL_HASTEN_FOOD_IN_BILL
+           = "/bill/operator/hasten-food-in-bill";
+   public static final String BILL_CHECKOUT_BILL
+           = "/bill/operator/checkout-bill";
+   public static final String BILL_CANCEL_BILL
+           = "/bill/operator/cancel-bill";
+   public static final String BILL_MAKE_BILL_FOR_SALE_PLACE
+           = "/bill/operator/make-bill-for-sale-place";
+   public static final String BILL_SET_COMMENT_TO_BILL
+           = "/bill/operator/set-comment-to-bill";
+   public static final String BILL_GET_CURRENT_BILL_COUNT_FROM_SALE_PLACE
+           = "/bill/customer/get-current-bill-count-from-sale-place";
+   public static final String BILL_SET_SELLING_PRICE_TO_BILL
+           = "/bill/operator/set-selling-price-to-bill";
+   public static final String BILL_SET_COMMENT_TO_BILL_ITEM
+           = "/bill/customer/set-comment-to-bill-item/";
+   public static final String BILL_GET_BILL_ITEM
+           = "/bill/customer/get-bill-item";
+   public static final String BILL_CALCULATE_BILL_PRICE
+           = "/bill/customer/calculate-bill-price";
+   public static final String BILL_REMOVE_BILL
+           = "/bill/manager/remove-bill";
+   public static final String BILL_MARK_BILL_AS_SENT
+           = "/bill/operator/mark-bill-as-sent";
+   public static final String BILL_REMOVE_ITEM_FROM_BILL
+           = "/bill/manager/remove-item-from-bill";
+   public static final String BILL_MARK_BILL_ITEM_COMPLETE
+           = "/bill/kitchen/mark-bill-item-complete";
+   public static final String BILL_MARK_BILL_ITEM_PROCESSING
+           = "/bill/kitchen/mark-bill-item-processing";
+   public static final String BILL_MARK_BILL_ITEM_RETURNED
+           = "/bill/kitchen/mark-bill-item-returned";
+   public static final String BILL_CALCULATE_BILL_ITEM_HASTEN_COUNT
+           = "/bill/operator/calculate-bill-item-hasten-count";
 
    public static void setBaseURL(String baseURL) {
       _BASE_URL = baseURL;
