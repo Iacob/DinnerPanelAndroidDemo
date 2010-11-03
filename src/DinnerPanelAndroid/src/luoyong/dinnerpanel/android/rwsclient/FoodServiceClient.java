@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import luoyong.dinnerpanel.android.common.util.Base64Util;
 import luoyong.dinnerpanel.android.model.Food;
 import luoyong.dinnerpanel.android.model.FoodCategory;
 import luoyong.dinnerpanel.android.rwscommon.info.RemoteAuthorizationException;
@@ -77,7 +78,7 @@ public class FoodServiceClient {
       if (resultArray.length() == 0) {
          return null;
       }
-      
+
       JSONObject jsonObject = null;
 
       try {
@@ -216,7 +217,7 @@ public class FoodServiceClient {
          throw new RemoteBusinessLogicException("餐品信息不能为空");
       }
 
-      JSONObject jsonObject = JsonBeanUtil.beanToJsonObject(f);
+      JSONObject jsonObject = this.foodInformationToJsonObject(f);
 
       if (jsonObject == null) {
          throw new RemoteBusinessLogicException("上传的餐品信息不能为空");
@@ -832,6 +833,14 @@ public class FoodServiceClient {
          } catch (JSONException ex) {
             ex.printStackTrace(System.err);
          }
+
+         // Set picture for food in base 64 format.
+         try {
+            foodJsonObject.put(
+                    "picture_encoded", Base64Util.encode(f.getPicture()));
+         } catch (JSONException ex) {
+            ex.printStackTrace(System.err);
+         }
       }
 
       return foodJsonObject;
@@ -884,6 +893,14 @@ public class FoodServiceClient {
       }catch(Throwable t) {
          t.printStackTrace(System.err);
       }
+
       f.setTags(foodTagsSet);
+
+      try {
+         f.setPicture(Base64Util.decode(
+                 foodJsonObject.getString("picture_encoded")));
+      } catch (Throwable t) {
+         t.printStackTrace(System.err);
+      }
    }
 }

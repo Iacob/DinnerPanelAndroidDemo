@@ -20,7 +20,7 @@ public class Food implements Serializable {
    private BigDecimal price;
    private FoodStatus status;
    private Set<String> tags;
-   private byte[] image;
+   private byte[] picture;
    private Integer recommend;
 
    public String getAbbreviation() {
@@ -103,12 +103,12 @@ public class Food implements Serializable {
       this.tags = tags;
    }
 
-   public byte[] getImage() {
-      return image;
+   public byte[] getPicture() {
+      return picture;
    }
 
-   public void setImage(byte[] image) {
-      this.image = image;
+   public void setPicture(byte[] picture) {
+      this.picture = picture;
    }
 
    public Integer getRecommend() {

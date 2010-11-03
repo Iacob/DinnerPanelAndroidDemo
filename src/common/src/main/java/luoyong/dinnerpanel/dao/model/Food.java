@@ -169,8 +169,8 @@ public class Food implements Serializable {
    @Column(length=100, name="tag_name")
    private Set<String> tags;
 
-   @Column(name="image")
-   private byte[] image;
+   @Column(name="picture", length=5000000)
+   private byte[] picture;
 
    @Column(name="recommend")
    private Integer recommend;
@@ -255,12 +255,12 @@ public class Food implements Serializable {
       this.tags = tags;
    }
 
-   public byte[] getImage() {
-      return image;
+   public byte[] getPicture() {
+      return picture;
    }
 
-   public void setImage(byte[] image) {
-      this.image = image;
+   public void setPicture(byte[] picture) {
+      this.picture = picture;
    }
 
    public Integer getRecommend() {

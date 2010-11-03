@@ -47,6 +47,9 @@ public class FoodCategory implements Serializable {
    @Column(name="name",length=100)
    private String name;
 
+   @Column(name="picture", length= 5000000)
+   private byte[] picture;
+
    public ExistKey getEk() {
       return ek;
    }
@@ -69,6 +72,14 @@ public class FoodCategory implements Serializable {
 
    public void setName(String name) {
       this.name = name;
+   }
+
+   public byte[] getPicture() {
+      return picture;
+   }
+
+   public void setPicture(byte[] picture) {
+      this.picture = picture;
    }
 
    @Override

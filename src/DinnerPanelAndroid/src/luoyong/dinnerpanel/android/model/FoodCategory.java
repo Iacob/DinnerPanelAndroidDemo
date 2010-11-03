@@ -11,6 +11,7 @@ public class FoodCategory implements Serializable {
    private ExistKey ek;
    private Long id;
    private String name;
+   private byte[] picture;
 
    public ExistKey getEk() {
       return ek;
@@ -34,6 +35,14 @@ public class FoodCategory implements Serializable {
 
    public void setName(String name) {
       this.name = name;
+   }
+
+   public byte[] getPicture() {
+      return picture;
+   }
+
+   public void setPicture(byte[] picture) {
+      this.picture = picture;
    }
 
    @Override
