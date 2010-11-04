@@ -19,6 +19,8 @@ import luoyong.dinnerpanel.dao.model.ExistKey;
 import luoyong.dinnerpanel.dao.model.SalePlace;
 import luoyong.dinnerpanel.dao.model.SalePlaceServiceStatus;
 import luoyong.dinnerpanel.dao.model.SalePlaceStatus;
+import luoyong.dinnerpanel.dao.model.enumwrapper.SalePlaceServiceStatusEnum;
+import luoyong.dinnerpanel.dao.model.enumwrapper.SalePlaceStatusEnum;
 import luoyong.dinnerpanel.rwsclient.SalePlaceServiceClient;
 import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
@@ -68,11 +70,12 @@ public class SalePlaceUpdateDialog extends JDialog {
       comboBoxServiceStatus = new JComboBox();
       for (SalePlaceServiceStatus serviceStatus
               : SalePlaceServiceStatus.values()) {
-         comboBoxServiceStatus.addItem(serviceStatus);
+         comboBoxServiceStatus.addItem(
+                 new SalePlaceServiceStatusEnum(serviceStatus));
       }
       comboBoxStatus = new JComboBox();
       for (SalePlaceStatus status : SalePlaceStatus.values()) {
-         comboBoxStatus.addItem(status);
+         comboBoxStatus.addItem(new SalePlaceStatusEnum(status));
       }
 
       JPanel parameterPanel = new JPanel();
@@ -150,19 +153,21 @@ public class SalePlaceUpdateDialog extends JDialog {
             salePlace.setServiceStatus(null); // Clear value before change it.
             if ((comboBoxServiceStatus.getSelectedItem() != null)
                     && (comboBoxServiceStatus.getSelectedItem()
-                        instanceof SalePlaceServiceStatus)) {
+                        instanceof SalePlaceServiceStatusEnum)) {
                
-               salePlace.setServiceStatus((SalePlaceServiceStatus)
-                       comboBoxServiceStatus.getSelectedItem());
+               salePlace.setServiceStatus(
+                       ((SalePlaceServiceStatusEnum)comboBoxServiceStatus
+                          .getSelectedItem()).getEnum());
             }
             // Change sale place status.
             salePlace.setStatus(null); // Clear value before change it.
             if ((comboBoxStatus.getSelectedItem() != null)
                     && (comboBoxStatus.getSelectedItem()
-                        instanceof SalePlaceStatus)) {
+                        instanceof SalePlaceStatusEnum)) {
 
-               salePlace.setStatus((SalePlaceStatus)
-                       comboBoxStatus.getSelectedItem());
+               salePlace.setStatus(
+                       ((SalePlaceStatusEnum)comboBoxStatus.getSelectedItem())
+                          .getEnum());
             }
 
             SalePlace salePlaceInSystem = null;

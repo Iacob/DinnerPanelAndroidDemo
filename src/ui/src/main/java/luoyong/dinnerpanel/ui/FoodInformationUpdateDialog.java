@@ -22,6 +22,7 @@ import luoyong.dinnerpanel.dao.model.ExistKey;
 import luoyong.dinnerpanel.dao.model.Food;
 import luoyong.dinnerpanel.dao.model.FoodCategory;
 import luoyong.dinnerpanel.dao.model.FoodStatus;
+import luoyong.dinnerpanel.dao.model.enumwrapper.FoodStatusEnum;
 import luoyong.dinnerpanel.rwsclient.FoodServiceClient;
 import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
@@ -96,7 +97,7 @@ public class FoodInformationUpdateDialog extends JDialog {
       comboBoxStatus = new JComboBox();
       FoodStatus foodStatusArray[] = FoodStatus.values();
       for (FoodStatus s : foodStatusArray) {
-         comboBoxStatus.addItem(s);
+         comboBoxStatus.addItem(new FoodStatusEnum(s));
       }
 
       textFieldRecommend = new JTextField();
@@ -266,12 +267,17 @@ public class FoodInformationUpdateDialog extends JDialog {
             f.setRecommend(recommend);
             // Set food information status.
             f.setStatus(null); // Clear the value before change it.
+
+            // Set food status.
             Object comboBoxStatusSelectedItem
                     = comboBoxStatus.getSelectedItem();
             if ((comboBoxStatusSelectedItem != null)
-                    && (comboBoxStatusSelectedItem instanceof FoodStatus)) {
-               f.setStatus((FoodStatus)comboBoxStatusSelectedItem);
+                    && (comboBoxStatusSelectedItem instanceof FoodStatusEnum)) {
+               
+               f.setStatus(
+                       ((FoodStatusEnum)comboBoxStatusSelectedItem).getEnum());
             }
+            
             f.setDescription(textAreaDesc.getText());
 
             if (f.getId() ==null) {

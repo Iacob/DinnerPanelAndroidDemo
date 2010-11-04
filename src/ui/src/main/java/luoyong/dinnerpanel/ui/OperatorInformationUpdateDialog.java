@@ -22,6 +22,7 @@ import luoyong.dinnerpanel.dao.model.Operator;
 import luoyong.dinnerpanel.dao.model.OperatorGroup;
 import luoyong.dinnerpanel.dao.model.OperatorStatus;
 import luoyong.dinnerpanel.dao.model.enumwrapper.OperatorGroupEnum;
+import luoyong.dinnerpanel.dao.model.enumwrapper.OperatorStatusEnum;
 import luoyong.dinnerpanel.rwsclient.OperatorServiceClient;
 import luoyong.dinnerpanel.rwscommon.info.RWSException;
 import luoyong.dinnerpanel.ui.component.AddNewActionListener;
@@ -88,7 +89,7 @@ public class OperatorInformationUpdateDialog extends JDialog {
       comboBoxStatus = new JComboBox();
       OperatorStatus operatorStatusArray[] = OperatorStatus.values();
       for (OperatorStatus operatorStatus : operatorStatusArray) {
-         comboBoxStatus.addItem(operatorStatus);
+         comboBoxStatus.addItem(new OperatorStatusEnum(operatorStatus));
       }
       comboBoxStatus.setSelectedItem(OperatorStatus.P);
 
@@ -225,10 +226,10 @@ public class OperatorInformationUpdateDialog extends JDialog {
             operator.setStatus(null);
             if ((comboBoxStatus.getSelectedItem() != null)
                     && (comboBoxStatus.getSelectedItem()
-                        instanceof OperatorStatus)) {
+                        instanceof OperatorStatusEnum)) {
                
-               operator.setStatus(
-                       (OperatorStatus)comboBoxStatus.getSelectedItem());
+               operator.setStatus(((OperatorStatusEnum)comboBoxStatus
+                       .getSelectedItem()).getEnum());
             }
             // Set operator status from the combo box.
             operator.setGroups(null);
