@@ -72,7 +72,7 @@ public class Operator implements Serializable {
    @ElementCollection
    @CollectionTable(name="login_operator_group", joinColumns = {
       @JoinColumn(table="login_operator",
-         name="user_id", referencedColumnName="user_id")})
+         name="user_id", referencedColumnName="id")})
    @Column(table="login_operator_group", length=100, name="group_name")
    @javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
    private Set<OperatorGroup> groups;

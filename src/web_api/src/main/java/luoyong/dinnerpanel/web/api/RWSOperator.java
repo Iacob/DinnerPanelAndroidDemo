@@ -9,7 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import luoyong.dinnerpanel.dao.model.Operator;
 import luoyong.dinnerpanel.service.OperatorManagement;
-import luoyong.dinnerpanel.rwscommon.util.JsonBeanUtil;
+import luoyong.dinnerpanel.rwscommon.util.JsonModelUtil;
 import luoyong.dinnerpanel.rwscommon.util.RWSUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,7 +53,7 @@ public class RWSOperator {
       }
 
       Operator operator = new Operator();
-      JsonBeanUtil.jsonObjectToBean(operatorJsonObject, operator);
+      JsonModelUtil.jsonObjectToOperatorInfo(operatorJsonObject, operator);
 
       operatorManagement.addOperator(operator);
 
@@ -87,7 +87,7 @@ public class RWSOperator {
       }
 
       Operator operator = new Operator();
-      JsonBeanUtil.jsonObjectToBean(operatorJsonObject, operator);
+      JsonModelUtil.jsonObjectToOperatorInfo(operatorJsonObject, operator);
 
       Operator operatorInSystem
               = operatorManagement.getOperatorInformation(operator);
@@ -148,7 +148,7 @@ public class RWSOperator {
       }
 
       JSONObject operatorJsonObject
-              =  JsonBeanUtil.beanToJsonObject(operator);
+              =  JsonModelUtil.operatorInfoToJsonObject(operator);
       if (operatorJsonObject == null) {
          RWSUtil.setJsonObjectResult(result, 0, resultArray);
          return result.toString();
@@ -184,7 +184,8 @@ public class RWSOperator {
 
          if ((operator != null) && (operator.getId() != null)) {
 
-            operatorJsonObject = JsonBeanUtil.beanToJsonObject(operator);
+            operatorJsonObject
+                    = JsonModelUtil.operatorInfoToJsonObject(operator);
 
             if (operatorJsonObject != null) {
                resultArray.put(operatorJsonObject);

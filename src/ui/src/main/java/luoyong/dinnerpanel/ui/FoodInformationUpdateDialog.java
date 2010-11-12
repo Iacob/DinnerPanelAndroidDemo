@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -279,6 +281,8 @@ public class FoodInformationUpdateDialog extends JDialog {
             }
             
             f.setDescription(textAreaDesc.getText());
+            // Extract and set tags.
+            f.setTags(extractTags(textFieldTag.getText()));
 
             if (f.getId() ==null) {
                // Add food information to system.
@@ -351,6 +355,7 @@ public class FoodInformationUpdateDialog extends JDialog {
                  (f.getPrice()==null)?"":f.getPrice().toPlainString());
          comboBoxStatus.setSelectedItem(f.getStatus());
          textAreaDesc.setText(f.getDescription());
+         textFieldTag.setText(this.createTagLiteral(f.getTags()));
       }
    }
 
@@ -406,6 +411,50 @@ public class FoodInformationUpdateDialog extends JDialog {
 
       return (priceString.trim().matches("[0-9]+")
               || priceString.trim().matches("[0-9]+\\.[0-9]{1,2}"));
+   }
+
+   private Set<String> extractTags(String tagStringLiteral) {
+      
+      if (tagStringLiteral == null) {
+         return null;
+      }
+
+      Set<String> tagSet = new HashSet<String>();
+
+      String[] tagStrings = tagStringLiteral.split(",");
+
+      String tag = null;
+      for (String tagString : tagStrings) {
+
+         if (tagString != null) {
+            tag = tagString.trim();
+            if (tag.length() > 0) {
+               tagSet.add(tag);
+            }
+         }
+      }
+
+      return tagSet;
+   }
+
+   private String createTagLiteral(Set<String> tagSet) {
+      
+      if (tagSet == null) {
+         return "";
+      }
+
+      StringBuilder tagLiteral = new StringBuilder();
+
+      boolean ifFirstTag = true;
+      for (String tag : tagSet) {
+         if (ifFirstTag) {
+            tagLiteral.append(", ");
+            ifFirstTag = false;
+         }
+         tagLiteral.append(tag);
+      }
+
+      return tagLiteral.toString();
    }
 
    private class SelectItemActionListenerAdapter
