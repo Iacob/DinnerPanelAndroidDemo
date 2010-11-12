@@ -22,10 +22,13 @@ import javax.persistence.Table;
 @Table(name="operator")
 @SecondaryTable(name="login_operator", pkJoinColumns={
    @PrimaryKeyJoinColumn(name="user_id")})
-@NamedQueries({@NamedQuery(name=Operator.QUERY_REMOVE_OPERATOR_INFORMATION,
-   query="update Operator o "
-      + "set o.ek=luoyong.dinnerpanel.dao.model.ExistKey.D "
-      + "where o.id=?1"),
+@NamedQueries({
+//   @NamedQuery(name=Operator.QUERY_REMOVE_OPERATOR_INFORMATION, query="update "
+//      + "Operator o "
+//      + "set o.ek=luoyong.dinnerpanel.dao.model.ExistKey.D "
+//      + "where o.id=?1"),
+   @NamedQuery(name=Operator.QUERY_REMOVE_OPERATOR_INFORMATION,
+      query="delete from Operator o where o.id=?1"),
    @NamedQuery(name=Operator.QUERY_GET_OPERATOR_INFORMATION,query="select o "
       + "from Operator o "
       + "where o.id=?1 and o.ek=luoyong.dinnerpanel.dao.model.ExistKey.E"),

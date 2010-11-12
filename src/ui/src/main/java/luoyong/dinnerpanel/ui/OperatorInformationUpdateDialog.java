@@ -222,6 +222,7 @@ public class OperatorInformationUpdateDialog extends JDialog {
             operator.setId(textFieldId.getText());
             operator.setName(textFieldName.getText());
             operator.setPassword(operatorPassword);
+            operator.setLoginPassword(operatorPassword);
             // Set operator status from the combo box.
             operator.setStatus(null);
             if ((comboBoxStatus.getSelectedItem() != null)
