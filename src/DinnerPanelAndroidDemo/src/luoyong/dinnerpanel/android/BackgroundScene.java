@@ -1,6 +1,5 @@
 package luoyong.dinnerpanel.android;
 
-import android.os.AsyncTask;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -16,26 +15,15 @@ public class BackgroundScene {
 
    private DinnerPanelApplicationContext dpAppContext = null;
 
-   private int loopTime = 5000;
+   private static SwtichViewAsyncTask switchViewTask = null;
    
-   private int totalLoopTime = 0;
-   private boolean resetTimer = false;
-
-   private static int waitingPeroid = 7000;
-
-   private boolean taskStarted = false;
 
    public BackgroundScene(DinnerPanelApplicationContext applicationContext) {
       this.dpAppContext = applicationContext;
-   }
-
-   public void show() {
 
       Button adViewButtonQuit = (Button)this.dpAppContext
               .getActivityContext().findViewById(
                   R.id.advertisement_view_button_quit);
-
-      
 
       // Set the quit button.
       adViewButtonQuit.setOnClickListener(new OnClickListener() {
@@ -48,51 +36,31 @@ public class BackgroundScene {
          }
       });
 
-      if (!taskStarted) {
-
-         // Start switch view thread.
-         AsyncTask switchViewTask = new AsyncTask() {
-
-            @Override
-            protected Object doInBackground(Object... arg0) {
-
-               for (;;) {
-                  try {
-                     Thread.sleep(loopTime);
-                     // Reset the total loop time if the timer is reset.
-                     if (resetTimer) {
-                        totalLoopTime = 0;
-                        resetTimer = false;
-                        continue;
-                     }
-                     totalLoopTime += loopTime;
-                     if (totalLoopTime > BackgroundScene.getWaitingPeroid()) {
-                        totalLoopTime = 0;
-                        // Send message to tell main view to show broadcast ad.
-                        dpAppContext.getActivityContext().messageHandler
-                                .sendEmptyMessage(0x151);
-                     }
-                     android.util.Log.v("Loop Cycle", "A cycle reached.");
-                  } catch (Throwable t) {
-                     android.util.Log.e("Thread Error", "Thread error.", t);
-                  }
-               }
-            }
-         };
-         switchViewTask.execute("Hello thread.");
-         taskStarted = true;
+      if (switchViewTask != null) {
+         // Mark the old task stop.
+         android.util.Log.v("DINNER PANEL MESSAGE",
+                 "Mark the old task as stop.");
+         switchViewTask.stop();
+         // Waiting the old task stop.
+         android.util.Log.v("DINNER PANEL MESSAGE",
+                 "Waiting the old task stopped.");
+         try {
+            Thread.sleep(switchViewTask.getLoopCycle() * 2);
+         } catch (InterruptedException ex) {
+            ex.printStackTrace(System.err);
+         }
       }
+
+      // Create a new task instance.
+      switchViewTask = new SwtichViewAsyncTask(this.dpAppContext);
+      // Start the task.
+      switchViewTask.execute("Start task.");
+   }
+
+   public void show() {
    }
 
    public void resetTimer() {
-      this.resetTimer = true;
-   }
-
-   public static int getWaitingPeroid() {
-      return waitingPeroid;
-   }
-
-   public static void setWaitingPeroid(int waitingPeroid) {
-      BackgroundScene.waitingPeroid = waitingPeroid;
+      switchViewTask.resetTimer();
    }
 }

@@ -5,19 +5,18 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -49,8 +48,6 @@ public class MainActivity extends Activity {
 
    private DinnerPanelApplicationContext dpAppContext = null;
 
-   public Handler messageHandler = null;
-
    @Override
    public void onCreate(Bundle icicle) {
       android.util.Log.v("SYSTEM", "Creating activity.");
@@ -73,46 +70,6 @@ public class MainActivity extends Activity {
          // Start the background scene here.
          dpAppContext.getBackgroundScene().show();
       }
-
-//      if (messageHandler == null) {
-         
-         messageHandler = new Handler() {
-
-            @Override
-            public void handleMessage(Message msg) {
-               if (msg.what == 0x151) {
-                  android.util.Log.v("Loop Cycle", "Handling 0x151 message.");
-                  android.util.Log.v("Loop Cycle", "Current DisplayChild: "
-                          + dpAppContext.getMainView().getDisplayedChild());
-                  // Show the broadcast advertisement.
-   //               if (dpAppContext.getMainView().getDisplayedChild()
-   //                       != BackgroundScene.VIEW_INDEX) {
-
-
-
-                     
-                     dpAppContext.getMainView().setInAnimation(
-                             AnimationUtil.createFadeInAnimation(dpAppContext));
-                     dpAppContext.getMainView().setOutAnimation(
-                             AnimationUtil.createFadeOutAnimation(dpAppContext));
-
-   //                  ImageView imageView = (ImageView)dpAppContext
-   //                          .getActivityContext()
-   //                          .findViewById(R.id.advertisement_view_image_view);
-   //                  Bitmap bitmap = BitmapFactory.decodeResource(dpAppContext.getApplicationResources(), R.drawable.fruit_juice);
-   //                  bitmap = Bitmap.createScaledBitmap(
-   //                    bitmap, 100, 70, true);
-   //                  imageView.setImageBitmap(bitmap);
-
-                     android.util.Log.v("Loop Cycle", "Play the advertisement.");
-                     dpAppContext.getMainView().setDisplayedChild(
-                             BackgroundScene.VIEW_INDEX);
-   //               }
-               }
-               super.handleMessage(msg);
-            }
-         };
-//      }
 
       // Setup food category grid view.
       GridView gridView
@@ -186,6 +143,9 @@ public class MainActivity extends Activity {
               R.id.bill_item_list_view_button_add);
       buttonBillItemListViewAdd.setOnClickListener(new OnClickListener() {
          public void onClick(View arg0) {
+            // Reset the background scene timer.
+            dpAppContext.getBackgroundScene().resetTimer();
+            // Set in and out animation.
             mainView.setInAnimation(AnimationUtil.createFromNorthInAnimation());
             mainView.setOutAnimation(AnimationUtil.createToSouthOutAnimation());
             // Reset the background timer.
@@ -198,6 +158,9 @@ public class MainActivity extends Activity {
               R.id.food_category_view_button);
       buttonFoodCategoryViewAdd.setOnClickListener(new OnClickListener() {
          public void onClick(View arg0) {
+            // Reset the background scene timer.
+            dpAppContext.getBackgroundScene().resetTimer();
+            // Set in and out animation.
             mainView.setInAnimation(AnimationUtil.createFromNorthInAnimation());
             mainView.setOutAnimation(AnimationUtil.createToSouthOutAnimation());
             // Reset the background timer.
@@ -209,11 +172,22 @@ public class MainActivity extends Activity {
       // Setup food list gallery.
       gallery = (Gallery)this.findViewById(R.id.food_list_view_gallery);
       gallery.setAdapter(new FoodListViewAdapter(this));
+      gallery.setOnTouchListener(new OnTouchListener() {
+         public boolean onTouch(View arg0, MotionEvent arg1) {
+            // Reset the background scene timer.
+            dpAppContext.getBackgroundScene().resetTimer();
+            // Process this event by underlyer.
+            return false;
+         }
+      });
 
       Button buttonFoodListViewAdd
               = (Button)this.findViewById(R.id.food_list_view_button_add);
       buttonFoodListViewAdd.setOnClickListener(new OnClickListener() {
          public void onClick(View arg0) {
+            // Reset the background scene timer.
+            dpAppContext.getBackgroundScene().resetTimer();
+            
             confirmDialog.show();
          }
       });
@@ -222,6 +196,9 @@ public class MainActivity extends Activity {
               = (Button)this.findViewById(R.id.food_list_view_button_back);
       buttonFoodListViewBack.setOnClickListener(new OnClickListener() {
          public void onClick(View arg0) {
+            // Reset the background scene timer.
+            dpAppContext.getBackgroundScene().resetTimer();
+            // Set in and out animation.
             mainView.setInAnimation(AnimationUtil.createFromSouthInAnimation());
             mainView.setOutAnimation(AnimationUtil.createToNorthOutAnimation());
             // Reset the background timer.
@@ -231,9 +208,20 @@ public class MainActivity extends Activity {
       });
 
       
-      // 
+      gridView.setOnTouchListener(new OnTouchListener() {
+         public boolean onTouch(View arg0, MotionEvent arg1) {
+            // Reset the background scene timer.
+            dpAppContext.getBackgroundScene().resetTimer();
+            // Process this event by underlyer.
+            return false;
+         }
+      });
+
       gridView.setOnItemClickListener(new OnItemClickListener() {
          public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+
+            // Reset the background scene timer.
+            dpAppContext.getBackgroundScene().resetTimer();
             
             if (position == 2) {
                Toast toast = Toast.makeText(activityContext, "请稍候，正在获取数据", Toast.LENGTH_LONG);
